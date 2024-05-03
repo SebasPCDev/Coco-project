@@ -13,6 +13,5 @@ export class AppController {
 
     //esto es otra prueba 3
 
-    //un tercer comentario
   }
 }

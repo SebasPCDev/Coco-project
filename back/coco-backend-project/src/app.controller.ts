@@ -8,10 +8,5 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
-
-    //esto es una prueba
-
-    //esto es otra prueba 3
-
   }
 }

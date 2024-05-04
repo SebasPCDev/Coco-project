@@ -3,13 +3,12 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  //Put,
   Param,
   Delete,
 } from '@nestjs/common';
 import { CoworkingService } from './coworking.service';
 import { CreateCoworkingDto } from './coworking.dto';
-import { UpdateCoworkingDto } from './dto/update-coworking.dto';
 
 @Controller('coworking')
 export class CoworkingController {
@@ -30,13 +29,13 @@ export class CoworkingController {
     return this.coworkingService.findOne(+id);
   }
 
-  @Patch(':id')
+  /*   @Put(':id')
   update(
     @Param('id') id: string,
     @Body() updateCoworkingDto: UpdateCoworkingDto,
   ) {
     return this.coworkingService.update(+id, updateCoworkingDto);
-  }
+  } */
 
   @Delete(':id')
   remove(@Param('id') id: string) {

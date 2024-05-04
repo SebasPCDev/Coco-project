@@ -3,13 +3,12 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  //Put,
   Param,
   Delete,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './company.dto';
-import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Controller('company')
 export class CompanyController {
@@ -30,10 +29,10 @@ export class CompanyController {
     return this.companyService.findOne(+id);
   }
 
-  @Patch(':id')
+  /* @Put(':id')
   update(@Param('id') id: string, @Body() updateCompanyDto: UpdateCompanyDto) {
     return this.companyService.update(+id, updateCompanyDto);
-  }
+  } */
 
   @Delete(':id')
   remove(@Param('id') id: string) {

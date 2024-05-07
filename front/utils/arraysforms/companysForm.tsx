@@ -1,37 +1,32 @@
-import {
-    RiHomeLine,
-  RiInstagramLine,
-  RiLockLine,
-  RiMailLine,
-  RiMapPinLine,
-  RiPhoneLine,
-  RiUserLine,
-} from "@remixicon/react";
 export interface elementForm {
   name: string;
   label: string;
   type: string;
   placeholder: string;
   required: boolean;
-  icon?: JSX.Element;
 }
 
-export const companiesFormsArray: elementForm[] = [
+export const formDataCompanies: elementForm[] = [
   {
     name: "name",
     label: "Name",
     type: "text",
     placeholder: "Name",
     required: true,
-    icon: <RiUserLine />,
+  },
+  {
+    name: "lastname",
+    label: "Last Name",
+    type: "text",
+    placeholder: "Last Name",
+    required: true,
   },
   {
     name: "phone",
     label: "Phone",
     type: "text",
-    placeholder: "+57 320500000",
+    placeholder: "Phone",
     required: true,
-    icon: <RiPhoneLine />,
   },
   {
     name: "email",
@@ -39,46 +34,68 @@ export const companiesFormsArray: elementForm[] = [
     type: "email",
     placeholder: "Email",
     required: true,
-    icon: <RiMailLine />,
   },
-
   {
-    name: "address",
-    label: "Address",
+    name: "identification",
+    label: "Identification",
     type: "text",
-    placeholder: "calle 123 # 45-67",
+    placeholder: "Número de documento",
     required: true,
-    icon: <RiHomeLine />,
+  },
+  {
+    name: "role",
+    label: "Role",
+    type: "text",
+    placeholder: "Cargo dentro de la empresa",
+    required: true,
+  },
+  {
+    name: "company_name",
+    label: "Company Name",
+    type: "text",
+    placeholder: "Nombre de la compañía o coworking",
+    required: true,
+  },
+  {
+    name: "company_email",
+    label: "Company Email",
+    type: "email",
+    placeholder: "Email de la compañía o coworking",
+    required: true,
+  },
+  {
+    name: "company_phone",
+    label: "Company Phone",
+    type: "text",
+    placeholder: "Phone de la compañía o coworking",
+    required: true,
+  },
+  {
+    name: "quantity_beneficiaries",
+    label: "Quantity of Beneficiaries",
+    type: "number",
+    placeholder: "Cantidad de empleados con el beneficio",
+    required: false,
+  },
+  {
+    name: "business_sector",
+    label: "Business Sector",
+    type: "text",
+    placeholder: "Sector empresarial",
+    required: false,
+  },
+  {
+    name: "size",
+    label: "Size",
+    type: "number",
+    placeholder: "Cantidad de empleados",
+    required: false,
   },
   {
     name: "message",
     label: "Message",
     type: "text",
-    placeholder: "quiero informacion",
-    required: true,
+    placeholder: "Message",
+    required: false,
   },
-  {
-    name: "socialMedia",
-    label: "socialMedia",
-    type: "text",
-    placeholder: "https://www.instagram.com/ejemplo/",
-    required: true,
-    icon: <RiInstagramLine />,
-    },
-    {
-      name: "number_beneficiaries",
-      label: "number_beneficiaries",
-      type: "number",
-      placeholder: "2",
-      required: true,
-      icon: <RiMapPinLine />,
-    },
-    {
-        name: "sector",
-        label: "sector",
-        type: "text",
-        placeholder: "sector",
-        required: true,
-        icon: <RiMapPinLine />,
-    }
 ];

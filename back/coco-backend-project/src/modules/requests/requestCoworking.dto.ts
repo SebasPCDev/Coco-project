@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsInt, IsEmail, IsDate, IsNotEmpty, isEmpty, IsUrl } from 'class-validator';
+import { IsString, IsOptional, IsInt, IsEmail, IsNotEmpty,  IsUrl, IsEmpty } from 'class-validator';
 
 export class RequestDtoCoworking {
   @ApiProperty({
@@ -46,9 +46,9 @@ export class RequestDtoCoworking {
     example: 'Admin',
     description: 'El rol del solicitante, cargo dentro de la empresa',
   })
-  @IsString({ message: 'El rol debe ser una cadena de texto' })
-  @IsNotEmpty({ message: 'El rol es obligatorio' })
-  role: string;
+  @IsString({ message: 'El position debe ser una cadena de texto' })
+  @IsNotEmpty({ message: 'El position es obligatorio' })
+  position: string;
 
   @ApiProperty({
     example: 'Ejemplo Compañía',
@@ -96,16 +96,16 @@ export class RequestDtoCoworking {
     description: 'Hora en la que abre el cowork tipo date',
   })
   @IsOptional()
-  @IsDate({ message: 'El open debe ser un valor tipo date' })
-  open: Date;
+  @IsString({ message: 'El open debe ser un valor tipo string' })
+  open: string;
 
   @ApiProperty({
     example: '17:00',
     description: 'Hora en la que cierra el cowork tipo date',
   })
   @IsOptional()
-  @IsDate({ message: 'El close debe ser un valor tipo date' })
-  close: Date;
+  @IsString({ message: 'El close debe ser un valor tipo string' })
+  close: string;
 
   @ApiProperty({
     example: 10,
@@ -143,8 +143,9 @@ export class RequestDtoCoworking {
     nullable: true,
   })
   
-  @IsString()
-  type: string|null;
+
+  @IsEmpty()
+  type: string;
 
 
 }

@@ -1,14 +1,25 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { loggerGlobal } from './middleware/logger.middleware';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(loggerGlobal);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      
+      whitelist: true,
+      
+      forbidNonWhitelisted: true,
+    }),
+  );
+
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Demo Nest')
+    .setTitle('Coco+')
     .setDescription('API construida para el backend de la aplicación Coco+')
     .setVersion('1.0')
     .build();
@@ -18,6 +29,6 @@ async function bootstrap() {
 
   await app.listen(3000);
 
-  //comentario de prueba
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

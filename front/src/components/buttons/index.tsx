@@ -3,7 +3,7 @@ import Link from "next/link";
 const ButtonClient = ({
   buttonText,
   path,
-  color = "primary",
+  color,
 }: {
   buttonText: string;
   path: string;

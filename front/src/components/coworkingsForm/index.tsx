@@ -1,9 +1,9 @@
 "use client";
-import { formDataCompanies } from "../../../utils/arraysforms/companysForm";
 import { useState } from "react";
+import { formDataCoworkings } from "../../../utils/arraysforms/coworkingsForms";
 
-const CompaniesForm = () => {
-  const [companiesInfo, setCompaniesInfo] = useState({
+const CoworkingsForm = () => {
+  const [coworkingInfo, setCoworkingInfo] = useState({
     name: "",
     lastname: "",
     phone: "",
@@ -13,12 +13,15 @@ const CompaniesForm = () => {
     company_name: "",
     company_email: "",
     company_phone: "",
-    quantity_beneficiaries: 0,
-    business_sector: "",
-    size: 0,
+    address: "",
+    website: "",
+    open: "",
+    close: "",
+    capacity: 0,
     message: "",
   });
-  const [companiesInfoError, setCompaniesInfoError] = useState({
+
+  const [coworkingInfoError, setCoworkingInfoError] = useState({
     name: "",
     lastname: "",
     phone: "",
@@ -28,17 +31,19 @@ const CompaniesForm = () => {
     company_name: "",
     company_email: "",
     company_phone: "",
-    quantity_beneficiaries: "",
-    business_sector: "",
-    size: "",
+    address: "",
+    website: "",
+    open: "",
+    close: "",
+    capacity: "",
     message: "",
   });
 
   return (
     <>
       <form className="md:w-1/3 m-auto px-2 md:my-20 grid grid-cols-2 gap-4 ">
-        <h1 className="text-3xl text-center">Soy una Empresa</h1>
-        {formDataCompanies.map(
+        <h1 className="text-3xl text-center">Soy Coworking</h1>
+        {formDataCoworkings.map(
           ({ name, label, type, placeholder, required }) => {
             return (
               <div key={name} className="flex flex-col ">
@@ -71,4 +76,4 @@ const CompaniesForm = () => {
   );
 };
 
-export default CompaniesForm;
+export default CoworkingsForm;

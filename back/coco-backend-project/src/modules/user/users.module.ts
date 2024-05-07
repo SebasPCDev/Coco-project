@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
+import { UsersService } from './users.service';
+import { UsersController } from './users.controller';
 import { Users } from 'src/entities/users.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  controllers: [UserController],
-  providers: [UserService],
+  controllers: [UsersController],
+  providers: [UsersService],
   imports: [TypeOrmModule.forFeature([Users])],
+  exports: [UsersService],
 })
-export class UserModule {
-  constructor(private readonly userService: UserService) {}
+export class UsersModule {
+  constructor(private readonly userService: UsersService) {}
 
   async onModuleInit() {
     await this.userService.preloadSuperAdminUser();

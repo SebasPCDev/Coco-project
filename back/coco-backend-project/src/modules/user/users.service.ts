@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
@@ -18,6 +18,11 @@ export class UserService {
 
   findAll() {
     return `This action returns all user`;
+  }
+
+  async getUserByEmail(email: string): Promise<Users> {
+    const user = await this.usersRepository.findOneBy({ email });
+    return user;
   }
 
   findOne(id: number) {
@@ -33,17 +38,20 @@ export class UserService {
   }
 
   async preloadSuperAdminUser() {
-    const hashedPassword = await bcrypt.hash('Coco123!', 10);
+    const hashedPassword = await bcrypt.hash(
+      process.env.SUPERADMIN_PASSWORD,
+      10,
+    );
 
     const adminUser = {
-      name: 'Coco',
-      lastname: 'Plus',
-      phone: '311223332',
-      email: 'cocoplus2024@gmail.com',
-      identification: '123456789',
-      position: 'Superadmin',
+      name: process.env.SUPERADMIN_NAME,
+      lastname: process.env.SUPERADMIN_LASTNAME,
+      phone: process.env.SUPERADMIN_PHONE,
+      email: process.env.SUPERADMIN_EMAIL,
+      identification: process.env.SUPERADMIN_IDENTIFICATION,
+      position: process.env.SUPERADMIN_POSITION,
       password: hashedPassword,
-      role: 'superadmin',
+      role: process.env.SUPERADMIN_ROLE,
     };
 
     const userTemp = await this.usersRepository.findOne({

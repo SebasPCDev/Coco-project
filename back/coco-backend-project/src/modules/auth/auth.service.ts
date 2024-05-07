@@ -1,25 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './auth.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+
+import { UsersService } from '../user/users.service';
+import { LoginUserDto } from '../user/user.dto';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async signin(credentials: LoginUserDto) {
+    const { email, password } = credentials;
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+    const user = await this.usersService.getUserByEmail(email);
 
-  /*   update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  } */
+    if (!user) throw new BadRequestException('User not found');
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) throw new BadRequestException('Invalid password');
+
+    const userPayload = {
+      sub: user.id,
+      id: user.id,
+      email: user.email,
+    };
+
+    // Generamos un token
+    const token = this.jwtService.sign(userPayload);
+
+    return { user, token };
   }
 }

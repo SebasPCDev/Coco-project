@@ -35,7 +35,7 @@ export class Users {
   @Column({ type: 'varchar', length: 100 })
   position: string;
 
-  // @Exclude()
+  @Exclude()
   @Column({ type: 'varchar', length: 255 })
   password: string;
 

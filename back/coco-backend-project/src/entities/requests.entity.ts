@@ -49,7 +49,7 @@ import {
         nullable: false,
         type: 'varchar',
     })
-    role: string;
+    position: string;
   
     @Column({
         nullable: false,
@@ -101,13 +101,13 @@ import {
   
     @Column({
         nullable: true,
-        type: 'time',
+        type: 'varchar',
     })
     open: string;
   
     @Column({
         nullable: true,
-        type: 'time',
+        type: 'varchar',
     })
     close: string;
   
@@ -146,7 +146,7 @@ import {
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     })
-    createddAt: Date;
+    createdAt: Date;
 
   @Exclude()
   @CreateDateColumn({

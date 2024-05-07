@@ -46,9 +46,9 @@ export class RequestDtoCompany {
     example: 'Admin',
     description: 'El rol del solicitante, cargo dentro de la empresa',
   })
-  @IsString({ message: 'El rol debe ser una cadena de texto' })
-  @IsNotEmpty({ message: 'El rol es obligatorio' })
-  role: string;
+  @IsString({ message: 'El position debe ser una cadena de texto' })
+  @IsNotEmpty({ message: 'El position es obligatorio' })
+  position: string;
 
   @ApiProperty({
     example: 'Ejemplo Compañía',

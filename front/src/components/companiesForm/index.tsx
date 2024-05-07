@@ -1,4 +1,5 @@
 "use client";
+
 import { formDataCompanies } from "../../../utils/arraysforms/companysForm";
 import { useState } from "react";
 import ICompaniesInfo from "../../../utils/types/companiesFormInterface";
@@ -11,7 +12,7 @@ const CompaniesForm = () => {
     phone: "",
     email: "",
     identification: "",
-    role: "",
+    position: "",
     companyName: "",
     companyEmail: "",
     companyPhone: "",
@@ -21,7 +22,7 @@ const CompaniesForm = () => {
     message: "",
     status: "pending",
     observation: "Esto es una observacion",
-    type: "Company",
+    type: "",
   });
   const [companiesInfoError, setCompaniesInfoError] = useState({
     name: "",
@@ -36,7 +37,7 @@ const CompaniesForm = () => {
     quantityBeneficiaries: "",
     businessSector: "",
     size: "",
-    message: "",    
+    message: "",
     type: "",
   });
 
@@ -48,11 +49,15 @@ const CompaniesForm = () => {
     });
     console.log(companiesInfo);
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(companiesInfo);
 
-    PostCompany(companiesInfo);
+    try {
+      await PostCompany(companiesInfo);
+    } catch (error) {
+      console.log("Hubo un error en la petición", error);
+    }
   };
 
   return (

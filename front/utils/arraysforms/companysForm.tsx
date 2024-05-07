@@ -43,8 +43,8 @@ export const formDataCompanies: elementForm[] = [
     required: true,
   },
   {
-    name: "role",
-    label: "Role",
+    name: "position",
+    label: "Position",
     type: "text",
     placeholder: "Cargo dentro de la empresa",
     required: true,

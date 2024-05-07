@@ -4,7 +4,7 @@ interface ICompaniesInfo {
   phone: string;
   email: string;
   identification: string;
-  role: string;
+  position: string;
   companyName: string;
   companyEmail: string;
   companyPhone: string;

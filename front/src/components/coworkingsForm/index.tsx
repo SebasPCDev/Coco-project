@@ -1,24 +1,26 @@
 "use client";
 import { useState } from "react";
 import { formDataCoworkings } from "../../../utils/arraysforms/coworkingsForms";
+import ICoworkingsInfo from "../../../utils/types/coworkingsFormInterface";
 
 const CoworkingsForm = () => {
-  const [coworkingInfo, setCoworkingInfo] = useState({
+  const [coworkingInfo, setCoworkingInfo] = useState<ICoworkingsInfo>({
     name: "",
     lastname: "",
     phone: "",
     email: "",
     identification: "",
     role: "",
-    company_name: "",
-    company_email: "",
-    company_phone: "",
+    companyName: "",
+    companyEmail: "",
+    companyPhone: "",
     address: "",
     website: "",
     open: "",
     close: "",
     capacity: 0,
     message: "",
+    type: "Coworking",
   });
 
   const [coworkingInfoError, setCoworkingInfoError] = useState({
@@ -28,15 +30,16 @@ const CoworkingsForm = () => {
     email: "",
     identification: "",
     role: "",
-    company_name: "",
-    company_email: "",
-    company_phone: "",
+    companyName: "",
+    companyEmail: "",
+    companyPhone: "",
     address: "",
     website: "",
     open: "",
     close: "",
     capacity: "",
     message: "",
+    type: "",
   });
 
   return (

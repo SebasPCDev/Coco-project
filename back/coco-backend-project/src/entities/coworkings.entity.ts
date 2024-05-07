@@ -58,7 +58,7 @@ export class Coworkings {
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  createddAt: Date;
+  createdAt: Date;
 
   @Exclude()
   @CreateDateColumn({

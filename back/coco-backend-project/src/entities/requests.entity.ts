@@ -1,7 +1,9 @@
+import { Exclude } from 'class-transformer';
 import {
     Entity,
     PrimaryGeneratedColumn,
-    Column
+    Column,
+    CreateDateColumn
   } from 'typeorm';
   
   
@@ -101,13 +103,13 @@ import {
         nullable: true,
         type: 'time',
     })
-    open: Date;
+    open: string;
   
     @Column({
         nullable: true,
         type: 'time',
     })
-    close: Date;
+    close: string;
   
     @Column({
         nullable: true,
@@ -137,6 +139,22 @@ import {
         type: 'varchar',
     })
     type: string;
+
+    @Exclude()
+    @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+    })
+    createddAt: Date;
+
+  @Exclude()
+  @CreateDateColumn({
+    name: 'updated_at',
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
   
    
   }

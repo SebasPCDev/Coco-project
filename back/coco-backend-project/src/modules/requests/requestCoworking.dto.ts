@@ -96,16 +96,16 @@ export class RequestDtoCoworking {
     description: 'Hora en la que abre el cowork tipo date',
   })
   @IsOptional()
-  @IsDate({ message: 'El open debe ser un valor tipo date' })
-  open: Date;
+  @IsDate({ message: 'El open debe ser un valor tipo string' })
+  open: string;
 
   @ApiProperty({
     example: '17:00',
     description: 'Hora en la que cierra el cowork tipo date',
   })
   @IsOptional()
-  @IsDate({ message: 'El close debe ser un valor tipo date' })
-  close: Date;
+  @IsDate({ message: 'El close debe ser un valor tipo string' })
+  close: string;
 
   @ApiProperty({
     example: 10,

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsInt, IsEmail, IsDate, IsNotEmpty, isEmpty } from 'class-validator';
+import { IsString, IsOptional, IsInt, IsEmail, IsDate, IsNotEmpty, isEmpty, IsEmpty } from 'class-validator';
 
 export class RequestDtoCompany {
   @ApiProperty({
@@ -97,46 +97,7 @@ export class RequestDtoCompany {
   @IsOptional()
   @IsInt({message:"size debe ser un numero"})
   size: number;
-//! COwork
-  // @ApiProperty({
-  //   example: '123 Main St',
-  //   description: 'The address of the company',
-  // })
-  // @IsOptional()
-  // @IsString()
-  // address: string;
 
-  // @ApiProperty({
-  //   example: 'www.example.com',
-  //   description: 'The website of the company',
-  // })
-  // @IsOptional()
-  // @IsString()
-  // website: string;
-
-  // @ApiProperty({
-  //   example: '09:00',
-  //   description: 'The open time',
-  // })
-  // @IsOptional()
-  // @IsDate()
-  // open: Date;
-
-  // @ApiProperty({
-  //   example: '17:00',
-  //   description: 'The close time',
-  // })
-  // @IsOptional()
-  // @IsDate()
-  // close: Date;
-
-  // @ApiProperty({
-  //   example: 10,
-  //   description: 'The capacity of the event',
-  // })
-  // @IsOptional()
-  // @IsInt()
-  // capacity: number;
 
   @ApiProperty({
     example: 'Esto es un mensaje de prueba',
@@ -167,6 +128,7 @@ export class RequestDtoCompany {
   })
   
   @IsString()
+  @IsEmpty({message:"Debe ser nullo"})
   type: null|string;
 
 

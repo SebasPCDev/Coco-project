@@ -1,25 +1,29 @@
 "use client";
 import { LoginFormArray } from "../../../utils/arraysforms/loginForm";
 import { useEffect, useState } from "react";
-
-interface LoginForm {
-  email: string;
-  password: string;
-}
+import ILoginForm from "../../../utils/types/loginFormInterface";
+import PostLogin from "../../../utils/posts/postSignin";
 
 const LoginForm = () => {
-  const [LoginForm, setLoginForm] = useState<LoginForm>({
+  const [LoginForm, setLoginForm] = useState<ILoginForm>({
     email: "",
     password: "",
   });
 
-  const [LoginFormError, setLoginFormError] = useState<LoginForm>({
+  const [LoginFormError, setLoginFormError] = useState<ILoginForm>({
     email: "",
     password: "",
   });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLoginForm({ ...LoginFormError, [name]: value });
+    setLoginForm({ ...LoginForm, [name]: value });
+    console.log(LoginForm);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(LoginForm);
+    const response = await PostLogin(LoginForm);
   };
 
   return (

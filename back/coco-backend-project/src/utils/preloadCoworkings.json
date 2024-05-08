@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Coworking 1",
+    "phone": "123456789",
+    "email": "coworking1@mail.com",
+    "open": "08:00",
+    "close": "20:00",
+    "address": "Calle 1, 123",
+    "capacity": 20,
+    "status": "pending",
+    "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/gettyimages-1161987904-640x640_gtz1ok.jpg"
+  },
+  {
+    "name": "Coworking 2",
+    "phone": "987654321",
+    "email": "coworking2@mail.com",
+    "open": "09:00",
+    "close": "21:00",
+    "address": "Calle 2, 456",
+    "capacity": 15,
+    "status": "active",
+    "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/istockphoto-1357829448-640x640_qe3nqo.jpg"
+  },
+  {
+    "name": "Coworking 3",
+    "phone": "555555555",
+    "email": "coworking3@mail.com",
+    "open": "07:30",
+    "close": "19:30",
+    "address": "Calle 3, 789",
+    "capacity": 25,
+    "status": "pending",
+    "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/istockphoto-1279090224-640x640_t2u9zl.jpg"
+  },
+  {
+    "name": "Coworking 4",
+    "phone": "999999999",
+    "email": "coworking4@mail.com",
+    "open": "08:30",
+    "close": "20:30",
+    "address": "Calle 4, 101112",
+    "capacity": 18,
+    "status": "active",
+    "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/gettyimages-1214699141-640x640_bhzal2.jpg"
+  },
+  {
+    "name": "Coworking 5",
+    "phone": "777777777",
+    "email": "coworking5@mail.com",
+    "open": "07:45",
+    "close": "19:45",
+    "address": "Calle 5, 131415",
+    "capacity": 22,
+    "status": "pending",
+    "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/gettyimages-1157185547-640x640_qrhflf.jpg"
+  },
+  {
+    "name": "Coworking 6",
+    "phone": "333333333",
+    "email": "coworking6@mail.com",
+    "open": "09:30",
+    "close": "21:30",
+    "address": "Calle 6, 161718",
+    "capacity": 17,
+    "status": "inactive",
+    "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/gettyimages-1157235072-640x640_uspmdc.jpg"
+  }
+]

@@ -9,7 +9,6 @@ import {
   IsEmpty,
   IsEnum,
 } from 'class-validator';
-import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { TypeCompany } from 'src/models/typeCompany.enum';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 
@@ -148,7 +147,6 @@ export class RequestDtoCoworking {
     example: 'pending',
     description: 'El status de la request pending / close	',
   })
-
   @IsEnum(StatusRequest)
   status: StatusRequest;
 

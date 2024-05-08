@@ -7,12 +7,12 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UsersService } from './users.service';
 import { CreateUserDto } from './user.dto';
 
 @Controller('user')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+export class UsersController {
+  constructor(private readonly userService: UsersService) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {

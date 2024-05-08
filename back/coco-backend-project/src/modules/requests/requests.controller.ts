@@ -2,8 +2,8 @@ import {
   Body,
   ConflictException,
   Controller,
-  DefaultValuePipe,
   Get,
+  HttpStatus,
   ParseEnumPipe,
   Post,
   Query,
@@ -20,6 +20,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { Public } from 'src/decorators/public.decorator';
 import { StatusRequest } from 'src/models/statusRequest.enum';
+import { QueryParamsValidator } from 'src/pipes/queryParamsValidator.pipe';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
@@ -66,19 +67,26 @@ export class RequestsController {
   async getrequests(
     @Query(
       'type',
-      new DefaultValuePipe(TypeCompany.COMPANY),
-      new ParseEnumPipe(TypeCompany),
+      new ParseEnumPipe(TypeCompany, {
+        optional: true,
+        errorHttpStatusCode: HttpStatus.BAD_REQUEST,
+      }),
+      new QueryParamsValidator(),
     )
-    type: TypeCompany,
+    type?: TypeCompany,
     @Query(
       'status',
-      new DefaultValuePipe(StatusRequest.PENDING),
-      new ParseEnumPipe(StatusRequest),
+      new ParseEnumPipe(StatusRequest, {
+        optional: true,
+        errorHttpStatusCode: HttpStatus.BAD_REQUEST,
+      }),
+      new QueryParamsValidator(),
     )
-    status: StatusRequest,
+    status?: StatusRequest,
   ) {
     try {
       const result = await this.requestsService.getRequest(type, status);
+      console.log(result);
       return result;
     } catch (error) {
       throw error;

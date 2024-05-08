@@ -45,7 +45,7 @@ const LoginForm = () => {
                   required={required}
                   className="border-2 mx-1/3 py-2"
                   onChange={handleChange}
-                  value={LoginForm[name as keyof LoginForm]}
+                  value={LoginForm[name as keyof ILoginForm]}
                 />
                 <p className="text-red-500">
                   {/* {LoginFormError[name as keyof LoginFormError]} */}

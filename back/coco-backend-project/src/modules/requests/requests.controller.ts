@@ -14,7 +14,6 @@ import { RequestDtoCoworking } from './requestCoworking.dto';
 import { RequestDtoCompany } from './requestCompany.dto';
 import { RequestsService } from './requests.service';
 import { TypeCompany } from 'src/models/typeCompany.enum';
-import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -73,17 +72,16 @@ export class RequestsController {
     type: TypeCompany,
     @Query(
       'status',
-      new DefaultValuePipe(CoworkingStatus.PENDING),
-      new ParseEnumPipe(CoworkingStatus),
+      new DefaultValuePipe(StatusRequest.PENDING),
+      new ParseEnumPipe(StatusRequest),
     )
-    status: CoworkingStatus,
+    status: StatusRequest,
   ) {
     try {
       const result = await this.requestsService.getRequest(type, status);
       return result;
     } catch (error) {
       throw error;
-
     }
   }
 }

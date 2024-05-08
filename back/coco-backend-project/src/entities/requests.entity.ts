@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 
-import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { StatusRequest } from 'src/models/statusRequest.enum';
 import { TypeCompany } from 'src/models/typeCompany.enum';
 
 import {
@@ -127,10 +127,10 @@ export class Request {
 
   @Column({
     type: 'enum',
-    enum: CoworkingStatus,
-    default: CoworkingStatus.PENDING,
+    enum: StatusRequest,
+    default: StatusRequest.PENDING,
   })
-  status: CoworkingStatus;
+  status: StatusRequest;
 
   @Column({
     nullable: false,

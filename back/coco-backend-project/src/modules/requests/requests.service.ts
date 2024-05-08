@@ -1,6 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { equal } from 'assert';
 import { Request } from 'src/entities/requests.entity';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';

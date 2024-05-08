@@ -3,12 +3,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Users } from './users.entity';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { Amenities } from './amenities.entity';
 
 @Entity('coworkings')
 export class Coworkings {
@@ -68,6 +71,20 @@ export class Coworkings {
   })
   updatedAt: Date;
 
+  @ManyToMany(() => Amenities, (amenities) => amenities.coworkings, {
+    nullable: true,
+  })
+  @JoinTable({
+    name: 'amenities_coworkings',
+    joinColumn: {
+      name: 'coworking_id', // Relación con la entidad donde estas situado.
+    },
+    inverseJoinColumn: {
+      name: 'amenitie_id', // Relación con la otra entidad.
+    },
+  })
+  amenitie: Amenities[];
+
   @ManyToMany(() => Users, (user) => user.coworkings, { nullable: true })
   @JoinTable({
     name: 'users_coworkings',
@@ -79,4 +96,8 @@ export class Coworkings {
     },
   })
   user: Users[];
+
+  @ManyToOne(() => Coworkings, (coworking) => coworking.images)
+  @JoinColumn({ name: 'coworking_id' })
+  images: Coworkings[];
 }

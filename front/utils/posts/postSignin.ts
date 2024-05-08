@@ -1,5 +1,5 @@
 import axios from "axios";
-import ICoworkingsInfo from "../types/coworkingsFormInterface";
+
 import ILoginForm from "../types/loginFormInterface";
 const urlBase = process.env.NEXT_PUBLIC_API_URL;
 

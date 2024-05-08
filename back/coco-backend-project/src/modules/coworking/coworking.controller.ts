@@ -20,13 +20,13 @@ export class CoworkingController {
   }
 
   @Get()
-  findAll() {
-    return this.coworkingService.findAll();
+  getAllCoworkings() {
+    return this.coworkingService.getAllCoworkings();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.coworkingService.findOne(+id);
+  getCoworkingById(@Param('id') id: string) {
+    return this.coworkingService.getCoworkingById(id);
   }
 
   /*   @Put(':id')

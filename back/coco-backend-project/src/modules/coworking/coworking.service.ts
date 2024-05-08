@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCoworkingDto } from './coworking.dto';
 import { loadData } from 'src/utils/loadData';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,15 +12,24 @@ export class CoworkingService {
     private coworkingRepository: Repository<Coworkings>,
   ) {}
   create(createCoworkingDto: CreateCoworkingDto) {
+    console.log(createCoworkingDto);
     return 'This action adds a new coworking';
   }
 
-  findAll() {
-    return `This action returns all coworking`;
+  async getAllCoworkings() {
+    return await this.coworkingRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} coworking`;
+  async getCoworkingById(id: string) {
+    const coworking = await this.coworkingRepository.findOne({
+      where: { id },
+    });
+
+    if (!coworking) {
+      throw new NotFoundException(`Coworking with id ${id} not found`);
+    }
+
+    return coworking;
   }
 
   /*   update(id: number, updateCoworkingDto: UpdateCoworkingDto) {

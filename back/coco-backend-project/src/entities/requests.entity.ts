@@ -1,11 +1,14 @@
 import { Exclude } from 'class-transformer';
+import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+
 import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn
   } from 'typeorm';
-  
+
+
   
   @Entity({
     name: 'REQUESTS',
@@ -124,10 +127,13 @@ import {
     message: string;
   
     @Column({
-        nullable: false,
-        type: 'varchar',
-    })
-    status: string;
+        type: 'enum',
+        enum: CoworkingStatus,
+        default: CoworkingStatus.PENDING,
+      })
+      
+    status: CoworkingStatus;
+    
   
     @Column({
         nullable: false,

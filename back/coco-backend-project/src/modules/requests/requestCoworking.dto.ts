@@ -11,6 +11,7 @@ import {
 } from 'class-validator';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { TypeCompany } from 'src/models/typeCompany.enum';
+import { StatusRequest } from 'src/models/statusRequest.enum';
 
 export class RequestDtoCoworking {
   @ApiProperty({
@@ -147,8 +148,9 @@ export class RequestDtoCoworking {
     example: 'pending',
     description: 'El status de la request pending / close	',
   })
-  @IsEnum(CoworkingStatus)
-  status: CoworkingStatus;
+
+  @IsEnum(StatusRequest)
+  status: StatusRequest;
 
   @ApiProperty({
     example: 'Esto es una observacion',

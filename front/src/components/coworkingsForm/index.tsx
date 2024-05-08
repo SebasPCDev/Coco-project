@@ -1,24 +1,35 @@
 "use client";
-import { useState } from "react";
+// impotamos el array que mapearemos para crear los inputs y los labels del formulario
 import { formDataCoworkings } from "../../../utils/arraysforms/coworkingsForms";
+// importamos los hooks
+import { useState } from "react";
+
+// importamos la interface para tipar el estado del formulario
+import ICoworkingsInfo from "../../../utils/types/coworkingsFormInterface";
+
+// importamos la petición post a requests/coworking
+import PostCoworkings from "../../../utils/posts/postCoworkings";
 
 const CoworkingsForm = () => {
-  const [coworkingInfo, setCoworkingInfo] = useState({
+  const [coworkingInfo, setCoworkingInfo] = useState<ICoworkingsInfo>({
     name: "",
     lastname: "",
     phone: "",
     email: "",
     identification: "",
-    role: "",
-    company_name: "",
-    company_email: "",
-    company_phone: "",
+    position: "",
+    companyName: "",
+    companyEmail: "",
+    companyPhone: "",
     address: "",
     website: "",
     open: "",
     close: "",
     capacity: 0,
+    status: "pending",
+    observation: "Esto es una observacion",
     message: "",
+    type: "",
   });
 
   const [coworkingInfoError, setCoworkingInfoError] = useState({
@@ -28,20 +39,43 @@ const CoworkingsForm = () => {
     email: "",
     identification: "",
     role: "",
-    company_name: "",
-    company_email: "",
-    company_phone: "",
+    companyName: "",
+    companyEmail: "",
+    companyPhone: "",
     address: "",
     website: "",
     open: "",
     close: "",
     capacity: "",
     message: "",
+    type: "",
   });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setCoworkingInfo({
+      ...coworkingInfo,
+      [name]: value,
+    });
+
+    console.log(coworkingInfo);
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(coworkingInfo);
+    try {
+      await PostCoworkings(coworkingInfo);
+    } catch (error) {
+      console.log("hubo un error", error);
+    }
+  };
 
   return (
     <>
-      <form className="md:w-1/3 m-auto px-2 md:my-20 grid grid-cols-2 gap-4 ">
+      <form
+        className="md:w-1/3 m-auto px-2 md:my-20 grid grid-cols-2 gap-4 "
+        onSubmit={handleSubmit}>
         <h1 className="text-3xl text-center">Soy Coworking</h1>
         {formDataCoworkings.map(
           ({ name, label, type, placeholder, required }) => {
@@ -56,11 +90,11 @@ const CoworkingsForm = () => {
                   placeholder={placeholder}
                   required={required}
                   className="border-2 mx-1/3 py-2"
-
-                  //   value={companiesInfo[name as keyof companiesInfo]}
+                  onChange={handleChange}
+                  value={coworkingInfo[name as keyof ICoworkingsInfo]}
                 />
                 <p className="text-red-500">
-                  {/* {LoginFormError[name as keyof LoginFormError]} */}
+                  {/* {coworkingInfoError[name as keyof ICoworkingsInfo]} */}
                 </p>
               </div>
             );

@@ -20,6 +20,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { Public } from 'src/decorators/public.decorator';
+import { StatusRequest } from 'src/models/statusRequest.enum';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
@@ -82,6 +83,7 @@ export class RequestsController {
       return result;
     } catch (error) {
       throw error;
+
     }
   }
 }

@@ -1,4 +1,4 @@
-export const formDataCompanies: elementForm[] = [
+export const formDataCompanies = [
   {
     name: "name",
     label: "Name",
@@ -92,7 +92,7 @@ export const formDataCompanies: elementForm[] = [
   },
 ];
 
-export const formDataCoworkings: elementForm[] = [
+export const formDataCoworkings = [
   {
     name: "name",
     label: "Name",

@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { TypeCompany } from 'src/models/typeCompany.enum';
 

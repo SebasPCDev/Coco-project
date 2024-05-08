@@ -1,23 +1,37 @@
 "use client";
+// impotamos el array que mapearemos para crear los inputs y los labels del formulario
 import { formDataCompanies } from "../../../utils/arraysforms/companysForm";
+
+// importamos los hooks
 import { useState } from "react";
 
+// importamos la interface para tipar el estado del formulario
+import ICompaniesInfo from "../../../utils/types/companiesFormInterface";
+
+// importamos la petición post a requests/company
+import PostCompany from "../../../utils/posts/postCompany";
+
 const CompaniesForm = () => {
-  const [companiesInfo, setCompaniesInfo] = useState({
+  const [companiesInfo, setCompaniesInfo] = useState<ICompaniesInfo>({
     name: "",
     lastname: "",
     phone: "",
     email: "",
     identification: "",
-    role: "",
-    company_name: "",
-    company_email: "",
-    company_phone: "",
-    quantity_beneficiaries: 0,
-    business_sector: "",
+    position: "",
+    companyName: "",
+    companyEmail: "",
+    companyPhone: "",
+    quantityBeneficiaries: 0,
+    businessSector: "",
     size: 0,
     message: "",
+    status: "pending",
+    observation: "Esto es una observacion",
+    type: "",
   });
+
+  //el estado para los errores aun no se sta utilizando 
   const [companiesInfoError, setCompaniesInfoError] = useState({
     name: "",
     lastname: "",
@@ -25,19 +39,43 @@ const CompaniesForm = () => {
     email: "",
     identification: "",
     role: "",
-    company_name: "",
-    company_email: "",
-    company_phone: "",
-    quantity_beneficiaries: "",
-    business_sector: "",
+    companyName: "",
+    companyEmail: "",
+    companyPhone: "",
+    quantityBeneficiaries: "",
+    businessSector: "",
     size: "",
     message: "",
+    type: "",
   });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setCompaniesInfo({
+      ...companiesInfo,
+      [name]: value,
+    });
+    console.log(companiesInfo);
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log(companiesInfo);
+
+    try {
+      await PostCompany(companiesInfo);
+    } catch (error) {
+      console.log("Hubo un error en la petición", error);
+    }
+  };
 
   return (
     <>
-      <form className="md:w-1/3 m-auto px-2 md:my-20 grid grid-cols-2 gap-4 ">
-        <h1 className="text-3xl text-center">Soy una Empresa</h1>
+      <form
+        className="md:w-1/3 m-auto px-2 md:my-20 grid grid-cols-2 gap-4 "
+        onSubmit={handleSubmit}>
+        <h1 className="text-3xl text-center col-start-2">Soy una Empresa</h1>
         {formDataCompanies.map(
           ({ name, label, type, placeholder, required }) => {
             return (
@@ -51,11 +89,11 @@ const CompaniesForm = () => {
                   placeholder={placeholder}
                   required={required}
                   className="border-2 mx-1/3 py-2"
-
-                  //   value={companiesInfo[name as keyof companiesInfo]}
+                  onChange={handleChange}
+                  value={companiesInfo[name as keyof ICompaniesInfo]}
                 />
                 <p className="text-red-500">
-                  {/* {LoginFormError[name as keyof LoginFormError]} */}
+                  {/* {companiesInfoError[name as keyof ICompaniesInfo]} */}
                 </p>
               </div>
             );

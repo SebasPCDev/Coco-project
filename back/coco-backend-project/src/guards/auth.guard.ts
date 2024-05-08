@@ -36,7 +36,6 @@ export class AuthGuard implements CanActivate {
 
     try {
       const secret = process.env.JWT_SECRET;
-      // verificamos la firma
       const payload = this.jwtService.verify(token, { secret });
       payload.iat = new Date(payload.iat * 1000);
       payload.exp = new Date(payload.exp * 1000);

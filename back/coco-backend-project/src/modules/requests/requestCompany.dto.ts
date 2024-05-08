@@ -1,8 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsInt, IsEmail, IsDate, IsNotEmpty, isEmpty, IsEmpty, IsEnum } from 'class-validator';
+
+import {
+  IsString,
+  IsOptional,
+  IsInt,
+  IsEmail,
+  IsNotEmpty,
+  IsEmpty,
+  IsEnum,
+} from 'class-validator';
+import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { TypeCompany } from 'src/models/typeCompany.enum';
 import { StatusRequest } from 'src/models/statusRequest.enum';
-
-
 
 export class RequestDtoCompany {
   @ApiProperty({
@@ -41,7 +50,9 @@ export class RequestDtoCompany {
     example: '1234567890',
     description: 'El número de identificación del solicitante',
   })
-  @IsString({ message: 'El número de identificación debe ser una cadena de texto' })
+  @IsString({
+    message: 'El número de identificación debe ser una cadena de texto',
+  })
   @IsNotEmpty({ message: 'El número de identificación es obligatorio' })
   identification: string;
 
@@ -65,7 +76,10 @@ export class RequestDtoCompany {
     example: 'ejemplo@empresa.com',
     description: 'El correo electrónico de la empresa del solicitante',
   })
-  @IsEmail({}, { message: 'Formato de correo electrónico de la empresa inválido' })
+  @IsEmail(
+    {},
+    { message: 'Formato de correo electrónico de la empresa inválido' },
+  )
   @IsNotEmpty({ message: 'El correo electrónico de la empresa es obligatorio' })
   companyEmail: string;
 
@@ -73,7 +87,9 @@ export class RequestDtoCompany {
     example: '1234567890',
     description: 'El número de teléfono de la empresa del solicitante',
   })
-  @IsString({ message: 'El número de teléfono de la empresa debe ser una cadena de texto' })
+  @IsString({
+    message: 'El número de teléfono de la empresa debe ser una cadena de texto',
+  })
   @IsNotEmpty({ message: 'El número de teléfono de la empresa es obligatorio' })
   companyPhone: string;
 
@@ -82,7 +98,7 @@ export class RequestDtoCompany {
     description: 'Numero de beneficiarios',
   })
   @IsOptional()
-  @IsInt({message:"quantityBeneficiaries debe ser un numero"})
+  @IsInt({ message: 'quantityBeneficiaries debe ser un numero' })
   quantityBeneficiaries: number;
 
   @ApiProperty({
@@ -90,7 +106,7 @@ export class RequestDtoCompany {
     description: 'Sector de la compañia',
   })
   @IsOptional()
-  @IsString({message:"businessSector debe ser un string"})
+  @IsString({ message: 'businessSector debe ser un string' })
   businessSector: string;
 
   @ApiProperty({
@@ -98,16 +114,15 @@ export class RequestDtoCompany {
     description: 'Cantidad de empleados, tamaño de la empresa',
   })
   @IsOptional()
-  @IsInt({message:"size debe ser un numero"})
+  @IsInt({ message: 'size debe ser un numero' })
   size: number;
-
 
   @ApiProperty({
     example: 'Esto es un mensaje de prueba',
     description: 'Mensaje de la request',
   })
   @IsOptional()
-  @IsString({message:"message debe ser un string"})
+  @IsString({ message: 'message debe ser un string' })
   message: string;
 
   @ApiProperty({
@@ -122,7 +137,7 @@ export class RequestDtoCompany {
     example: 'Esto es una observacion',
     description: 'Observacion de la request',
   })
-  @IsString({message:"observation debe ser un string"})
+  @IsString({ message: 'observation debe ser un string' })
   observation: string;
 
   @ApiProperty({
@@ -130,9 +145,6 @@ export class RequestDtoCompany {
     description: 'Debe estar vacio (se setea detro del endpoint)',
     nullable: true,
   })
-  
-  @IsEmpty({message:"Debe ser nullo"})
-  type: string;
-
-
+  @IsEmpty({ message: 'Debe ser nullo' })
+  type: TypeCompany;
 }

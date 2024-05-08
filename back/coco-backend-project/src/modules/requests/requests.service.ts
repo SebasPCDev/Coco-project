@@ -1,58 +1,58 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'src/entities/requests.entity';
+import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { TypeCompany } from 'src/models/typeCompany.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';
-
 
 @Injectable()
 export class RequestsService {
-    
-    constructor(
-        @InjectRepository(Request)
-        private requestsRepository: Repository<Request>,
-       
-      ) {}
+  constructor(
+    @InjectRepository(Request)
+    private requestsRepository: Repository<Request>,
+  ) {}
 
-    async addCowork(cowork: Partial<Request>){
+  async addCowork(cowork: Partial<Request>) {
+    const existingRequest = await this.requestsRepository.findOne({
+      where: { email: cowork.email },
+    });
 
-        const existingRequest = await this.requestsRepository.findOne({ where: { email: cowork.email } });
-
-        if (existingRequest) {
-            throw new ConflictException('El correo ya está en uso');
-        }
-
-        const newRequest = this.requestsRepository.create(cowork);
-        await this.requestsRepository.save(newRequest);
-        return  { responseCowork: 'Registrado con éxito. Por favor, espere confirmación.', request: newRequest };
-
+    if (existingRequest) {
+      throw new ConflictException('El correo ya está en uso');
     }
 
-    async addCompany(company: Partial<Request>){
+    const newRequest = this.requestsRepository.create(cowork);
+    await this.requestsRepository.save(newRequest);
+    return {
+      responseCowork: 'Registrado con éxito. Por favor, espere confirmación.',
+      request: newRequest,
+    };
+  }
 
-        const existingRequest = await this.requestsRepository.findOne({ where: { email: company.email } });
+  async addCompany(company: Partial<Request>) {
+    const existingRequest = await this.requestsRepository.findOne({
+      where: { email: company.email },
+    });
 
-        if (existingRequest) {
-            throw new ConflictException('El correo ya está en uso');
-        }
-
-        const newRequest = this.requestsRepository.create(company);
-        await this.requestsRepository.save(newRequest);
-        return  { responseCompany: 'Registrado con éxito. Por favor, espere confirmación.', request: newRequest };
+    if (existingRequest) {
+      throw new ConflictException('El correo ya está en uso');
     }
 
-    async getRequest(params?:any){
-        if (params) {
-            const where: FindOptionsWhere<Request> = {};
-            const { type, status } = params;
+    const newRequest = this.requestsRepository.create(company);
+    await this.requestsRepository.save(newRequest);
+    return {
+      responseCompany: 'Registrado con éxito. Por favor, espere confirmación.',
+      request: newRequest,
+    };
+  }
 
-              where.type = type;
-              where.status = status;
-              console.log(where)
-        
-            return this.requestsRepository.find({
-              where
-            });
-        }
-        return this.requestsRepository.find();
-    }
+  async getRequest(type: TypeCompany, status: CoworkingStatus) {
+    const where: FindOptionsWhere<Request> = {};
+    if (type) where.type = type;
+    if (status) where.status = status;
+
+    console.log(where);
+
+    return this.requestsRepository.find({ where });
+  }
 }

@@ -7,16 +7,26 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { CoworkingService } from './coworking.service';
-import { CreateCoworkingDto } from './coworking.dto';
+import { CoworkingsService } from './coworkings.service';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateCoworkingsDto } from './coworkings.dto';
+import { UUID } from 'crypto';
 
-@Controller('coworking')
-export class CoworkingController {
-  constructor(private readonly coworkingService: CoworkingService) {}
+@ApiTags('corokings')
+@Controller('coworkings')
+export class CoworkingsController {
+  constructor(private readonly coworkingService: CoworkingsService) {}
 
   @Post()
-  create(@Body() createCoworkingDto: CreateCoworkingDto) {
-    return this.coworkingService.create(createCoworkingDto);
+  create(@Body() data: CreateCoworkingsDto) {
+    console.log(data);
+    return this.coworkingService.create(data);
+  }
+
+  @Post('activate')
+  activateCoworking(@Body() data: { id: UUID }) {
+    console.log(data);
+    return this.coworkingService.activateCoworking(data.id);
   }
 
   @Get()

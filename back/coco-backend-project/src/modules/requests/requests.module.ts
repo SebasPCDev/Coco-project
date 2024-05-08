@@ -5,11 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Request } from 'src/entities/requests.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Request])],
   providers: [RequestsService],
   controllers: [RequestsController],
-  imports: [
-    TypeOrmModule.forFeature([Request]),
-    
-  ]
+  exports: [RequestsService],
 })
 export class RequestsModule {}

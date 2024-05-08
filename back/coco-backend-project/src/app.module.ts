@@ -13,6 +13,7 @@ import typeOrmConfig from './config/typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RequestsModule } from './modules/requests/requests.module';
 import { JwtModule } from '@nestjs/jwt';
+import { AmenitiesModule } from './modules/amenities/amenities.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { JwtModule } from '@nestjs/jwt';
       // signOptions: { expiresIn: '1h' },
       secret: process.env.JWT_SECRET,
     }),
+    AmenitiesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

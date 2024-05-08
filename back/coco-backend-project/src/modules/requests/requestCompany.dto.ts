@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsOptional, IsInt, IsEmail, IsDate, IsNotEmpty, isEmpty, IsEmpty, IsEnum } from 'class-validator';
-import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { StatusRequest } from 'src/models/statusRequest.enum';
 
 
 
@@ -115,8 +115,8 @@ export class RequestDtoCompany {
     description: 'El status de la request pending / close	',
   })
  
-  @IsEnum(CoworkingStatus)
-  status: CoworkingStatus;
+  @IsEnum(StatusRequest)
+  status: StatusRequest;
 
   @ApiProperty({
     example: 'Esto es una observacion',

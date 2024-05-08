@@ -43,8 +43,8 @@ export const formDataCoworkings: elementForm[] = [
     required: true,
   },
   {
-    name: "role",
-    label: "Role",
+    name: "position",
+    label: "position",
     type: "text",
     placeholder: "Cargo dentro de la empresa",
     required: true,

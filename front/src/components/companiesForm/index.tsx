@@ -43,6 +43,7 @@ const CompaniesForm = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    
     setCompaniesInfo({
       ...companiesInfo,
       [name]: value,
@@ -51,6 +52,7 @@ const CompaniesForm = () => {
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
     console.log(companiesInfo);
 
     try {

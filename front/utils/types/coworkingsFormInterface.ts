@@ -4,7 +4,7 @@ interface ICoworkingsInfo {
   phone: string;
   email: string;
   identification: string;
-  role: string;
+  position: string;
   companyName: string;
   companyEmail: string;
   companyPhone: string;
@@ -13,6 +13,8 @@ interface ICoworkingsInfo {
   open: string;
   close: string;
   capacity: number;
+  status: string;
+  observation: string;
   message: string;
   type: string;
 }

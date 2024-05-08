@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { formDataCoworkings } from "../../../utils/arraysforms/coworkingsForms";
 import ICoworkingsInfo from "../../../utils/types/coworkingsFormInterface";
+import PostCoworkings from "../../../utils/posts/postCoworkings";
 
 const CoworkingsForm = () => {
   const [coworkingInfo, setCoworkingInfo] = useState<ICoworkingsInfo>({
@@ -10,7 +11,7 @@ const CoworkingsForm = () => {
     phone: "",
     email: "",
     identification: "",
-    role: "",
+    position: "",
     companyName: "",
     companyEmail: "",
     companyPhone: "",
@@ -19,8 +20,10 @@ const CoworkingsForm = () => {
     open: "",
     close: "",
     capacity: 0,
+    status: "pending",
+    observation: "Esto es una observacion",
     message: "",
-    type: "Coworking",
+    type: "",
   });
 
   const [coworkingInfoError, setCoworkingInfoError] = useState({
@@ -42,9 +45,31 @@ const CoworkingsForm = () => {
     type: "",
   });
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setCoworkingInfo({
+      ...coworkingInfo,
+      [name]: value,
+    });
+
+    console.log(coworkingInfo);
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(coworkingInfo);
+    try {
+      await PostCoworkings(coworkingInfo);
+    } catch (error) {
+      console.log("hubo un error", error);
+    }
+  };
+
   return (
     <>
-      <form className="md:w-1/3 m-auto px-2 md:my-20 grid grid-cols-2 gap-4 ">
+      <form
+        className="md:w-1/3 m-auto px-2 md:my-20 grid grid-cols-2 gap-4 "
+        onSubmit={handleSubmit}>
         <h1 className="text-3xl text-center">Soy Coworking</h1>
         {formDataCoworkings.map(
           ({ name, label, type, placeholder, required }) => {
@@ -59,8 +84,8 @@ const CoworkingsForm = () => {
                   placeholder={placeholder}
                   required={required}
                   className="border-2 mx-1/3 py-2"
-
-                  //   value={companiesInfo[name as keyof companiesInfo]}
+                  onChange={handleChange}
+                  value={coworkingInfo[name as keyof ICoworkingsInfo]}
                 />
                 <p className="text-red-500">
                   {/* {LoginFormError[name as keyof LoginFormError]} */}

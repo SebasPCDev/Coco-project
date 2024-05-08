@@ -4,9 +4,14 @@ import { CoworkingsController } from './coworkings.controller';
 import { RequestsModule } from '../requests/requests.module';
 import { Coworkings } from 'src/entities/coworkings.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [RequestsModule, TypeOrmModule.forFeature([Coworkings])],
+  imports: [
+    UsersModule,
+    RequestsModule,
+    TypeOrmModule.forFeature([Coworkings]),
+  ],
   controllers: [CoworkingsController],
   providers: [CoworkingsService],
 })

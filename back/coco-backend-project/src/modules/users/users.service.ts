@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './user.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { CreateUsersDto } from './users.dto';
 import * as bcrypt from 'bcrypt';
 import { Users } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class UsersService {
@@ -12,8 +13,15 @@ export class UsersService {
     private usersRepository: Repository<Users>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(data: CreateUsersDto) {
+    const user = await this.getUserByEmail(data.email);
+    if (user) throw new BadRequestException('Usuario existente');
+
+    const newUserTemp = this.usersRepository.create(data);
+    console.log('newUserTemp', newUserTemp);
+    const newUser = await this.usersRepository.save(newUserTemp);
+
+    return newUser;
   }
 
   findAll() {
@@ -25,8 +33,12 @@ export class UsersService {
     return user;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: UUID) {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['coworkings'],
+    });
+    return user;
   }
 
   /*   update(id: number, updateUserDto: UpdateUserDto) {

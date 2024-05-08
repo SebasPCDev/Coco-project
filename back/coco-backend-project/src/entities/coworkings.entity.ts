@@ -40,7 +40,7 @@ export class Coworkings {
   country: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  state: string;
+  state?: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   city: string;
@@ -54,6 +54,9 @@ export class Coworkings {
   @Column({ type: 'int' })
   capacity: number;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  message: string;
+
   @Column({
     type: 'enum',
     enum: CoworkingStatus,
@@ -61,8 +64,8 @@ export class Coworkings {
   })
   status: CoworkingStatus;
 
-  @Column({ type: 'varchar', length: 255 })
-  thumbnail: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  thumbnail?: string;
 
   @Exclude()
   @CreateDateColumn({

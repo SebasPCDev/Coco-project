@@ -5,7 +5,7 @@ import { UserCoworkingModule } from './modules/user-coworking/user-coworking.mod
 import { CoworkingModule } from './modules/coworkings/coworking.module';
 import { UserEmployeeModule } from './modules/user-employee/user-employee.module';
 import { CompanyModule } from './modules/company/company.module';
-import { UsersModule } from './modules/user/users.module';
+import { UsersModule } from './modules/users/users.module';
 import { BookingsModule } from './modules/bookings/bookings.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';

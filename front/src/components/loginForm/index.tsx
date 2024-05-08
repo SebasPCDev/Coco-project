@@ -3,8 +3,11 @@ import { LoginFormArray } from "../../../utils/arraysforms/loginForm";
 import { useEffect, useState } from "react";
 import ILoginForm from "../../../utils/types/loginFormInterface";
 import PostLogin from "../../../utils/posts/postSignin";
+import { useUserContext } from "../context";
+import { log } from "console";
 
 const LoginForm = () => {
+  const { user, setuser, token, setToken } = useUserContext();
   const [LoginForm, setLoginForm] = useState<ILoginForm>({
     email: "",
     password: "",
@@ -23,12 +26,18 @@ const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(LoginForm);
-    const response = await PostLogin(LoginForm);
+    const data = await PostLogin(LoginForm);
+
+    if (data) {
+      setuser(data.user);
+
+      setToken(data.token);
+    }
   };
 
   return (
     <>
-      <form className="md:w-1/3 m-auto px-2 md:my-20 ">
+      <form className="md:w-1/3 m-auto px-2 md:my-20 " onSubmit={handleSubmit}>
         <h1 className="text-3xl text-center">LOGIN</h1>
         {LoginFormArray.map(
           ({ name, label, type, placeholder, required, icon }) => {

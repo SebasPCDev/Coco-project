@@ -4,7 +4,7 @@ import { RequestDtoCoworking } from './requestCoworking.dto';
 import { RequestDtoCompany } from './requestCompany.dto';
 import { RequestsService } from './requests.service';
 import { TypeCompany } from 'src/models/typeCompany.enum';
-import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { StatusRequest } from 'src/models/statusRequest.enum';
 
 
 @ApiTags("requests")
@@ -46,7 +46,7 @@ export class RequestsController {
     @Get()
     async getrequests(
         @Query("type",new DefaultValuePipe(TypeCompany.COMPANY),new ParseEnumPipe(TypeCompany)) type:TypeCompany,
-        @Query("status",new DefaultValuePipe(CoworkingStatus.PENDING),new ParseEnumPipe(CoworkingStatus)) status:CoworkingStatus
+        @Query("status",new DefaultValuePipe(StatusRequest.PENDING),new ParseEnumPipe(StatusRequest)) status:StatusRequest
     ) {
         try {
             const params = {

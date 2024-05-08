@@ -1,8 +1,14 @@
 "use client";
-
+// impotamos el array que mapearemos para crear los inputs y los labels del formulario
 import { formDataCompanies } from "../../../utils/arraysforms/companysForm";
+
+// importamos los hooks
 import { useState } from "react";
+
+// importamos la interface para tipar el estado del formulario
 import ICompaniesInfo from "../../../utils/types/companiesFormInterface";
+
+// importamos la petición post a requests/company
 import PostCompany from "../../../utils/posts/postCompany";
 
 const CompaniesForm = () => {
@@ -24,6 +30,8 @@ const CompaniesForm = () => {
     observation: "Esto es una observacion",
     type: "",
   });
+
+  //el estado para los errores aun no se sta utilizando 
   const [companiesInfoError, setCompaniesInfoError] = useState({
     name: "",
     lastname: "",
@@ -43,7 +51,7 @@ const CompaniesForm = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
+
     setCompaniesInfo({
       ...companiesInfo,
       [name]: value,
@@ -52,7 +60,7 @@ const CompaniesForm = () => {
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     console.log(companiesInfo);
 
     try {
@@ -83,11 +91,9 @@ const CompaniesForm = () => {
                   className="border-2 mx-1/3 py-2"
                   onChange={handleChange}
                   value={companiesInfo[name as keyof ICompaniesInfo]}
-
-                  //   value={companiesInfo[name as keyof companiesInfo]}
                 />
                 <p className="text-red-500">
-                  {/* {LoginFormError[name as keyof LoginFormError]} */}
+                  {/* {companiesInfoError[name as keyof ICompaniesInfo]} */}
                 </p>
               </div>
             );

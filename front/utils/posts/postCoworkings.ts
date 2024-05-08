@@ -9,7 +9,7 @@ const PostCoworkings = async (data: ICoworkingsInfo) => {
     capacity: Number(data.capacity),
   };
   try {
-    const response = await axios.post(url, data, {
+    const response = await axios.post(url, datasend, {
       headers: {
         "Content-Type": "application/json",
       },

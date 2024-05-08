@@ -1,7 +1,13 @@
 "use client";
-import { useState } from "react";
+// impotamos el array que mapearemos para crear los inputs y los labels del formulario
 import { formDataCoworkings } from "../../../utils/arraysforms/coworkingsForms";
+// importamos los hooks
+import { useState } from "react";
+
+// importamos la interface para tipar el estado del formulario
 import ICoworkingsInfo from "../../../utils/types/coworkingsFormInterface";
+
+// importamos la petición post a requests/coworking
 import PostCoworkings from "../../../utils/posts/postCoworkings";
 
 const CoworkingsForm = () => {
@@ -88,7 +94,7 @@ const CoworkingsForm = () => {
                   value={coworkingInfo[name as keyof ICoworkingsInfo]}
                 />
                 <p className="text-red-500">
-                  {/* {LoginFormError[name as keyof LoginFormError]} */}
+                  {/* {coworkingInfoError[name as keyof ICoworkingsInfo]} */}
                 </p>
               </div>
             );

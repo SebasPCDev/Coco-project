@@ -33,8 +33,17 @@ export class Coworkings {
   @Column({ type: 'time' })
   close: Date;
 
-  @Column({ type: 'varchar', length: 250 })
+  @Column({ type: 'varchar', length: 255 })
   address: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  country: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  state: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  city: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
   lat: string;

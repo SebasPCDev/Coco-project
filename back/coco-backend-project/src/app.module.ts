@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserCoworkingModule } from './modules/user-coworking/user-coworking.module';
-import { CoworkingModule } from './modules/coworking/coworking.module';
+import { CoworkingModule } from './modules/coworkings/coworking.module';
 import { UserEmployeeModule } from './modules/user-employee/user-employee.module';
 import { CompanyModule } from './modules/company/company.module';
 import { UsersModule } from './modules/user/users.module';

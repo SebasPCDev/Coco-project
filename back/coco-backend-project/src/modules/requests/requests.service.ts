@@ -1,5 +1,10 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UUID } from 'crypto';
 import { Request } from 'src/entities/requests.entity';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { TypeCompany } from 'src/models/typeCompany.enum';
@@ -55,5 +60,11 @@ export class RequestsService {
     console.log(where);
 
     return await this.requestsRepository.find({ where });
+  }
+
+  async findById(id: UUID) {
+    const request = await this.requestsRepository.findOneBy({ id });
+    if (!request) throw new BadRequestException('Request not found');
+    return request;
   }
 }

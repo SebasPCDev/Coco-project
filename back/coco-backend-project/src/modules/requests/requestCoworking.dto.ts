@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsString,
   IsOptional,
@@ -12,7 +12,7 @@ import {
 import { TypeCompany } from 'src/models/typeCompany.enum';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 
-export class RequestDtoCoworking {
+export class CreateRequestCoworkingDto {
   @ApiProperty({
     example: 'John',
     description: 'Nombre del solicitante',
@@ -165,3 +165,7 @@ export class RequestDtoCoworking {
   @IsEmpty({ message: 'Debe ser nullo' })
   type: TypeCompany;
 }
+
+export class UpdateRequestCoworkingDto extends PartialType(
+  CreateRequestCoworkingDto,
+) {}

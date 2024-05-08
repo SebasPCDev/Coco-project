@@ -9,6 +9,7 @@ import { Request } from 'src/entities/requests.entity';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { TypeCompany } from 'src/models/typeCompany.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';
+import { UpdateRequestCoworkingDto } from './requestCoworking.dto';
 
 @Injectable()
 export class RequestsService {
@@ -17,14 +18,30 @@ export class RequestsService {
     private requestsRepository: Repository<Request>,
   ) {}
 
-  async addCowork(cowork: Partial<Request>) {
+  async getRequestByEmail(email: string) {
     const existingRequest = await this.requestsRepository.findOne({
-      where: { email: cowork.email },
+      where: { email },
     });
-
     if (existingRequest) {
       throw new ConflictException('El correo ya está en uso');
     }
+  }
+
+  async getCoworkingById(id: UUID) {
+    const request = await this.requestsRepository.findOneBy({ id });
+    return request;
+  }
+
+  async addCowork(cowork: Partial<Request>) {
+    // const existingRequest = await this.requestsRepository.findOne({
+    //   where: { email: cowork.email },
+    // });
+
+    // if (existingRequest) {
+    //   throw new ConflictException('El correo ya está en uso');
+    // }
+
+    await this.getRequestByEmail(cowork.email);
 
     const newRequest = this.requestsRepository.create(cowork);
     await this.requestsRepository.save(newRequest);
@@ -66,5 +83,12 @@ export class RequestsService {
     const request = await this.requestsRepository.findOneBy({ id });
     if (!request) throw new BadRequestException('Request not found');
     return request;
+  }
+
+  async update(id: UUID, changes: UpdateRequestCoworkingDto) {
+    const request = await this.getCoworkingById(id);
+
+    const updCoworking = this.requestsRepository.merge(request, changes);
+    return this.requestsRepository.save(updCoworking);
   }
 }

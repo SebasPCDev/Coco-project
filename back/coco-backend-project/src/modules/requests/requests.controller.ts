@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { RequestDtoCoworking } from './requestCoworking.dto';
+import { CreateRequestCoworkingDto } from './requestCoworking.dto';
 import { RequestDtoCompany } from './requestCompany.dto';
 import { RequestsService } from './requests.service';
 import { TypeCompany } from 'src/models/typeCompany.enum';
@@ -31,7 +31,7 @@ export class RequestsController {
 
   @Public()
   @Post('coworking')
-  async addCowork(@Body() coworking: RequestDtoCoworking) {
+  async addCowork(@Body() coworking: CreateRequestCoworkingDto) {
     coworking.type = TypeCompany.COWORKING;
 
     try {

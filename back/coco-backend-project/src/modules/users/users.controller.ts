@@ -6,16 +6,18 @@ import {
   //Put,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './user.dto';
+import { CreateUsersDto } from './users.dto';
+import { UUID } from 'crypto';
 
-@Controller('user')
+@Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: CreateUsersDto) {
     return this.userService.create(createUserDto);
   }
 
@@ -25,8 +27,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  findOne(@Param('id', ParseUUIDPipe) id: UUID) {
+    return this.userService.findOne(id);
   }
 
   /*   @Patch(':id')

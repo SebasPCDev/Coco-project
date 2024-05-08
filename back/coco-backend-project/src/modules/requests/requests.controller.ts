@@ -1,8 +1,11 @@
-import { Body, ConflictException, Controller, Post } from '@nestjs/common';
+import { Body, ConflictException, Controller, DefaultValuePipe, Get, ParseEnumPipe, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RequestDtoCoworking } from './requestCoworking.dto';
 import { RequestDtoCompany } from './requestCompany.dto';
 import { RequestsService } from './requests.service';
+import { TypeCompany } from 'src/models/typeCompany.enum';
+import { StatusRequest } from 'src/models/statusRequest.enum';
+
 
 @ApiTags("requests")
 @Controller('requests')
@@ -36,6 +39,24 @@ export class RequestsController {
             if (error instanceof ConflictException) {
                 return { message: 'El correo ya está en uso' };
             }
+            throw error;
+        }
+    }
+
+    @Get()
+    async getrequests(
+        @Query("type",new DefaultValuePipe(TypeCompany.COMPANY),new ParseEnumPipe(TypeCompany)) type:TypeCompany,
+        @Query("status",new DefaultValuePipe(StatusRequest.PENDING),new ParseEnumPipe(StatusRequest)) status:StatusRequest
+    ) {
+        try {
+            const params = {
+                type:type,
+                status:status
+            }
+            const result = await this.requestsService.getRequest(params)
+            return result;
+        } catch (error) {
+          
             throw error;
         }
     }

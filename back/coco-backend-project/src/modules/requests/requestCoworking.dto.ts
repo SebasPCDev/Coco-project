@@ -1,5 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsInt, IsEmail, IsNotEmpty,  IsUrl, IsEmpty } from 'class-validator';
+import { IsString, IsOptional, IsInt, IsEmail, IsNotEmpty,  IsUrl, IsEmpty, IsEnum } from 'class-validator';
+import { StatusRequest } from 'src/models/statusRequest.enum';
+
+
 
 export class RequestDtoCoworking {
   @ApiProperty({
@@ -43,15 +46,15 @@ export class RequestDtoCoworking {
   identification: string;
 
   @ApiProperty({
-    example: 'Admin',
-    description: 'El rol del solicitante, cargo dentro de la empresa',
+    example: 'General manager',
+    description: 'El position del solicitante, cargo dentro de la empresa',
   })
   @IsString({ message: 'El position debe ser una cadena de texto' })
   @IsNotEmpty({ message: 'El position es obligatorio' })
   position: string;
 
   @ApiProperty({
-    example: 'Ejemplo Compañía',
+    example: 'Ejemplo cowork',
     description: 'Nombre de la empresa del solicitante',
   })
   @IsString({ message: 'El nombre de la empresa debe ser una cadena de texto' })
@@ -59,8 +62,8 @@ export class RequestDtoCoworking {
   companyName: string;
 
   @ApiProperty({
-    example: 'ejemplo@empresa.com',
-    description: 'El correo electrónico de la empresa del solicitante',
+    example: 'ejemplo@cowork.com',
+    description: 'El correo electrónico del cowork del solicitante',
   })
   @IsEmail({}, { message: 'Formato de correo electrónico de la empresa inválido' })
   @IsNotEmpty({ message: 'El correo electrónico de la empresa es obligatorio' })
@@ -127,8 +130,9 @@ export class RequestDtoCoworking {
     example: 'pending',
     description: 'El status de la request pending / close	',
   })
-  @IsString({message:"status debe ser un string "})
-  status: string;
+
+  @IsEnum(StatusRequest)
+  status: StatusRequest;
 
   @ApiProperty({
     example: 'Esto es una observacion',
@@ -138,14 +142,16 @@ export class RequestDtoCoworking {
   observation: string;
 
   @ApiProperty({
-    example: 'Coworking',
-    description: 'Tipo  de usuario que ingresa company / coworking (se seta detro del endpoint), se envia null',
+    example: '',
+    description: 'Debe estar vacio (se seta detro del endpoint), se envia null',
     nullable: true,
+
   })
   
-
-  @IsEmpty()
+  @IsEmpty({message:"Debe ser nullo"})
   type: string;
+
+  
 
 
 }

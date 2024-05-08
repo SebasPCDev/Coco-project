@@ -1,7 +1,8 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'src/entities/requests.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
+
 
 @Injectable()
 export class RequestsService {
@@ -37,5 +38,21 @@ export class RequestsService {
         const newRequest = this.requestsRepository.create(company);
         await this.requestsRepository.save(newRequest);
         return  { responseCompany: 'Registrado con éxito. Por favor, espere confirmación.', request: newRequest };
+    }
+
+    async getRequest(params?:any){
+        if (params) {
+            const where: FindOptionsWhere<Request> = {};
+            const { type, status } = params;
+
+              where.type = type;
+              where.status = status;
+              console.log(where)
+        
+            return this.requestsRepository.find({
+              where
+            });
+        }
+        return this.requestsRepository.find();
     }
 }

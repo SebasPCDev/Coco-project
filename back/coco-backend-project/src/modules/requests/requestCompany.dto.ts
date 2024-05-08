@@ -1,10 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsInt, IsEmail, IsDate, IsNotEmpty, isEmpty, IsEmpty } from 'class-validator';
+import { IsString, IsOptional, IsInt, IsEmail, IsDate, IsNotEmpty, isEmpty, IsEmpty, IsEnum } from 'class-validator';
+import { StatusRequest } from 'src/models/statusRequest.enum';
+
+
 
 export class RequestDtoCompany {
   @ApiProperty({
     example: 'John',
-    description: 'Nombre del solicitante',
+    description: 'Nombre del solicitante ',
   })
   @IsString({ message: 'El nombre debe ser una cadena de texto' })
   @IsNotEmpty({ message: 'El nombre es obligatorio' })
@@ -43,7 +46,7 @@ export class RequestDtoCompany {
   identification: string;
 
   @ApiProperty({
-    example: 'Admin',
+    example: 'General manager',
     description: 'El rol del solicitante, cargo dentro de la empresa',
   })
   @IsString({ message: 'El position debe ser una cadena de texto' })
@@ -111,8 +114,9 @@ export class RequestDtoCompany {
     example: 'pending',
     description: 'El status de la request pending / close	',
   })
-  @IsString({message:"status debe ser un string "})
-  status: string;
+ 
+  @IsEnum(StatusRequest)
+  status: StatusRequest;
 
   @ApiProperty({
     example: 'Esto es una observacion',
@@ -122,14 +126,13 @@ export class RequestDtoCompany {
   observation: string;
 
   @ApiProperty({
-    example: 'Coworking',
-    description: 'Tipo  de usuario que ingresa company / coworking (se seta detro del endpoint)',
+    example: '',
+    description: 'Debe estar vacio (se setea detro del endpoint)',
     nullable: true,
   })
   
-  @IsString()
   @IsEmpty({message:"Debe ser nullo"})
-  type: null|string;
+  type: string;
 
 
 }

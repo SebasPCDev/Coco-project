@@ -103,7 +103,7 @@ const CoworkingsForm = () => {
         <button
           className="bg-slate-500 text-white p-2 rounded-lg my-4"
           type="submit">
-          Login
+          Enviar Solicitud
         </button>
       </form>
     </>

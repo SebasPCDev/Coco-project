@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'src/entities/requests.entity';
-import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { StatusRequest } from 'src/models/statusRequest.enum';
 import { TypeCompany } from 'src/models/typeCompany.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';
 
@@ -46,13 +46,14 @@ export class RequestsService {
     };
   }
 
-  async getRequest(type: TypeCompany, status: CoworkingStatus) {
+  async getRequest(type: TypeCompany, status: StatusRequest) {
+    console.log(type, status);
     const where: FindOptionsWhere<Request> = {};
     if (type) where.type = type;
     if (status) where.status = status;
 
     console.log(where);
 
-    return this.requestsRepository.find({ where });
+    return await this.requestsRepository.find({ where });
   }
 }

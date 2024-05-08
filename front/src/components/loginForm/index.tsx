@@ -1,30 +1,43 @@
 "use client";
 import { LoginFormArray } from "../../../utils/arraysforms/loginForm";
 import { useEffect, useState } from "react";
-
-interface LoginForm {
-  email: string;
-  password: string;
-}
+import ILoginForm from "../../../utils/types/loginFormInterface";
+import PostLogin from "../../../utils/posts/postSignin";
+import { useUserContext } from "../context";
+import { log } from "console";
 
 const LoginForm = () => {
-  const [LoginForm, setLoginForm] = useState<LoginForm>({
+  const { user, setuser, token, setToken } = useUserContext();
+  const [LoginForm, setLoginForm] = useState<ILoginForm>({
     email: "",
     password: "",
   });
 
-  const [LoginFormError, setLoginFormError] = useState<LoginForm>({
+  const [LoginFormError, setLoginFormError] = useState<ILoginForm>({
     email: "",
     password: "",
   });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLoginForm({ ...LoginFormError, [name]: value });
+    setLoginForm({ ...LoginForm, [name]: value });
+    console.log(LoginForm);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(LoginForm);
+    const data = await PostLogin(LoginForm);
+
+    if (data) {
+      setuser(data.user);
+
+      setToken(data.token);
+    }
   };
 
   return (
     <>
-      <form className="md:w-1/3 m-auto px-2 md:my-20 ">
+      <form className="md:w-1/3 m-auto px-2 md:my-20 " onSubmit={handleSubmit}>
         <h1 className="text-3xl text-center">LOGIN</h1>
         {LoginFormArray.map(
           ({ name, label, type, placeholder, required, icon }) => {
@@ -41,7 +54,7 @@ const LoginForm = () => {
                   required={required}
                   className="border-2 mx-1/3 py-2"
                   onChange={handleChange}
-                  value={LoginForm[name as keyof LoginForm]}
+                  value={LoginForm[name as keyof ILoginForm]}
                 />
                 <p className="text-red-500">
                   {/* {LoginFormError[name as keyof LoginFormError]} */}

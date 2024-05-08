@@ -10,4 +10,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   controllers: [CoworkingsController],
   providers: [CoworkingsService],
 })
-export class CoworkingModule {}
+export class CoworkingModule {
+  constructor(private readonly coworkingService: CoworkingsService) {}
+
+  async onModuleInit() {
+    await this.coworkingService.preloadCoworkings();
+  }
+}

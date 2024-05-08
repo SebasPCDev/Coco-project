@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 // import { CreateCoworkingDto } from './coworkings.dto';
 import { CreateCoworkingsDto } from './coworkings.dto';
 import { UUID } from 'crypto';
+import { loadData } from 'src/utils/loadData';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Coworkings } from 'src/entities/coworkings.entity';
 import { Repository } from 'typeorm';
@@ -16,6 +17,22 @@ export class CoworkingsService {
     private coworkingsRepository: Repository<Coworkings>,
     private readonly requestsService: RequestsService,
   ) {}
+
+  async getAllCoworkings() {
+    return await this.coworkingsRepository.find();
+  }
+
+  async getCoworkingById(id: string) {
+    const coworking = await this.coworkingsRepository.findOne({
+      where: { id },
+    });
+
+    if (!coworking) {
+      throw new NotFoundException(`Coworking with id ${id} not found`);
+    }
+
+    return coworking;
+  }
 
   create(data: CreateCoworkingsDto) {
     return data;
@@ -76,5 +93,26 @@ export class CoworkingsService {
 
   remove(id: number) {
     return `This action removes a #${id} coworking`;
+  }
+
+  async preloadCoworkings() {
+    const data = loadData();
+
+    for await (const coworking of data) {
+      const coworkingExists = await this.coworkingsRepository.findOne({
+        where: { email: coworking.email },
+      });
+
+      if (!coworkingExists) {
+        await this.coworkingsRepository.save(coworking);
+      }
+    }
+    console.log(`
+    ###############################################
+    ##### Coworkings data loaded successfully #####
+    ###############################################
+
+    `);
+    return true;
   }
 }

@@ -1,8 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsInt, IsEmail, IsNotEmpty,  IsUrl, IsEmpty, IsEnum } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsInt,
+  IsEmail,
+  IsNotEmpty,
+  IsUrl,
+  IsEmpty,
+  IsEnum,
+} from 'class-validator';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
-
-
+import { TypeCompany } from 'src/models/typeCompany.enum';
 
 export class RequestDtoCoworking {
   @ApiProperty({
@@ -41,7 +49,9 @@ export class RequestDtoCoworking {
     example: '1234567890',
     description: 'El número de identificación del solicitante',
   })
-  @IsString({ message: 'El número de identificación debe ser una cadena de texto' })
+  @IsString({
+    message: 'El número de identificación debe ser una cadena de texto',
+  })
   @IsNotEmpty({ message: 'El número de identificación es obligatorio' })
   identification: string;
 
@@ -65,7 +75,10 @@ export class RequestDtoCoworking {
     example: 'ejemplo@cowork.com',
     description: 'El correo electrónico del cowork del solicitante',
   })
-  @IsEmail({}, { message: 'Formato de correo electrónico de la empresa inválido' })
+  @IsEmail(
+    {},
+    { message: 'Formato de correo electrónico de la empresa inválido' },
+  )
   @IsNotEmpty({ message: 'El correo electrónico de la empresa es obligatorio' })
   companyEmail: string;
 
@@ -73,7 +86,9 @@ export class RequestDtoCoworking {
     example: '1234567890',
     description: 'El número de teléfono de la empresa del solicitante',
   })
-  @IsString({ message: 'El número de teléfono de la empresa debe ser una cadena de texto' })
+  @IsString({
+    message: 'El número de teléfono de la empresa debe ser una cadena de texto',
+  })
   @IsNotEmpty({ message: 'El número de teléfono de la empresa es obligatorio' })
   companyPhone: string;
 
@@ -90,7 +105,9 @@ export class RequestDtoCoworking {
     description: 'El website de cowork',
   })
   @IsOptional()
-  @IsString({ message: 'El website de la empresa debe ser una cadena de texto' })
+  @IsString({
+    message: 'El website de la empresa debe ser una cadena de texto',
+  })
   @IsUrl({}, { message: 'El website debe ser una URL válida' })
   website: string;
 
@@ -123,14 +140,13 @@ export class RequestDtoCoworking {
     description: 'Mensaje de la request',
   })
   @IsOptional()
-  @IsString({message:"message debe ser un string"})
+  @IsString({ message: 'message debe ser un string' })
   message: string;
 
   @ApiProperty({
     example: 'pending',
     description: 'El status de la request pending / close	',
   })
-
   @IsEnum(CoworkingStatus)
   status: CoworkingStatus;
 
@@ -138,20 +154,14 @@ export class RequestDtoCoworking {
     example: 'Esto es una observacion',
     description: 'Observacion de la request',
   })
-  @IsString({message:"observation debe ser un string"})
+  @IsString({ message: 'observation debe ser un string' })
   observation: string;
 
   @ApiProperty({
     example: '',
     description: 'Debe estar vacio (se seta detro del endpoint), se envia null',
     nullable: true,
-
   })
-  
-  @IsEmpty({message:"Debe ser nullo"})
-  type: string;
-
-  
-
-
+  @IsEmpty({ message: 'Debe ser nullo' })
+  type: TypeCompany;
 }

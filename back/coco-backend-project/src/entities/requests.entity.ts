@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { TypeCompany } from 'src/models/typeCompany.enum';
 
 import {
   Entity,
@@ -135,11 +136,13 @@ export class Request {
     type: 'text',
   })
   observation: string;
+
   @Column({
+    type: 'enum',
+    enum: TypeCompany,
     nullable: false,
-    type: 'varchar',
   })
-  type: string;
+  type: TypeCompany;
 
   @Exclude()
   @CreateDateColumn({

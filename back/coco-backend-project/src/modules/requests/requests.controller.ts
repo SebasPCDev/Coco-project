@@ -31,7 +31,7 @@ export class RequestsController {
   @Public()
   @Post('coworking')
   async addCowork(@Body() coworking: RequestDtoCoworking) {
-    coworking.type = 'coworking';
+    coworking.type = TypeCompany.COWORKING;
 
     try {
       const result = await this.requestsService.addCowork(coworking);
@@ -47,7 +47,7 @@ export class RequestsController {
   @Public()
   @Post('company')
   async addCompany(@Body() company: RequestDtoCompany) {
-    company.type = 'company';
+    company.type = TypeCompany.COMPANY;
 
     try {
       const result = await this.requestsService.addCompany(company);

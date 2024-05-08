@@ -31,7 +31,7 @@ const CompaniesForm = () => {
     type: "",
   });
 
-  //el estado para los errores aun no se sta utilizando 
+  //el estado para los errores aun no se sta utilizando
   const [companiesInfoError, setCompaniesInfoError] = useState({
     name: "",
     lastname: "",
@@ -102,7 +102,7 @@ const CompaniesForm = () => {
         <button
           className="bg-slate-500 text-white p-2 rounded-lg my-4"
           type="submit">
-          Login
+          enviar Solicitud
         </button>
       </form>
     </>

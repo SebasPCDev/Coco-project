@@ -10,7 +10,10 @@ import ICoworkingsInfo from "../../../utils/types/coworkingsFormInterface";
 // importamos la petición post a requests/coworking
 import PostCoworkings from "../../../utils/posts/postCoworkings";
 
+import { useRouter } from "next/navigation";
+
 const CoworkingsForm = () => {
+  const router = useRouter();
   const [coworkingInfo, setCoworkingInfo] = useState<ICoworkingsInfo>({
     name: "",
     lastname: "",
@@ -66,6 +69,7 @@ const CoworkingsForm = () => {
     console.log(coworkingInfo);
     try {
       await PostCoworkings(coworkingInfo);
+      router.push("/");
     } catch (error) {
       console.log("hubo un error", error);
     }

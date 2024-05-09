@@ -53,7 +53,6 @@ export class CoworkingsService {
     console.log('request', request);
 
     // 2- Crear user
-
     // const password = Math.random().toString(36).slice(-8);
     const password = 'Coco123!';
     const hashedPass = await bcrypt.hash(password, 10);
@@ -74,10 +73,7 @@ export class CoworkingsService {
 
     const newUser = await this.usersService.create(user);
 
-    console.log('newUser!!!!!!!!!!!!!!!!!', newUser);
-
     // 2- Crear coworking -> users_coworking
-
     const coworking: CreateCoworkingsDto = {
       name: request.companyName,
       email: request.companyEmail,
@@ -92,8 +88,6 @@ export class CoworkingsService {
     };
     const newCoworkingTemp = this.coworkingsRepository.create(coworking);
     const newCoworking = await this.coworkingsRepository.save(newCoworkingTemp);
-
-    console.log('newCoworking!!!!!!!!!!!!!!!', newCoworking);
 
     // 3- Requests pending -> close
     await this.requestsService.update(id, {
@@ -117,9 +111,9 @@ export class CoworkingsService {
     return `This action updates a #${id} coworking`;
   } */
 
-  remove(id: number) {
-    return `This action removes a #${id} coworking`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} coworking`;
+  // }
 
   async preloadCoworkings() {
     const data = loadData();

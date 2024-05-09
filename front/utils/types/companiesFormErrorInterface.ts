@@ -15,6 +15,7 @@ interface ICompaniesErrorInfo {
     type?: string;
     status?: string;
     observation?: string;
+    role?: string;
   }
   
   export default ICompaniesErrorInfo;

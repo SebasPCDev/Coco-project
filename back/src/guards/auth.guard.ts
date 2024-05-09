@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 // Reflector nos permite conocer la metadata
 // Se inyecta a través de inuección de dependencias
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from './../decorators/public.decorator';
+import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 // import { Role } from 'src/models/roles.enum';
 
 @Injectable()

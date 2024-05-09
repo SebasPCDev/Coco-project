@@ -1,13 +1,16 @@
 "use client";
+import { useUserContext } from "@/components/context";
 import PostActivateCowork from "../../../../utils/posts/postActivateCowork";
 import IResponseRequest from "../../../../utils/types/responseRequets";
 
 const CompanyList = ({ companies }: { companies: IResponseRequest[] }) => {
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const { token } = useUserContext();
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const id = e.currentTarget.id;
+    const Id = e.currentTarget.id;
 
-    PostActivateCowork(id);
+    const response = await PostActivateCowork({ Id, token });
+    console.log(response);
   };
 
   return (

@@ -1,5 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-// import { CreateCoworkingDto } from './coworkings.dto';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCoworkingsDto } from './coworkings.dto';
 import { UUID } from 'crypto';
 import { loadData } from 'src/utils/loadData';
@@ -9,6 +12,12 @@ import { Repository } from 'typeorm';
 import { RequestsService } from '../requests/requests.service';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
+import { UsersService } from '../users/users.service';
+import * as bcrypt from 'bcrypt';
+import { CreateUsersDto } from '../users/users.dto';
+import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { StatusRequest } from 'src/models/statusRequest.enum';
+import { NodemailerService } from '../nodemailer/nodemailer.service';
 
 @Injectable()
 export class CoworkingsService {
@@ -16,6 +25,8 @@ export class CoworkingsService {
     @InjectRepository(Coworkings)
     private coworkingsRepository: Repository<Coworkings>,
     private readonly requestsService: RequestsService,
+    private readonly usersService: UsersService,
+    private readonly nodemailerService: NodemailerService,
   ) {}
 
   async getAllCoworkings() {
@@ -44,39 +55,50 @@ export class CoworkingsService {
     console.log('request', request);
 
     // 2- Crear user
+    // const password = Math.random().toString(36).slice(-8);
+    const password = 'Coco123!';
+    const hashedPass = await bcrypt.hash(password, 10);
+    if (!hashedPass)
+      throw new BadRequestException('Password could not be hashed');
 
-    const user = {
+    const user: CreateUsersDto = {
       name: request.name,
       lastname: request.lastname,
       phone: request.phone,
       email: request.email,
+      password: hashedPass,
       identification: request.identification,
       position: request.position,
       status: UserStatus.ACTIVE,
       role: Role.ADMIN_COWORKING,
     };
-    console.log('User', user);
-    // const user = {
-    //
-    // }
 
-    // const newUser = await this.serviceUser.create(user)
+    const newUser = await this.usersService.create(user);
 
     // 2- Crear coworking -> users_coworking
-    // const coworking = {
-    //   name:
-    //   user: newUser
-    // }
-    // const newCoworking = this.coworkingRepository.create(coworking)
-    // const newCoworking = this.coworkingRepository.save(coworking)
+    const coworking: CreateCoworkingsDto = {
+      name: request.companyName,
+      email: request.companyEmail,
+      phone: request.companyPhone,
+      address: request.address,
+      open: request.open,
+      close: request.close,
+      capacity: request.capacity,
+      message: request.message,
+      status: CoworkingStatus.PENDING,
+      user: [newUser],
+    };
+    const newCoworkingTemp = this.coworkingsRepository.create(coworking);
+    const newCoworking = await this.coworkingsRepository.save(newCoworkingTemp);
 
     // 3- Requests pending -> close
-    // const request = await this.servicioRequests.update(id, {status: 'close'})
+    await this.requestsService.update(id, {
+      status: StatusRequest.CLOSE,
+    });
 
-    // 4- Enviar email
-
-    // return newCoworking
-    return id;
+    //TODO: 4- Enviar email
+    this.nodemailerService.confirmacionMailRequest(request.email,request.companyName,password)
+    return newCoworking;
   }
 
   findAll() {
@@ -91,9 +113,9 @@ export class CoworkingsService {
     return `This action updates a #${id} coworking`;
   } */
 
-  remove(id: number) {
-    return `This action removes a #${id} coworking`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} coworking`;
+  // }
 
   async preloadCoworkings() {
     const data = loadData();

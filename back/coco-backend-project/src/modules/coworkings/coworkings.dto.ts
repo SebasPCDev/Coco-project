@@ -1,5 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
 import {
+  IsArray,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -7,6 +8,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { Users } from 'src/entities/users.entity';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 
 export class CreateCoworkingsDto {
@@ -24,11 +26,11 @@ export class CreateCoworkingsDto {
 
   @IsString()
   @IsNotEmpty()
-  open: Date;
+  open: string;
 
   @IsString()
   @IsNotEmpty()
-  close: Date;
+  close: string;
 
   @IsString()
   @IsNotEmpty()
@@ -36,27 +38,32 @@ export class CreateCoworkingsDto {
 
   @IsString()
   @IsOptional()
-  country: string;
+  country?: string;
 
   @IsString()
   @IsOptional()
-  state: string;
+  state?: string;
 
   @IsString()
   @IsOptional()
-  city: string;
+  city?: string;
 
   @IsString()
   @IsOptional()
-  lat: string;
+  lat?: string;
 
   @IsString()
   @IsOptional()
-  long: string;
+  long?: string;
 
   @IsNotEmpty()
   @IsNumber()
   capacity: number;
+
+  @IsString()
+  // URL
+  @IsOptional()
+  message?: string;
 
   @IsEnum(CoworkingStatus)
   status: CoworkingStatus;
@@ -64,7 +71,10 @@ export class CreateCoworkingsDto {
   @IsString()
   // URL
   @IsOptional()
-  thumbnail: string;
+  thumbnail?: string;
+
+  @IsArray()
+  user: Users[];
 }
 
 export class UpdateCoworkingsDto extends PartialType(CreateCoworkingsDto) {}

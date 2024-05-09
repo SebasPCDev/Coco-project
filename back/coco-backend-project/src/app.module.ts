@@ -5,7 +5,7 @@ import { UserCoworkingModule } from './modules/user-coworking/user-coworking.mod
 import { CoworkingModule } from './modules/coworkings/coworking.module';
 import { UserEmployeeModule } from './modules/user-employee/user-employee.module';
 import { CompanyModule } from './modules/company/company.module';
-import { UsersModule } from './modules/user/users.module';
+import { UsersModule } from './modules/users/users.module';
 import { BookingsModule } from './modules/bookings/bookings.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -14,6 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RequestsModule } from './modules/requests/requests.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AmenitiesModule } from './modules/amenities/amenities.module';
+import { NodemailerModule } from './modules/nodemailer/nodemailer.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { AmenitiesModule } from './modules/amenities/amenities.module';
       secret: process.env.JWT_SECRET,
     }),
     AmenitiesModule,
+    NodemailerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

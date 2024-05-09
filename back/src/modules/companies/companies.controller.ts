@@ -10,35 +10,44 @@ import {
 } from '@nestjs/common';
 
 import { CreateCompaniesDto } from './companies.dto';
-import { CompaniesService } from './companies.service';
+
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Role } from 'src/models/roles.enum';
 import { Roles } from 'src/decorators/roles.decorator';
+import { CompaniesService } from './companies.service';
+import { UUID } from 'crypto';
 
 @ApiTags('companies')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller('companies')
 export class CompaniesController {
-  constructor(private readonly CompaniesService: CompaniesService) {}
+  constructor(private readonly companiesService: CompaniesService) {}
+
+  @Get(':id')
+  getCompanyById(@Param('id') id: string) {
+    return this.companiesService.getCompanyById(id);
+  }
 
   @Post()
   create(@Body() createCompaniesDto: CreateCompaniesDto) {
-    return this.CompaniesService.create(createCompaniesDto);
+    return this.companiesService.create(createCompaniesDto);
   }
 
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Get()
   getAllCompanies() {
-    return this.CompaniesService.getAllCompanies();
+    return this.companiesService.getAllCompanies();
   }
 
-  @Get(':id')
-  getCompanyById(@Param('id') id: string) {
-    return this.CompaniesService.getCompanyById(id);
+  @Roles(Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Post('activate')
+  activateCoworking(@Body() data: { id: UUID }) {
+    return this.companiesService.activateCompany(data.id as UUID);
   }
 
   /* @Put(':id')
@@ -48,6 +57,6 @@ export class CompaniesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.CompaniesService.remove(+id);
+    return this.companiesService.remove(+id);
   }
 }

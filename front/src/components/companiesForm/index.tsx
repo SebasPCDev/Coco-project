@@ -11,7 +11,10 @@ import ICompaniesInfo from "../../../utils/types/companiesFormInterface";
 // importamos la petición post a requests/company
 import PostCompany from "../../../utils/posts/postCompany";
 
+import { useRouter } from "next/navigation";
+
 const CompaniesForm = () => {
+  const router = useRouter();
   const [companiesInfo, setCompaniesInfo] = useState<ICompaniesInfo>({
     name: "",
     lastname: "",
@@ -65,6 +68,7 @@ const CompaniesForm = () => {
 
     try {
       await PostCompany(companiesInfo);
+      router.push("/");
     } catch (error) {
       console.log("Hubo un error en la petición", error);
     }

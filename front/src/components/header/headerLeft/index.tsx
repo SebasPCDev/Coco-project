@@ -1,9 +1,6 @@
 import Link from "next/link";
-const arrayNav = [
-  { name: "Ver Coworkings", path: "/" },
-  { name: "Precios", path: "/" },
-  { name: "Contacto", path: "/" },
-];
+import arrayNav from "../../../../utils/arrayMenu/arrayMenuOrNav";
+
 const HeaderLeft = () => {
   return (
     <div className="flex flex-row justify-center items-center gap-2">

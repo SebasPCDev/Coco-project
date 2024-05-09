@@ -17,73 +17,54 @@ interface IUser {
 }
 
 interface IUserContext {
-  user: IUser;
-  setuser: (value: IUser) => void;
-  token: string;
-  setToken: (value: string) => void;
+  user: IUser | undefined;
+  setUser: (value: IUser | undefined) => void;
+  token: string | undefined;
+  setToken: (value: string | undefined) => void;
 }
 
 const userContext = createContext<IUserContext>({
-  user: {
-    id: "",
-    name: "",
-    lastname: "",
-    phone: "",
-    email: "",
-    identification: "",
-    position: "",
-    recoveryToken: null,
-    activationDate: null,
-    role: "",
-    status: "",
-  },
-
-  setuser: () => {},
-
-  token: "",
-
+  user: undefined,
+  setUser: () => {},
+  token: undefined,
   setToken: () => {},
 });
 
 const UserProvider = ({ children }: any) => {
-  const [user, setuser] = useState<IUser>({
-    id: "",
-    name: "",
-    lastname: "",
-    phone: "",
-    email: "",
-    identification: "",
-    position: "",
-    recoveryToken: null,
-    activationDate: null,
-    role: "",
-    status: "",
-  });
-
-  const [token, setToken] = useState<string>("");
+  const [token, setToken] = useState<string | undefined>(undefined);
+  const [user, setUser] = useState<IUser | undefined>(undefined);
 
   useEffect(() => {
-    const token = Cookie.get("token");
-    const user = Cookie.get("user");
-    if (token) {
-      setToken(token);
+    const tokenFromCookie = Cookie.get("token");
+    const userFromCookie = Cookie.get("user");
+
+    if (tokenFromCookie) {
+      setToken(tokenFromCookie);
     }
-    if (user) {
-      setuser(JSON.parse(user));
+
+    if (userFromCookie) {
+      try {
+        setUser(JSON.parse(userFromCookie) as IUser);
+      } catch (error) {
+        setUser(undefined);
+      }
     }
   }, []);
 
   useEffect(() => {
-    Cookie.set("user", JSON.stringify(user));
-    Cookie.set("token", token);
+    if (user) {
+      Cookie.set("user", JSON.stringify(user));
+    }
+    if (token) {
+      Cookie.set("token", token);
+    }
   }, [user, token]);
 
   return (
-    <userContext.Provider value={{ user, setuser, token, setToken }}>
+    <userContext.Provider value={{ user, setUser, token, setToken }}>
       {children}
     </userContext.Provider>
   );
-
 };
 
 const useUserContext = () => useContext(userContext);

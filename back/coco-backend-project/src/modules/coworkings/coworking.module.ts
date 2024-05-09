@@ -1,26 +1,26 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { NodemailerModule } from '../nodemailer/nodemailer.module';
 import { CoworkingsService } from './coworkings.service';
 import { CoworkingsController } from './coworkings.controller';
-import { RequestsModule } from '../requests/requests.module';
 import { Coworkings } from 'src/entities/coworkings.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from '../users/users.module';
-import { NodemailerModule } from '../nodemailer/nodemailer.module';
+import { Users } from 'src/entities/users.entity';
+import { Request } from 'src/entities/requests.entity';
 
+// imports: [AuthModule, TypeOrmModule.forFeature([Coworking])],
 @Module({
   imports: [
-    UsersModule,
-    RequestsModule,
     NodemailerModule,
-    TypeOrmModule.forFeature([Coworkings]),
+    TypeOrmModule.forFeature([Coworkings, Request, Users]),
   ],
   controllers: [CoworkingsController],
   providers: [CoworkingsService],
 })
 export class CoworkingModule {
-  constructor(private readonly coworkingService: CoworkingsService) {}
+  constructor(private readonly coworkingsService: CoworkingsService) {}
 
   async onModuleInit() {
-    await this.coworkingService.preloadCoworkings();
+    await this.coworkingsService.preloadCoworkings();
   }
 }

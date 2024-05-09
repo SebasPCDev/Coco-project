@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserCoworkingModule } from './modules/user-coworking/user-coworking.module';
 import { CoworkingModule } from './modules/coworkings/coworking.module';
-import { UserEmployeeModule } from './modules/user-employee/user-employee.module';
 import { UsersModule } from './modules/users/users.module';
 import { BookingsModule } from './modules/bookings/bookings.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -28,9 +26,7 @@ import { CompaniesModule } from './modules/companies/companies.module';
         configService.get('typeorm'),
     }),
     CompaniesModule,
-    UserCoworkingModule,
     CoworkingModule,
-    UserEmployeeModule,
     UsersModule,
     BookingsModule,
     AuthModule,

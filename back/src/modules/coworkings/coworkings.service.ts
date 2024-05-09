@@ -85,7 +85,6 @@ export class CoworkingsService {
         email: requestCoworking.email,
       });
 
-      console.log('user', user);
       if (user) throw new BadRequestException('Usuario existente');
 
       const newUserTemp = this.usersRepository.create(userData);
@@ -104,6 +103,7 @@ export class CoworkingsService {
         status: CoworkingStatus.PENDING,
         user: [newUser],
       };
+
       const newCoworkingTemp = this.coworkingsRepository.create(coworking);
       const newCoworking = await queryRunner.manager.save(newCoworkingTemp);
 

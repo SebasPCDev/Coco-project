@@ -48,6 +48,8 @@ export class Companies {
   })
   updatedAt: Date;
 
-  @OneToMany(() => Employees, (employee) => employee.company)
+  @OneToMany(() => Employees, (employee) => employee.company, {
+    nullable: true,
+  })
   employees: Employees[];
 }

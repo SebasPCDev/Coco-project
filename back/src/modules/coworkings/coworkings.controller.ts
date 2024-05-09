@@ -14,7 +14,11 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
 import { CoworkingsService } from './coworkings.service';
-import { CreateCoworkingsDto, UpdateCoworkingsDto } from './coworkings.dto';
+import {
+  ActivateCoworkingsDto,
+  CreateCoworkingsDto,
+  UpdateCoworkingsDto,
+} from './coworkings.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Public } from 'src/decorators/public.decorator';
@@ -42,16 +46,14 @@ export class CoworkingsController {
 
   @Post()
   create(@Body() data: CreateCoworkingsDto) {
-    console.log(data);
     return this.coworkingsService.create(data);
   }
 
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Post('activate')
-  activateCoworking(@Body() data: { id: UUID }) {
-    console.log(data);
-    return this.coworkingsService.activateCoworking(data.id);
+  activateCoworking(@Body() data: ActivateCoworkingsDto) {
+    return this.coworkingsService.activateCoworking(data.id as UUID);
   }
 
   @Roles(Role.ADMIN_COWORKING)

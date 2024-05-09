@@ -13,10 +13,7 @@ interface ICoworkingsInfo {
   open: string;
   close: string;
   capacity: number;
-  status: string;
-  observation: string;
   message: string;
-  type: string;
 }
 
 export default ICoworkingsInfo;

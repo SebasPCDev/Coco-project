@@ -1,7 +1,15 @@
 "use client";
+import PostActivateCowork from "../../../../utils/posts/postActivateCowork";
 import IResponseRequest from "../../../../utils/types/responseRequets";
 
 const CompanyList = ({ companies }: { companies: IResponseRequest[] }) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const id = e.currentTarget.id;
+
+    PostActivateCowork(id);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-4">Listado de Empresas</h1>
@@ -54,6 +62,12 @@ const CompanyList = ({ companies }: { companies: IResponseRequest[] }) => {
             <p>
               <strong>Observación:</strong> {company.observation || "N/A"}
             </p>
+            <button
+              onClick={handleClick}
+              className="bg-custom-secondary text-custom-white  py-3 px-6 rounded-lg text-xl font-bold"
+              id={company.id}>
+              Aprobar
+            </button>
           </li>
         ))}
       </ul>

@@ -18,14 +18,14 @@ export class UsersService {
     if (user) throw new BadRequestException('Usuario existente');
 
     const newUserTemp = this.usersRepository.create(data);
-    console.log('newUserTemp', newUserTemp);
     const newUser = await this.usersRepository.save(newUserTemp);
 
     return newUser;
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    const user = await this.usersRepository.find();
+    return user;
   }
 
   async getUserByEmail(email: string): Promise<Users> {

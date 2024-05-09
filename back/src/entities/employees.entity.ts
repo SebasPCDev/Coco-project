@@ -10,7 +10,7 @@ import {
 import { Exclude } from 'class-transformer';
 
 import { Users } from './users.entity';
-import { Company } from './companies.entity';
+import { Companies } from './companies.entity';
 
 @Entity('employees')
 export class Employees {
@@ -39,9 +39,9 @@ export class Employees {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Company, (company) => company.employees)
+  @ManyToOne(() => Companies, (company) => company.employees)
   @JoinColumn({ name: 'company_id' })
-  company: Company;
+  company: Companies;
 
   @OneToOne(() => Users, (user) => user.employee)
   @JoinColumn()

@@ -8,12 +8,13 @@ import {
   //Delete,
   UseGuards,
   ParseUUIDPipe,
+  Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
 import { CoworkingsService } from './coworkings.service';
-import { CreateCoworkingsDto } from './coworkings.dto';
+import { CreateCoworkingsDto, UpdateCoworkingsDto } from './coworkings.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Public } from 'src/decorators/public.decorator';
@@ -53,13 +54,15 @@ export class CoworkingsController {
     return this.coworkingsService.activateCoworking(data.id);
   }
 
-  /*   @Put(':id')
+  @Roles(Role.ADMIN_COWORKING)
+  @UseGuards(RolesGuard)
+  @Put(':id')
   update(
-    @Param('id') id: string,
-    @Body() updateCoworkingDto: UpdateCoworkingDto,
+    @Param('id', ParseUUIDPipe) id: UUID,
+    @Body() changes: UpdateCoworkingsDto,
   ) {
-    return this.coworkingService.update(+id, updateCoworkingDto);
-  } */
+    return this.coworkingsService.update(id, changes);
+  }
 
   // @Delete(':id')
   // remove(@Param('id') id: string) {

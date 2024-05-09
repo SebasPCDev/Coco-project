@@ -8,7 +8,6 @@ import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
 import { Request } from 'src/entities/requests.entity';
 
-// imports: [AuthModule, TypeOrmModule.forFeature([Coworking])],
 @Module({
   imports: [
     NodemailerModule,

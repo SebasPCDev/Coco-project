@@ -9,7 +9,7 @@ import { DataSource, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { NodemailerService } from '../nodemailer/nodemailer.service';
-import { loadData } from 'src/utils/loadData';
+import { loadDataCoworkings } from 'src/utils/loadData';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
@@ -148,7 +148,7 @@ export class CoworkingsService {
   // }
 
   async preloadCoworkings() {
-    const data = loadData();
+    const data = loadDataCoworkings();
 
     for await (const coworking of data) {
       const coworkingExists = await this.coworkingsRepository.findOne({

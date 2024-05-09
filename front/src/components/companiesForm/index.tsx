@@ -3,13 +3,17 @@
 import { formDataCompanies } from "../../../utils/arraysforms/companysForm";
 
 // importamos los hooks
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // importamos la interface para tipar el estado del formulario
 import ICompaniesInfo from "../../../utils/types/companiesFormInterface";
 
 // importamos la petición post a requests/company
 import PostCompany from "../../../utils/posts/postCompany";
+
+// importamos la validacion de formularios
+import companyValidation from "../../../utils/formValidation/companyValidation";
+import ICompaniesErrorInfo from "../../../utils/types/companiesFormErrorInterface";
 
 import { useRouter } from "next/navigation";
 
@@ -35,7 +39,7 @@ const CompaniesForm = () => {
   });
 
   //el estado para los errores aun no se sta utilizando
-  const [companiesInfoError, setCompaniesInfoError] = useState({
+  const [companiesInfoError, setCompaniesInfoError] = useState<ICompaniesErrorInfo>({
     name: "",
     lastname: "",
     phone: "",
@@ -74,6 +78,13 @@ const CompaniesForm = () => {
     }
   };
 
+  useEffect (() => {
+    const errors = companyValidation(companiesInfo);
+    setCompaniesInfoError(errors);
+    console.log(errors);
+  }, [companiesInfo]);
+
+
   return (
     <>
       <form
@@ -97,7 +108,7 @@ const CompaniesForm = () => {
                   value={companiesInfo[name as keyof ICompaniesInfo]}
                 />
                 <p className="text-red-500">
-                  {/* {companiesInfoError[name as keyof ICompaniesInfo]} */}
+                  {companiesInfoError[name as keyof ICompaniesInfo]}
                 </p>
               </div>
             );

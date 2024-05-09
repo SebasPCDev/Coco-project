@@ -5,6 +5,8 @@ import ILoginForm from "../../../utils/types/loginFormInterface";
 import PostLogin from "../../../utils/posts/postSignin";
 import { useUserContext } from "../context";
 import { useRouter } from "next/navigation";
+import ILoginErrorForm from "../../../utils/types/loginFormErrorInterface";
+import loginValidation from "../../../utils/formValidation/loginValidation";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -15,7 +17,7 @@ const LoginForm = () => {
     password: "",
   });
 
-  const [LoginFormError, setLoginFormError] = useState<ILoginForm>({
+  const [LoginFormError, setLoginFormError] = useState<ILoginErrorForm>({
     email: "",
     password: "",
   });
@@ -39,6 +41,12 @@ const LoginForm = () => {
     }
   };
 
+  useEffect (() => {
+    const errors = loginValidation(LoginForm);
+    setLoginFormError(errors);
+    console.log(errors);
+  }, [LoginForm]);
+
   return (
     <>
       <form className="md:w-1/3 m-auto px-2 md:my-20 " onSubmit={handleSubmit}>
@@ -61,7 +69,7 @@ const LoginForm = () => {
                   value={LoginForm[name as keyof ILoginForm]}
                 />
                 <p className="text-red-500">
-                  {/* {LoginFormError[name as keyof LoginFormError]} */}
+                  {LoginFormError[name as keyof ILoginForm]}
                 </p>
               </div>
             );

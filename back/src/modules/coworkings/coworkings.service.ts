@@ -14,7 +14,7 @@ import { StatusRequest } from 'src/models/statusRequest.enum';
 import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
 import { Request } from 'src/entities/requests.entity';
-import { CreateCoworkingsDto } from './coworkings.dto';
+import { CreateCoworkingsDto, UpdateCoworkingsDto } from './coworkings.dto';
 import { CreateUsersDto } from '../users/users.dto';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
@@ -131,17 +131,13 @@ export class CoworkingsService {
     }
   }
 
-  findAll() {
-    return `This action returns all coworking`;
-  }
+  async update(id: UUID, changes: UpdateCoworkingsDto) {
+    // return `This action updates a #${id} ${changes} coworking`;
+    const coworking = await this.getCoworkingById(id);
 
-  findOne(id: number) {
-    return `This action returns a #${id} coworking`;
+    const updCoworking = this.coworkingsRepository.merge(coworking, changes);
+    return await this.coworkingsRepository.save(updCoworking);
   }
-
-  /*   update(id: number, updateCoworkingDto: UpdateCoworkingDto) {
-    return `This action updates a #${id} coworking`;
-  } */
 
   // remove(id: number) {
   //   return `This action removes a #${id} coworking`;

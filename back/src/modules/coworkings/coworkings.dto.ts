@@ -1,4 +1,4 @@
-import { PartialType } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsArray,
   IsEmail,
@@ -7,6 +7,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 import { Users } from 'src/entities/users.entity';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
@@ -78,3 +79,12 @@ export class CreateCoworkingsDto {
 }
 
 export class UpdateCoworkingsDto extends PartialType(CreateCoworkingsDto) {}
+
+export class ActivateCoworkingsDto {
+  @ApiProperty({
+    example: 'df316546-4992-46ee-8b2e-03c5e7be0792',
+    description: 'Id de la solicitud (requests)',
+  })
+  @IsUUID()
+  id: string;
+}

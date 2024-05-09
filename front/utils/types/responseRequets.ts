@@ -1,5 +1,5 @@
 interface IResponseRequest {
-  id: string | null;
+  id: string ;
   name: string | null;
   lastname: string | null;
   phone: string | null;

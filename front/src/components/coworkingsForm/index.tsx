@@ -2,7 +2,7 @@
 // impotamos el array que mapearemos para crear los inputs y los labels del formulario
 import { formDataCoworkings } from "../../../utils/arraysforms/coworkingsForms";
 // importamos los hooks
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // importamos la interface para tipar el estado del formulario
 import ICoworkingsInfo from "../../../utils/types/coworkingsFormInterface";
@@ -10,7 +10,12 @@ import ICoworkingsInfo from "../../../utils/types/coworkingsFormInterface";
 // importamos la petición post a requests/coworking
 import PostCoworkings from "../../../utils/posts/postCoworkings";
 
+// importamos la validacion de formularios
+import coworkingValidation from "../../../utils/formValidation/coworkingValidation";
+import ICoworkingsErrorInfo  from "../../../utils/types/coworkingFormErrorInterface";
+
 import { useRouter } from "next/navigation";
+
 
 const CoworkingsForm = () => {
   const router = useRouter();
@@ -35,13 +40,13 @@ const CoworkingsForm = () => {
     type: "",
   });
 
-  const [coworkingInfoError, setCoworkingInfoError] = useState({
+  const [coworkingInfoError, setCoworkingInfoError] = useState<ICoworkingsErrorInfo>({
     name: "",
     lastname: "",
     phone: "",
     email: "",
     identification: "",
-    role: "",
+    position: "",
     companyName: "",
     companyEmail: "",
     companyPhone: "",
@@ -50,6 +55,8 @@ const CoworkingsForm = () => {
     open: "",
     close: "",
     capacity: "",
+    status: "pending",
+    observation: "Esto es una observacion",
     message: "",
     type: "",
   });
@@ -75,6 +82,12 @@ const CoworkingsForm = () => {
     }
   };
 
+  useEffect (() => {
+    const errors = coworkingValidation(coworkingInfo);
+    setCoworkingInfoError(errors);
+    console.log(errors);
+  }, [coworkingInfo]);
+
   return (
     <>
       <form
@@ -98,7 +111,7 @@ const CoworkingsForm = () => {
                   value={coworkingInfo[name as keyof ICoworkingsInfo]}
                 />
                 <p className="text-red-500">
-                  {/* {coworkingInfoError[name as keyof ICoworkingsInfo]} */}
+                  {coworkingInfoError[name as keyof ICoworkingsInfo]}
                 </p>
               </div>
             );

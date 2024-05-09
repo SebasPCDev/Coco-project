@@ -14,6 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RequestsModule } from './modules/requests/requests.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AmenitiesModule } from './modules/amenities/amenities.module';
+import { NodemailerModule } from './modules/nodemailer/nodemailer.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { AmenitiesModule } from './modules/amenities/amenities.module';
       secret: process.env.JWT_SECRET,
     }),
     AmenitiesModule,
+    NodemailerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -17,6 +17,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateUsersDto } from '../users/users.dto';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { StatusRequest } from 'src/models/statusRequest.enum';
+import { NodemailerService } from '../nodemailer/nodemailer.service';
 
 @Injectable()
 export class CoworkingsService {
@@ -25,6 +26,7 @@ export class CoworkingsService {
     private coworkingsRepository: Repository<Coworkings>,
     private readonly requestsService: RequestsService,
     private readonly usersService: UsersService,
+    private readonly nodemailerService: NodemailerService,
   ) {}
 
   async getAllCoworkings() {
@@ -101,7 +103,7 @@ export class CoworkingsService {
     });
 
     //TODO: 4- Enviar email
-
+    this.nodemailerService.confirmacionMailRequest(request.email,request.companyName,password)
     return newCoworking;
   }
 

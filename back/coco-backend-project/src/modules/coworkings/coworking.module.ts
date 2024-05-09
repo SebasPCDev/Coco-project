@@ -5,11 +5,13 @@ import { RequestsModule } from '../requests/requests.module';
 import { Coworkings } from 'src/entities/coworkings.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from '../users/users.module';
+import { NodemailerModule } from '../nodemailer/nodemailer.module';
 
 @Module({
   imports: [
     UsersModule,
     RequestsModule,
+    NodemailerModule,
     TypeOrmModule.forFeature([Coworkings]),
   ],
   controllers: [CoworkingsController],

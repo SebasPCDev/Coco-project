@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import ILoginForm from "../../../utils/types/loginFormInterface";
 import PostLogin from "../../../utils/posts/postSignin";
 import { useUserContext } from "../context";
-import { log } from "console";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
-  const { user, setuser, token, setToken } = useUserContext();
+  const router = useRouter();
+
+  const { user, setUser, token, setToken } = useUserContext();
   const [LoginForm, setLoginForm] = useState<ILoginForm>({
     email: "",
     password: "",
@@ -29,9 +31,11 @@ const LoginForm = () => {
     const data = await PostLogin(LoginForm);
 
     if (data) {
-      setuser(data.user);
-
+      setUser(data.user);
       setToken(data.token);
+      if (data.token) {
+        router.push("/superadmin");
+      }
     }
   };
 

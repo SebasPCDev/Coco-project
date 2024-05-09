@@ -13,9 +13,9 @@ interface ICoworkingsInfo {
   open: string;
   close: string;
   capacity: number;
-  message: string;
   status: string;
   observation: string;
+  message: string;
   type: string;
 }
 

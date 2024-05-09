@@ -3,7 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import {transporter} from  '../../config/nodemailer';
+import { transporter } from '../../config/nodemailer';
 import { config as dotenvConfig } from 'dotenv';
 import sendActivationMail from 'src/templates/activationSuccedMailTemplate';
 
@@ -18,7 +18,6 @@ export class NodemailerService {
     companyName: string,
     password: string,
   ) {
-    console.log(email);
     if (!email) {
       throw new BadRequestException('email is null');
     }
@@ -43,7 +42,7 @@ export class NodemailerService {
     } catch (error) {
       console.error('Error al enviar el correo electrónico:', error);
       throw new InternalServerErrorException(
-        `Error al enviar el correo electrónico:${error}`
+        `Error al enviar el correo electrónico:${error}`,
       );
     }
   }

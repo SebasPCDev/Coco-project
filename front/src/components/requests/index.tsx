@@ -3,15 +3,17 @@ import { useEffect, useState } from "react";
 import GetRequests from "../../../utils/gets/getRequests";
 import { useUserContext } from "../context";
 import CompanyList from "./request";
+import { useRouter } from "next/navigation";
 
-const Requests = () => {
+const Requests = ({ status, type }: { status: string; type: string }) => {
+  const router = useRouter();
   const [requests, setRequests] = useState([]);
   const { token } = useUserContext();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await GetRequests({ token, params: null });
+        const response = await GetRequests({ token, params: { status, type } });
         setRequests(response);
         console.log(response);
       } catch (error) {
@@ -20,9 +22,14 @@ const Requests = () => {
     };
 
     fetchData();
+  }, []);
+  useEffect(() => {
+    if (!token) {
+      router.push("/login");
+    }
   }, [token]);
 
-    return <CompanyList companies={requests} />;
+  return <CompanyList companies={requests} />;
 };
 
 export default Requests;

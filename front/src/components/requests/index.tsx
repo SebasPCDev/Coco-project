@@ -15,7 +15,6 @@ const Requests = ({ status, type }: { status: string; type: string }) => {
       try {
         const response = await GetRequests({ token, params: { status, type } });
         setRequests(response);
-        console.log(response);
       } catch (error) {
         console.error("Error fetching requests:", error);
       }

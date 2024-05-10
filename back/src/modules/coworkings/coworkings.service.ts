@@ -49,8 +49,13 @@ export class CoworkingsService {
     return coworking;
   }
 
-  create(data: CreateCoworkingsDto) {
-    return data;
+  async create(userId: UUID, data: CreateCoworkingsDto) {
+    const user = await this.usersRepository.findOneBy({ id: userId });
+    if (!user) throw new BadRequestException('User not found');
+
+    data.user = [user];
+    const newUser = this.coworkingsRepository.create(data);
+    return await this.coworkingsRepository.save(newUser);
   }
 
   async activateCoworking(id: UUID) {

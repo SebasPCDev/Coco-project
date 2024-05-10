@@ -4,6 +4,7 @@ import { useHeaderContext } from "@/components/headerconstext";
 import Link from "next/link";
 import { useUserContext } from "@/components/context";
 import { useEffect, useState } from "react";
+import Logout from "../logout";
 
 const HeaderRight = () => {
   const [visibleLogin, setVisibleLogin] = useState("block");
@@ -45,6 +46,7 @@ const HeaderRight = () => {
           {user?.name.slice(0, 1)}
         </div>
         <div className="text-custom-white">{user?.name}</div>
+        <Logout />
       </div>
     </>
   );

@@ -13,6 +13,7 @@ import PostCoworkings from "../../../utils/posts/postCoworkings";
 // importamos la validacion de formularios
 import coworkingValidation from "../../../utils/formValidation/coworkingValidation";
 import ICoworkingsErrorInfo from "../../../utils/types/coworkingFormErrorInterface";
+import Swal from "sweetalert2";
 
 import { useRouter } from "next/navigation";
 
@@ -86,7 +87,12 @@ const CoworkingsForm = () => {
     e.preventDefault();
     console.log(coworkingInfo);
     try {
-      await PostCoworkings(coworkingInfo);
+      const response = await PostCoworkings(coworkingInfo);
+      Swal.fire({
+        title: response.responseCowork,
+        text: "la respuesta se enviara a tu correo electronico",
+        icon: "success",
+      });
       router.push("/");
     } catch (error) {
       console.log("hubo un error", error);
@@ -116,8 +122,7 @@ const CoworkingsForm = () => {
     <>
       <form
         className="md:w-1/3 m-auto px-2 md:my-20 grid grid-cols-2 gap-4 "
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         <h1 className="text-3xl text-center">Soy Coworking</h1>
         {formDataCoworkings.map(
           ({ name, label, type, placeholder, required }) => {
@@ -132,8 +137,7 @@ const CoworkingsForm = () => {
                     required={required}
                     className="border-2 mx-1/3 py-2"
                     onChange={handleChangeTime}
-                    value={coworkingInfo[name as keyof ICoworkingsInfo]}
-                  >
+                    value={coworkingInfo[name as keyof ICoworkingsInfo]}>
                     <option value="">Selecciona una hora</option>
                     {generateTimeOptions().map((time) => (
                       <option key={time} value={time}>
@@ -162,8 +166,7 @@ const CoworkingsForm = () => {
         )}
         <button
           className="bg-slate-500 text-white p-2 rounded-lg my-4"
-          type="submit"
-        >
+          type="submit">
           Enviar Solicitud
         </button>
       </form>

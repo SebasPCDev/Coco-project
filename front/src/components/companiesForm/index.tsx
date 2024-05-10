@@ -16,6 +16,7 @@ import companyValidation from "../../../utils/formValidation/companyValidation";
 import ICompaniesErrorInfo from "../../../utils/types/companiesFormErrorInterface";
 
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const CompaniesForm = () => {
   const router = useRouter();
@@ -39,22 +40,23 @@ const CompaniesForm = () => {
   });
 
   //el estado para los errores aun no se sta utilizando
-  const [companiesInfoError, setCompaniesInfoError] = useState<ICompaniesErrorInfo>({
-    name: "",
-    lastname: "",
-    phone: "",
-    email: "",
-    identification: "",
-    role: "",
-    companyName: "",
-    companyEmail: "",
-    companyPhone: "",
-    quantityBeneficiaries: "",
-    businessSector: "",
-    size: "",
-    message: "",
-    type: "",
-  });
+  const [companiesInfoError, setCompaniesInfoError] =
+    useState<ICompaniesErrorInfo>({
+      name: "",
+      lastname: "",
+      phone: "",
+      email: "",
+      identification: "",
+      role: "",
+      companyName: "",
+      companyEmail: "",
+      companyPhone: "",
+      quantityBeneficiaries: "",
+      businessSector: "",
+      size: "",
+      message: "",
+      type: "",
+    });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -71,19 +73,23 @@ const CompaniesForm = () => {
     console.log(companiesInfo);
 
     try {
-      await PostCompany(companiesInfo);
+      const response = await PostCompany(companiesInfo);
+      Swal.fire({
+        title: response.responseCompany,
+        text: "la respuesta se enviara a tu correo electronico",
+        icon: "success",
+      });
       router.push("/");
     } catch (error) {
       console.log("Hubo un error en la petición", error);
     }
   };
 
-  useEffect (() => {
+  useEffect(() => {
     const errors = companyValidation(companiesInfo);
     setCompaniesInfoError(errors);
     console.log(errors);
   }, [companiesInfo]);
-
 
   return (
     <>

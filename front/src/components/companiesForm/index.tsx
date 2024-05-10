@@ -93,37 +93,34 @@ const CompaniesForm = () => {
 
   return (
     <>
-      <form
-        className="md:w-1/3 m-auto px-2 md:my-20 grid grid-cols-2 gap-4 "
-        onSubmit={handleSubmit}>
-        <h1 className="text-3xl text-center col-start-2">Soy una Empresa</h1>
-        {formDataCompanies.map(
-          ({ name, label, type, placeholder, required }) => {
-            return (
-              <div key={name} className="flex flex-col ">
-                <label className="flex gap-4 px-2" htmlFor={name}>
-                  {label}
-                </label>
-                <input
-                  type={type}
-                  name={name}
-                  placeholder={placeholder}
-                  required={required}
-                  className="border-2 mx-1/3 py-2"
-                  onChange={handleChange}
-                  value={companiesInfo[name as keyof ICompaniesInfo]}
-                />
-                <p className="text-red-500">
-                  {companiesInfoError[name as keyof ICompaniesInfo]}
-                </p>
-              </div>
-            );
-          }
-        )}
+      <form className="max-w-4xl mx-auto p-8 rounded-lg shadow-lg bg-white" onSubmit={handleSubmit}>
+        <h1 className="text-4xl font-bold text-center mb-8 col-span-2">Soy una Empresa</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {formDataCompanies.map(({ name, label, type, placeholder, required }) => (
+            <div key={name} className={`flex flex-col ${name === "message" ? "md:col-span-2" : ""}`}>
+              <label htmlFor={name} className="block text-gray-700 font-bold mb-2 text-lg">
+                {label}
+              </label>
+              <input
+                type={type}
+                name={name}
+                placeholder={placeholder}
+                required={required}
+                className={`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-6 px-8 rounded-lg text-xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${
+                  name === "message" ? "md:col-span-2" : ""
+                }`}
+                onChange={handleChange}
+                value={companiesInfo[name as keyof ICompaniesInfo]}
+              />
+              <p className="text-red-500 mt-2 text-lg">{companiesInfoError[name as keyof ICompaniesInfo]}</p>
+            </div>
+          ))}
+        </div>
         <button
-          className="bg-slate-500 text-white p-2 rounded-lg my-4"
-          type="submit">
-          enviar Solicitud
+          className="w-full bg-lime-400 hover:bg-lime-500 text-white font-bold py-4 px-8 rounded-lg text-xl focus:outline-none focus:shadow-outline mt-8"
+          type="submit"
+        >
+          Enviar Solicitud
         </button>
       </form>
     </>

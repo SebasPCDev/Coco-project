@@ -29,13 +29,12 @@ export const fetchCountries = async (authToken: string): Promise<any> => {
   
   export const generateAuthToken = async (): Promise<string> => {
     const email = 'hcguitarras@gmail.com';
-    const apiToken = process.env.NEXT_PUBLIC_TOKEN_GEOGRAPHY;
-   
+    const apiToken = 'xH1FBnjiQmP6ZHrfq0alQAQ-WDAb7MIuEuNX3dLUHc-2QLmd1MpwmOMMwih_2x87vvs';
+  
     const response = await fetch('https://www.universal-tutorial.com/api/getaccesstoken', {
-      
       headers: {
         'Accept': 'application/json',
-        'api-token': apiToken as string,
+        'api-token': apiToken,
         'user-email': email
       }
     });

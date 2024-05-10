@@ -39,7 +39,9 @@ export class Employees {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Companies, (company) => company.employees)
+  @ManyToOne(() => Companies, (company) => company.employees, {
+    nullable: true,
+  })
   @JoinColumn({ name: 'company_id' })
   company: Companies;
 

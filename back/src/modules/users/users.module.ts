@@ -11,9 +11,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   exports: [UsersService],
 })
 export class UsersModule {
-  constructor(private readonly userService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   async onModuleInit() {
-    await this.userService.preloadSuperAdminUser();
+    await this.usersService.preloadSuperAdminUser();
   }
 }

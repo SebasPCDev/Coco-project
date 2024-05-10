@@ -11,7 +11,7 @@ export interface IRegisterForm {
 export const LoginFormArray: IRegisterForm[] = [
   {
     name: "email",
-    label: "Email",
+    label: "Correo electrónico",
     type: "email",
     placeholder: "Email",
     required: true,
@@ -19,7 +19,7 @@ export const LoginFormArray: IRegisterForm[] = [
   },
   {
     name: "password",
-    label: "Password",
+    label: "Contraseña",
     type: "password",
     placeholder: "Password",
     required: true,

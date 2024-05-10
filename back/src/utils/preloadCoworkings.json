@@ -6,8 +6,11 @@
     "open": "08:00",
     "close": "20:00",
     "address": "Calle 1, 123",
+    "country": "Agentina",
+    "state": "Buenos Aires",
+    "city": "La Plata",
     "capacity": 20,
-    "status": "pending",
+    "status": "active",
     "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/gettyimages-1161987904-640x640_gtz1ok.jpg"
   },
   {
@@ -17,6 +20,9 @@
     "open": "09:00",
     "close": "21:00",
     "address": "Calle 2, 456",
+    "country": "Colombia",
+    "state": "Antioquia",
+    "city": "Antioquia",
     "capacity": 15,
     "status": "active",
     "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/istockphoto-1357829448-640x640_qe3nqo.jpg"
@@ -28,6 +34,9 @@
     "open": "07:30",
     "close": "19:30",
     "address": "Calle 3, 789",
+    "country": "Argentina",
+    "state": "Tucuman",
+    "city": "Tucuman",
     "capacity": 25,
     "status": "pending",
     "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/istockphoto-1279090224-640x640_t2u9zl.jpg"
@@ -39,6 +48,9 @@
     "open": "08:30",
     "close": "20:30",
     "address": "Calle 4, 101112",
+    "country": "Colombia",
+    "state": "Bolivar",
+    "city": "Arjona",
     "capacity": 18,
     "status": "active",
     "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/gettyimages-1214699141-640x640_bhzal2.jpg"
@@ -50,6 +62,9 @@
     "open": "07:45",
     "close": "19:45",
     "address": "Calle 5, 131415",
+    "country": "Argentina",
+    "state": "Tucuman",
+    "city": "Tucuman",
     "capacity": 22,
     "status": "pending",
     "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/gettyimages-1157185547-640x640_qrhflf.jpg"
@@ -61,6 +76,9 @@
     "open": "09:30",
     "close": "21:30",
     "address": "Calle 6, 161718",
+    "country": "Argentina",
+    "state": "Cordoba",
+    "city": "Cordoba",
     "capacity": 17,
     "status": "inactive",
     "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/gettyimages-1157235072-640x640_uspmdc.jpg"

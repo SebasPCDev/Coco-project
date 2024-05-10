@@ -7,6 +7,7 @@ import { useUserContext } from "../context";
 import { useRouter } from "next/navigation";
 import ILoginErrorForm from "../../../utils/types/loginFormErrorInterface";
 import loginValidation from "../../../utils/formValidation/loginValidation";
+import redirectionByRole from "../../../utils/ redirects/redirectByRole";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -35,13 +36,15 @@ const LoginForm = () => {
     if (data) {
       setUser(data.user);
       setToken(data.token);
-      if (data.token) {
-        router.push("/superadmin");
+      if (data.user) {
+        const redirection = redirectionByRole(data.user.role);
+
+        router.push(redirection);
       }
     }
   };
 
-  useEffect (() => {
+  useEffect(() => {
     const errors = loginValidation(LoginForm);
     setLoginFormError(errors);
     console.log(errors);

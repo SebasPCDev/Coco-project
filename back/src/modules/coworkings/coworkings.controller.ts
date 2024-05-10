@@ -9,6 +9,7 @@ import {
   UseGuards,
   ParseUUIDPipe,
   Put,
+  Req,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
@@ -44,9 +45,12 @@ export class CoworkingsController {
     return this.coworkingsService.getCoworkingById(id);
   }
 
+  @Roles(Role.ADMIN_COWORKING)
+  @UseGuards(RolesGuard)
   @Post()
-  create(@Body() data: CreateCoworkingsDto) {
-    return this.coworkingsService.create(data);
+  create(@Req() request, @Body() data: CreateCoworkingsDto) {
+    const user = request.user;
+    return this.coworkingsService.create(user.id as UUID, data);
   }
 
   @Roles(Role.SUPERADMIN)

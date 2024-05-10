@@ -1,7 +1,8 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
-  IsArray,
+  // IsArray,
   IsEmail,
+  IsEmpty,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -74,7 +75,8 @@ export class CreateCoworkingsDto {
   @IsOptional()
   thumbnail?: string;
 
-  @IsArray()
+  // @IsArray()
+  @IsEmpty()
   user: Users[];
 }
 

@@ -30,9 +30,8 @@ export const fetchCountries = async (authToken: string): Promise<any> => {
   export const generateAuthToken = async (): Promise<string> => {
     const email = 'hcguitarras@gmail.com';
     const apiToken = process.env.NEXT_PUBLIC_TOKEN_GEOGRAPHY;
-   
+  
     const response = await fetch('https://www.universal-tutorial.com/api/getaccesstoken', {
-      
       headers: {
         'Accept': 'application/json',
         'api-token': apiToken as string,

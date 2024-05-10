@@ -1,1 +1,1 @@
-export { default } from "@/components/coworkings";
+export { default } from "./CoworksRoute";

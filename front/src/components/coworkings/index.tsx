@@ -7,17 +7,20 @@
 // const Coworkings: React.FC = (): React.ReactElement => {
 //   const [coworkings, setCoworkings] = useState<IResponseCoworking[]>([]);
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const data = await GetCoworkings();
-//         console.log(data);
 
-//         setCoworkings(data);
-//       } catch (error) {
-//         console.error("Error fetching coworkings:", error);
-//       }
-//     };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await GetCoworkings();
+        const data2 = data.slice(0, 3);
+        console.log(data);
+
+        setCoworkings(data2);
+      } catch (error) {
+        console.error("Error fetching coworkings:", error);
+      }
+    };
+
 
 //     fetchData();
 //   }, []);

@@ -27,7 +27,6 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 
 @ApiTags('corokings')
-@ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller('coworkings')
 export class CoworkingsController {
@@ -45,6 +44,7 @@ export class CoworkingsController {
     return this.coworkingsService.getCoworkingById(id);
   }
 
+  @ApiBearerAuth()
   @Roles(Role.ADMIN_COWORKING)
   @UseGuards(RolesGuard)
   @Post()
@@ -53,6 +53,7 @@ export class CoworkingsController {
     return this.coworkingsService.create(user.id as UUID, data);
   }
 
+  @ApiBearerAuth()
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Post('activate')
@@ -60,6 +61,7 @@ export class CoworkingsController {
     return this.coworkingsService.activateCoworking(data.id as UUID);
   }
 
+  @ApiBearerAuth()
   @Roles(Role.ADMIN_COWORKING)
   @UseGuards(RolesGuard)
   @Put(':id')

@@ -34,7 +34,7 @@ export const fetchCountries = async (authToken: string): Promise<any> => {
     const response = await fetch('https://www.universal-tutorial.com/api/getaccesstoken', {
       headers: {
         'Accept': 'application/json',
-        'api-token': apiToken,
+        'api-token': apiToken as string,
         'user-email': email
       }
     });

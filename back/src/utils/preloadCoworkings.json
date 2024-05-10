@@ -38,7 +38,7 @@
     "state": "Tucuman",
     "city": "Tucuman",
     "capacity": 25,
-    "status": "pending",
+    "status": "active",
     "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/istockphoto-1279090224-640x640_t2u9zl.jpg"
   },
   {
@@ -66,7 +66,7 @@
     "state": "Tucuman",
     "city": "Tucuman",
     "capacity": 22,
-    "status": "pending",
+    "status": "active",
     "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/gettyimages-1157185547-640x640_qrhflf.jpg"
   },
   {
@@ -80,7 +80,7 @@
     "state": "Cordoba",
     "city": "Cordoba",
     "capacity": 17,
-    "status": "inactive",
+    "status": "active",
     "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/gettyimages-1157235072-640x640_uspmdc.jpg"
   }
 ]

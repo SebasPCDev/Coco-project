@@ -15,7 +15,7 @@ export const LoginFormArray: IRegisterForm[] = [
     type: "email",
     placeholder: "Email",
     required: true,
-    icon: <RiMailLine />,
+    icon: <RiMailLine  />,
   },
   {
     name: "password",

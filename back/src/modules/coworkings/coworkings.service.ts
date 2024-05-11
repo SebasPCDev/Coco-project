@@ -34,12 +34,13 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
   ) {}
 
-  async getAllCoworkings(page: number, limit: number, country: string, state: string, city: string) {
+   async getAllCoworkings(page: number, limit: number, country: string, state: string, city: string, status: CoworkingStatus) {
     
     const where: FindOptionsWhere<Coworkings> = {};
     if (country) where.country = country;
     if (state) where.state = state;
     if (city) where.city = city;
+    if (status) where.status = status;
 
     const skip = (page - 1) * limit;
 

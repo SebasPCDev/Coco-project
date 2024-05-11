@@ -1,8 +1,8 @@
 import "./style.css"
 
-export const Service = ()=>{
+export const Service: React.FC<{ id: string }>= (props) => {
     return(
-        <section className="section service" aria-label="service">
+        <section id={props.id} className="section service" aria-label="service">
         <div className="container">
 
           <h2 className="h2 section-title">Como reservar</h2>

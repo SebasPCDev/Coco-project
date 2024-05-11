@@ -1,9 +1,9 @@
 
 import "./style.css"
 
-export const Coworks = ()=>{
+export const Coworks: React.FC<{ id: string }>= (props) => {
     return(
-        <section className="section property" aria-label="property">
+        <section id={props.id} className="section property" aria-label="property">
         <div className="container">
 
           <h2 className="h2 section-title">Espacios destacados</h2>

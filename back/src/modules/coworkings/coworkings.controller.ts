@@ -52,6 +52,18 @@ export class CoworkingsController {
     return this.coworkingsService.getCountries();
   }
 
+  @Get('country/:country')
+  @Public()
+  getStates(@Param('country') country: string) { 
+    return this.coworkingsService.getStates(country);
+  }
+
+  @Get('country/:country/state/:state')
+  @Public()
+  getCities(@Param('country') country: string,
+  @Param('state') state: string){  
+    return this.coworkingsService.getCities(country, state);
+  }
 
   @Public()
   @Get(':id')

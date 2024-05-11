@@ -65,7 +65,6 @@ export class CoworkingsService {
   }
 
   async getCountries() {
-
     const countries = await this.coworkingsRepository
     .createQueryBuilder('coworking')
     .distinct(true)
@@ -74,8 +73,41 @@ export class CoworkingsService {
     .setParameter('status', CoworkingStatus.ACTIVE)
     .execute()
     
-    const countriesArr = countries.map((country) =>  country.country);
+    const countriesArr = countries.map((coworking: Coworkings) =>  coworking.country);
     return countriesArr;
+  }
+
+  async getStates(country: string) {
+    const states = await this.coworkingsRepository
+    .createQueryBuilder('coworking')
+    .distinct(true)
+    .select('state')
+    .where('coworking.status = :status')
+    .where('coworking.country = :country')
+    .setParameter('status', CoworkingStatus.ACTIVE)
+    .setParameter('country', country)
+    .execute()
+    
+    const statesArr = states.map((coworking: Coworkings) =>  coworking.state);
+    return statesArr;
+  }
+
+  async getCities(country: string, state: string) {
+    const cities = await this.coworkingsRepository
+    .createQueryBuilder('coworking')
+    .distinct(true)
+    .select('city')
+    .where('coworking.status = :status')
+    .where('coworking.country = :country')
+    .where('coworking.state = :state')
+    .setParameter('status', CoworkingStatus.ACTIVE)
+    .setParameter('country', country)
+    .setParameter('state', state)
+    .execute()
+    
+    const citiesArr = cities.map((coworking: Coworkings) =>  coworking.city);
+    return citiesArr;
+
   }
 
   async create(userId: UUID, data: CreateCoworkingsDto) {

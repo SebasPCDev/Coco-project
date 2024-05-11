@@ -52,9 +52,9 @@ const LoginForm = () => {
 
   return (
     <>
-      <div className="md:bg-[url('../../public/FondoLoginCoco1.png')] h-screen bg-cover bg-center relative">
+      <div className="bg-[url('../../public/LoginMobile.png')] md:bg-[url('../../public/FondoLoginCoco1.png')] h-screen bg-cover bg-center relative">
         <form
-          className="lg:w-1/4 md:3/4 w-1/2 px-8 pt-6 pb-8 mb-4 bg-custom-white rounded-lg shadow-lg absolute top-0 left-0 transform translate-x-1/2 translate-y-1/2 flex flex-col gap-6 "
+          className="lg:w-1/4 md:3/4 w-1/2 px-8 pt-6 pb-8 mb-4 bg-custom-white rounded-lg shadow-lg absolute top-0 left-0 transform translate-x-1/2 translate-y-1/2 flex flex-col gap-4 "
           onSubmit={handleSubmit}>
           <h1 className="text-3xl text-center mb-6 font-bold text-gray-800">
             Iniciar Sesión
@@ -70,14 +70,14 @@ const LoginForm = () => {
                     <label className="text-gray-700 text-2xl" htmlFor={name}>
                       {label}
                     </label>
-                    <div className="flex justify-center items-center gap-2 bg ">
+                    <div className="flex justify-center items-center gap-2 bg border-2 rounded-lg">
                       <div className="">{icon}</div>
                       <input
                         type={type}
                         name={name}
                         placeholder={placeholder}
                         required={required}
-                        className=" block w-full  pr-3 py-2 border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 bfocus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                        className="py-4 focus:outline-none"
                         onChange={handleChange}
                         value={formValue}
                       />

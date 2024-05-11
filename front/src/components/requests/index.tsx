@@ -13,6 +13,7 @@ const Requests = ({ status, type }: { status: string; type: string }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (!token) return router.push("/login"); //! Revisar!!
         const response = await GetRequests({ token, params: { status, type } });
         setRequests(response);
       } catch (error) {

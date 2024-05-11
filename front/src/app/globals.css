@@ -6,65 +6,79 @@
 @tailwind components;
 @tailwind utilities;
 
-     
-
-
-
 /* Ejemplo de cómo usar la fuente en tus estilos */
 body {
-  font-family: 'Teachers', sans-serif;
+  font-family: "Teachers", sans-serif;
 }
 
-  *,
-  *::before,
-  *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  li { list-style: none; }
-  
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  a,
-  img,
-  span,
-  label,
-  input,
-  select,
-  button,
-  ion-icon { display: block; }
-  
-  img { height: auto; }
-  
-  input,
-  select,
-  button {
-    background: none;
-    border: none;
-    font: inherit;
-  }
-  
-  input,
-  select { width: 100%; }
-  
-  button { cursor: pointer; }
-  
-  ion-icon { pointer-events: none; }
-  
-  address { font-style: normal; }
-  
-  html {
-    font-size: 10px;
-    scroll-behavior: smooth;
-  }
-  
-  body {
-    background-color: var(--white);
-    font-size: var(--fs-5);
-    color: var(--cadet-gray);
-  }
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a,
+img,
+span,
+label,
+input,
+select,
+button,
+ion-icon {
+  display: block;
+}
+
+img {
+  height: auto;
+}
+
+input,
+select,
+button {
+  background: none;
+  border: none;
+  font: inherit;
+}
+
+input,
+select {
+  width: 100%;
+}
+
+button {
+  cursor: pointer;
+}
+
+ion-icon {
+  pointer-events: none;
+}
+
+address {
+  font-style: normal;
+}
+
+html {
+  font-size: 10px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--white);
+  font-size: var(--fs-5);
+  color: var(--cadet-gray);
+}
+
+.Button_Form {
+  @apply bg-custom-secondary text-white rounded-md px-4 py-4;
+}

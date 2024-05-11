@@ -5,7 +5,8 @@ import {
 } from '@nestjs/common';
 import { UUID } from 'crypto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+// FindOptionsWhere,
+import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { NodemailerService } from '../nodemailer/nodemailer.service';
@@ -33,8 +34,23 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
   ) {}
 
-  async getAllCoworkings() {
-    return await this.coworkingsRepository.find();
+   async getAllCoworkings(page: number, limit: number, country: string, state: string, city: string, status: CoworkingStatus) {
+    
+    const where: FindOptionsWhere<Coworkings> = {};
+    if (country) where.country = country;
+    if (state) where.state = state;
+    if (city) where.city = city;
+    if (status) where.status = status;
+
+    const skip = (page - 1) * limit;
+
+    const conditions = {
+     skip: skip,
+     take: limit,
+     where
+    };
+    const [coworking, total] = await this.coworkingsRepository.findAndCount(conditions);
+    return { page, limit, total, coworking };
   }
 
   async getCoworkingById(id: string) {
@@ -47,6 +63,52 @@ export class CoworkingsService {
     }
 
     return coworking;
+  }
+
+  async getCountries() {
+    const countries = await this.coworkingsRepository
+    .createQueryBuilder('coworking')
+    .distinct(true)
+    .select('country')
+    .where('coworking.status = :status')
+    .setParameter('status', CoworkingStatus.ACTIVE)
+    .execute()
+    
+    const countriesArr = countries.map((coworking: Coworkings) =>  coworking.country);
+    return countriesArr;
+  }
+
+  async getStates(country: string) {
+    const states = await this.coworkingsRepository
+    .createQueryBuilder('coworking')
+    .distinct(true)
+    .select('state')
+    .where('coworking.status = :status')
+    .where('coworking.country = :country')
+    .setParameter('status', CoworkingStatus.ACTIVE)
+    .setParameter('country', country)
+    .execute()
+    
+    const statesArr = states.map((coworking: Coworkings) =>  coworking.state);
+    return statesArr;
+  }
+
+  async getCities(country: string, state: string) {
+    const cities = await this.coworkingsRepository
+    .createQueryBuilder('coworking')
+    .distinct(true)
+    .select('city')
+    .where('coworking.status = :status')
+    .where('coworking.country = :country')
+    .where('coworking.state = :state')
+    .setParameter('status', CoworkingStatus.ACTIVE)
+    .setParameter('country', country)
+    .setParameter('state', state)
+    .execute()
+    
+    const citiesArr = cities.map((coworking: Coworkings) =>  coworking.city);
+    return citiesArr;
+
   }
 
   async create(userId: UUID, data: CreateCoworkingsDto) {

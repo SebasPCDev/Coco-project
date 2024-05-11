@@ -69,12 +69,9 @@ export class RequestsService {
   }
 
   async getRequest(type: TypeCompany, status: StatusRequest) {
-    console.log(type, status);
     const where: FindOptionsWhere<Request> = {};
     if (type) where.type = type;
     if (status) where.status = status;
-
-    console.log(where);
 
     return await this.requestsRepository.find({ where });
   }

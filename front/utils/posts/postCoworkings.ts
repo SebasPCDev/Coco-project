@@ -15,6 +15,7 @@ const PostCoworkings = async (data: ICoworkingsInfo) => {
       },
     });
     console.log(response.data);
+    return response.data;
     console.log("la peticion fue exitosa");
   } catch (error) {
     console.log("hay un error", error);

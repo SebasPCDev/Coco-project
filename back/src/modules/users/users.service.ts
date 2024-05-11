@@ -5,6 +5,7 @@ import { Users } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UUID } from 'crypto';
+import { Role } from 'src/models/roles.enum';
 
 @Injectable()
 export class UsersService {
@@ -36,8 +37,10 @@ export class UsersService {
   async findOne(id: UUID) {
     const user = await this.usersRepository.findOne({
       where: { id },
-      relations: ['coworkings'],
+      relations: ['coworkings', 'employee', 'employee.company'],
     });
+
+    if (!user) throw new BadRequestException('User not found');
     return user;
   }
 
@@ -63,7 +66,7 @@ export class UsersService {
       identification: process.env.SUPERADMIN_IDENTIFICATION,
       position: process.env.SUPERADMIN_POSITION,
       password: hashedPassword,
-      role: process.env.SUPERADMIN_ROLE,
+      role: Role.SUPERADMIN,
     };
 
     const userTemp = await this.usersRepository.findOne({

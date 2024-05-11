@@ -5,16 +5,17 @@ import {
 } from '@nestjs/common';
 import { UUID } from 'crypto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+// FindOptionsWhere,
+import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { NodemailerService } from '../nodemailer/nodemailer.service';
-import { loadData } from 'src/utils/loadData';
+import { loadDataCoworkings } from 'src/utils/loadData';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
 import { Request } from 'src/entities/requests.entity';
-import { CreateCoworkingsDto } from './coworkings.dto';
+import { CreateCoworkingsDto, UpdateCoworkingsDto } from './coworkings.dto';
 import { CreateUsersDto } from '../users/users.dto';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
@@ -33,8 +34,23 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
   ) {}
 
-  async getAllCoworkings() {
-    return await this.coworkingsRepository.find();
+   async getAllCoworkings(page: number, limit: number, country: string, state: string, city: string, status: CoworkingStatus) {
+    
+    const where: FindOptionsWhere<Coworkings> = {};
+    if (country) where.country = country;
+    if (state) where.state = state;
+    if (city) where.city = city;
+    if (status) where.status = status;
+
+    const skip = (page - 1) * limit;
+
+    const conditions = {
+     skip: skip,
+     take: limit,
+     where
+    };
+    const [coworking, total] = await this.coworkingsRepository.findAndCount(conditions);
+    return { page, limit, total, coworking };
   }
 
   async getCoworkingById(id: string) {
@@ -49,13 +65,66 @@ export class CoworkingsService {
     return coworking;
   }
 
-  create(data: CreateCoworkingsDto) {
-    return data;
+  async getCountries() {
+    const countries = await this.coworkingsRepository
+    .createQueryBuilder('coworking')
+    .distinct(true)
+    .select('country')
+    .where('coworking.status = :status')
+    .setParameter('status', CoworkingStatus.ACTIVE)
+    .execute()
+    
+    const countriesArr = countries.map((coworking: Coworkings) =>  coworking.country);
+    return countriesArr;
+  }
+
+  async getStates(country: string) {
+    const states = await this.coworkingsRepository
+    .createQueryBuilder('coworking')
+    .distinct(true)
+    .select('state')
+    .where('coworking.status = :status')
+    .where('coworking.country = :country')
+    .setParameter('status', CoworkingStatus.ACTIVE)
+    .setParameter('country', country)
+    .execute()
+    
+    const statesArr = states.map((coworking: Coworkings) =>  coworking.state);
+    return statesArr;
+  }
+
+  async getCities(country: string, state: string) {
+    const cities = await this.coworkingsRepository
+    .createQueryBuilder('coworking')
+    .distinct(true)
+    .select('city')
+    .where('coworking.status = :status')
+    .where('coworking.country = :country')
+    .where('coworking.state = :state')
+    .setParameter('status', CoworkingStatus.ACTIVE)
+    .setParameter('country', country)
+    .setParameter('state', state)
+    .execute()
+    
+    const citiesArr = cities.map((coworking: Coworkings) =>  coworking.city);
+    return citiesArr;
+
+  }
+
+  async create(userId: UUID, data: CreateCoworkingsDto) {
+    const user = await this.usersRepository.findOneBy({ id: userId });
+    if (!user) throw new BadRequestException('User not found');
+
+    data.user = [user];
+    const newUser = this.coworkingsRepository.create(data);
+    return await this.coworkingsRepository.save(newUser);
   }
 
   async activateCoworking(id: UUID) {
     // 1- Busco la solicitud
     const requestCoworking = await this.requestsRepository.findOneBy({ id });
+    if (!requestCoworking || requestCoworking.status === StatusRequest.CLOSE)
+      throw new BadRequestException('socolitud procesada o inexistente');
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -85,7 +154,6 @@ export class CoworkingsService {
         email: requestCoworking.email,
       });
 
-      console.log('user', user);
       if (user) throw new BadRequestException('Usuario existente');
 
       const newUserTemp = this.usersRepository.create(userData);
@@ -104,6 +172,7 @@ export class CoworkingsService {
         status: CoworkingStatus.PENDING,
         user: [newUser],
       };
+
       const newCoworkingTemp = this.coworkingsRepository.create(coworking);
       const newCoworking = await queryRunner.manager.save(newCoworkingTemp);
 
@@ -131,24 +200,20 @@ export class CoworkingsService {
     }
   }
 
-  findAll() {
-    return `This action returns all coworking`;
-  }
+  async update(id: UUID, changes: UpdateCoworkingsDto) {
+    // return `This action updates a #${id} ${changes} coworking`;
+    const coworking = await this.getCoworkingById(id);
 
-  findOne(id: number) {
-    return `This action returns a #${id} coworking`;
+    const updCoworking = this.coworkingsRepository.merge(coworking, changes);
+    return await this.coworkingsRepository.save(updCoworking);
   }
-
-  /*   update(id: number, updateCoworkingDto: UpdateCoworkingDto) {
-    return `This action updates a #${id} coworking`;
-  } */
 
   // remove(id: number) {
   //   return `This action removes a #${id} coworking`;
   // }
 
   async preloadCoworkings() {
-    const data = loadData();
+    const data = loadDataCoworkings();
 
     for await (const coworking of data) {
       const coworkingExists = await this.coworkingsRepository.findOne({

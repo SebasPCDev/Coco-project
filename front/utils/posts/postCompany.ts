@@ -9,19 +9,21 @@ const PostCompany = async (data: ICompaniesInfo) => {
     size: Number(data.size),
     quantityBeneficiaries: Number(data.quantityBeneficiaries),
   };
+  const response = await axios.post(url, datasend, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-  try {
-    const response = await axios.post(url, datasend, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  console.log(response.data);
+  return response.data;
+  console.log("la peticion fue exitosa");
 
-    console.log(response.data);
-    console.log("la peticion fue exitosa");
-  } catch (error) {
-    console.log("hay un error", error);
-  }
+  // try {
+
+  // } catch (error) {
+  //   console.log("hay un error", error);
+  // }
 };
 
 export default PostCompany;

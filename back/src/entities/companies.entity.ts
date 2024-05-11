@@ -10,7 +10,7 @@ import {
 import { Employees } from './employees.entity';
 
 @Entity('companies')
-export class Company {
+export class Companies {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -48,6 +48,8 @@ export class Company {
   })
   updatedAt: Date;
 
-  @OneToMany(() => Employees, (employee) => employee.company)
+  @OneToMany(() => Employees, (employee) => employee.company, {
+    nullable: true,
+  })
   employees: Employees[];
 }

@@ -11,6 +11,7 @@ import { Exclude } from 'class-transformer';
 import { Employees } from './employees.entity';
 import { Coworkings } from './coworkings.entity';
 import { UserStatus } from 'src/models/userStatus.enum';
+import { Role } from 'src/models/roles.enum';
 
 @Entity({ name: 'users' })
 export class Users {
@@ -54,8 +55,8 @@ export class Users {
   })
   activationDate: Date;
 
-  @Column({ type: 'varchar', length: 15 })
-  role: string;
+  @Column({ type: 'enum', enum: Role })
+  role: Role;
 
   @Column({ type: 'enum', enum: UserStatus, default: UserStatus.ACTIVE })
   status: UserStatus;

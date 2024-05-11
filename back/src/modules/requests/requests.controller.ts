@@ -86,7 +86,6 @@ export class RequestsController {
   ) {
     try {
       const result = await this.requestsService.getRequest(type, status);
-      console.log(result);
       return result;
     } catch (error) {
       throw error;

@@ -43,7 +43,6 @@ export class CoworkingsController {
     @Query('city') city: string,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number) {
-      console.log("page", page, "number", limit);
     return this.coworkingsService.getAllCoworkings(page, limit, country, state, city);
   }
 

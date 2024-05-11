@@ -4,25 +4,19 @@ export interface IRegisterForm {
   label: string;
   type: string;
   placeholder: string;
-  required: boolean;
-  icon: JSX.Element;
 }
 
 export const LoginFormArray: IRegisterForm[] = [
   {
     name: "email",
-    label: "Correo electrónico",
+    label: "Email",
     type: "email",
     placeholder: "Email",
-    required: true,
-    icon: <RiMailLine  />,
   },
   {
     name: "password",
     label: "Contraseña",
     type: "password",
     placeholder: "Password",
-    required: true,
-    icon: <RiLockLine />,
   },
 ];

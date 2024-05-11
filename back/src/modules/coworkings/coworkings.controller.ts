@@ -10,6 +10,9 @@ import {
   ParseUUIDPipe,
   Put,
   Req,
+  Query,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
@@ -32,10 +35,16 @@ import { Role } from 'src/models/roles.enum';
 export class CoworkingsController {
   constructor(private readonly coworkingsService: CoworkingsService) {}
 
-  @Public()
   @Get()
-  getAllCoworkings() {
-    return this.coworkingsService.getAllCoworkings();
+  @Public()
+  getAllCoworkings( 
+    @Query('country') country: string,
+    @Query('state') state: string,
+    @Query('city') city: string,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number) {
+      console.log("page", page, "number", limit);
+    return this.coworkingsService.getAllCoworkings(page, limit, country, state, city);
   }
 
   @Public()

@@ -5,7 +5,8 @@ import {
 } from '@nestjs/common';
 import { UUID } from 'crypto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+// FindOptionsWhere,
+import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { NodemailerService } from '../nodemailer/nodemailer.service';
@@ -33,8 +34,22 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
   ) {}
 
-  async getAllCoworkings() {
-    return await this.coworkingsRepository.find();
+  async getAllCoworkings(page: number, limit: number, country: string, state: string, city: string) {
+    
+    const where: FindOptionsWhere<Coworkings> = {};
+    if (country) where.country = country;
+    if (state) where.state = state;
+    if (city) where.city = city;
+
+    const skip = (page - 1) * limit;
+
+    const conditions = {
+     skip: skip,
+     take: limit,
+     where
+    };
+    const [coworking, total] = await this.coworkingsRepository.findAndCount(conditions);
+    return { page, limit, total, coworking };
   }
 
   async getCoworkingById(id: string) {

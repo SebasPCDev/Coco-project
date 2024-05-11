@@ -70,7 +70,7 @@ const LoginForm = () => {
                     <label className="text-gray-700 text-2xl" htmlFor={name}>
                       {label}
                     </label>
-                    <div className="flex justify-center items-center gap-2 bg border-2 rounded-lg">
+                    <div className="flex justify-center items-center gap-2 bg-custom-white border-2 rounded-lg">
                       <div className="">{icon}</div>
                       <input
                         type={type}

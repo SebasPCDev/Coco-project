@@ -46,6 +46,13 @@ export class CoworkingsController {
     return this.coworkingsService.getAllCoworkings(page, limit, country, state, city);
   }
 
+  @Get('countries')
+  @Public()
+  getCountries(){ 
+    return this.coworkingsService.getCountries();
+  }
+
+
   @Public()
   @Get(':id')
   getCoworkingById(@Param('id', ParseUUIDPipe) id: UUID) {

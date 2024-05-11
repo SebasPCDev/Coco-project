@@ -64,6 +64,20 @@ export class CoworkingsService {
     return coworking;
   }
 
+  async getCountries() {
+
+    const countries = await this.coworkingsRepository
+    .createQueryBuilder('coworking')
+    .distinct(true)
+    .select('country')
+    .where('coworking.status = :status')
+    .setParameter('status', CoworkingStatus.ACTIVE)
+    .execute()
+    
+    const countriesArr = countries.map((country) =>  country.country);
+    return countriesArr;
+  }
+
   async create(userId: UUID, data: CreateCoworkingsDto) {
     const user = await this.usersRepository.findOneBy({ id: userId });
     if (!user) throw new BadRequestException('User not found');

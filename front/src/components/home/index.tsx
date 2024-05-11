@@ -25,17 +25,22 @@ const home = () => {
                 <NavBarLanding href="#Coworks">Nuestros espacios</NavBarLanding>
               </div>
             </div>
-            <div>            
-              <Link href="/login"><button className="flex bg-green-500 hover:bg-green-600 text-white font-bold py-5 px-10 rounded-full text-3xl"><RiUserLine color="#ffffff" />Login</button></Link>
+            <div>
+              <Link href="/login">
+                <button className="flex bg-green-500 hover:bg-green-600 text-white font-bold py-5 px-10 rounded-full text-3xl">
+                  <RiUserLine color="#ffffff" />
+                  Login
+                </button>
+              </Link>
             </div>
           </div>
         </div>
       </nav>
-        <Banner/>
-        <HeaderMain/>
-        <About/>
-        <Service id="Service"/>
-        <Coworks id="Coworks"/>
+      <Banner />
+      <HeaderMain />
+      {/* <About/> */}
+      <Service id="Service" />
+      <Coworks id="Coworks" />
     </div>
   );
 };

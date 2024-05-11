@@ -3,7 +3,7 @@ import axios from "axios";
 interface IParams {
   token: string | undefined;
   params: {
-    status: string;
+    status: string | null | undefined;
     type: string;
   } | null;
 }

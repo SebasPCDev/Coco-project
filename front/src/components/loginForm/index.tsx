@@ -52,51 +52,47 @@ const LoginForm = () => {
 
   return (
     <>
-      <form
-        className="md:w-1/2 lg:w-1/3 m-auto px-4 py-8 bg-white shadow-lg rounded-lg"
-        onSubmit={handleSubmit}
-      >
-        <h1 className="text-3xl text-center mb-6 font-bold text-gray-800">
-          Iniciar Sesión
-        </h1>
-        {LoginFormArray.map(
-          ({ name, label, type, placeholder, required, icon }) => {
-            const formValue = LoginForm[name as keyof ILoginForm];
-            const formError = LoginFormError[name as keyof ILoginForm];
+      <div className="bg-[url('../../public/LoginMobile.png')] md:bg-[url('../../public/FondoLoginCoco1.png')] h-screen bg-cover bg-center relative">
+        <form
+          className="lg:w-1/4 md:3/4 w-1/2 px-8 pt-6 pb-8 mb-4 bg-custom-white rounded-lg shadow-lg absolute top-0 left-0 transform translate-x-1/2 translate-y-1/2 flex flex-col gap-4 "
+          onSubmit={handleSubmit}>
+          <h1 className="text-3xl text-center mb-6 font-bold text-gray-800">
+            Iniciar Sesión
+          </h1>
+          {LoginFormArray.map(
+            ({ name, label, type, placeholder, required, icon }) => {
+              const formValue = LoginForm[name as keyof ILoginForm];
+              const formError = LoginFormError[name as keyof ILoginForm];
 
-            return (
-              <React.Fragment key={name}>
-                <div className="mb-4">
-                  <label className="text-gray-700" htmlFor={name}>
-                    {label}
-                  </label>
-                  <div className="mt-1 relative rounded-md shadow-sm">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      {icon}
+              return (
+                <React.Fragment key={name}>
+                  <div className="mb-4 flex flex-col gap-4">
+                    <label className="text-gray-700 text-2xl" htmlFor={name}>
+                      {label}
+                    </label>
+                    <div className="flex justify-center items-center gap-2 bg-custom-white border-2 rounded-lg">
+                      <div className="">{icon}</div>
+                      <input
+                        type={type}
+                        name={name}
+                        placeholder={placeholder}
+                        required={required}
+                        className="py-4 focus:outline-none"
+                        onChange={handleChange}
+                        value={formValue}
+                      />
                     </div>
-                    <input
-                      type={type}
-                      name={name}
-                      placeholder={placeholder}
-                      required={required}
-                      className="block w-full pl-10 pr-3 py-2 border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                      onChange={handleChange}
-                      value={formValue}
-                    />
+                    <p className="text-red-500 text-sm mt-1">{formError}</p>
                   </div>
-                  <p className="text-red-500 text-sm mt-1">{formError}</p>
-                </div>
-              </React.Fragment>
-            );
-          }
-        )}
-        <button
-          className="w-full bg-lime-400 text-white py-2 rounded-md hover:bg-lime-500 focus:outline-none focus:hover:bg-lime-600"
-          type="submit"
-        >
-          Iniciar Sesión
-        </button>
-      </form>
+                </React.Fragment>
+              );
+            }
+          )}
+          <button className="Button_Form" type="submit">
+            Iniciar Sesión
+          </button>
+        </form>
+      </div>
     </>
   );
 };

@@ -1,7 +1,6 @@
 const arraySuperAdminMenu = [
-  { name: "ver Solicitudes", path: "/superadmin/requests" },
-  { name: "Ver Coworkings", path: "/" },
-  { name: "Ver Empresas", path: "/" },
+  { name: "solicitudes Coworkings", path: "/superadmin/requests/coworking" },
+  { name: "solicitudes Empresas", path: "/superadmin/requests/company" },
   { name: "ver estadisticas", path: "/" },
 ];
 

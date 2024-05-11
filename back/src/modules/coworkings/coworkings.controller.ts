@@ -28,6 +28,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Public } from 'src/decorators/public.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
+import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 
 @ApiTags('corokings')
 @UseGuards(AuthGuard)
@@ -41,9 +42,10 @@ export class CoworkingsController {
     @Query('country') country: string,
     @Query('state') state: string,
     @Query('city') city: string,
+    @Query('status', new DefaultValuePipe(CoworkingStatus.ACTIVE)) status: CoworkingStatus,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number) {
-    return this.coworkingsService.getAllCoworkings(page, limit, country, state, city);
+    return this.coworkingsService.getAllCoworkings(page, limit, country, state, city, status);
   }
 
   @Get('countries')

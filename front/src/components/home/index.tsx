@@ -1,4 +1,6 @@
+
 "use client"
+
 import Image from "next/image";
 import ButtonClient from "../buttons";
 import PromotionalComponent from "../mainAdvertisement";
@@ -6,6 +8,11 @@ import Banner from "../Banner";
 import { About } from "../About";
 import Service from "../Service";
 import Coworks from "../Cowoks";
+import NavBarLanding from "../navBarLanding";
+import DropdownMenu from "../sinUtilizar/dropdownMenu";
+import { RiUserLine } from "@remixicon/react";
+import HeaderMain from "../mainHeader";
+import Link from "next/link";
 import Coworkings from "../coworkings";
 import { useUserContext } from "@/components/context"; // Importa el contexto de usuario
 import Cookie from "js-cookie";
@@ -30,6 +37,7 @@ const home = () => {
 
   
   return (
+
     <>
     {role == "superadmin" ? 
       <h1>Proximamente vista para superadmin</h1>
@@ -68,6 +76,7 @@ const home = () => {
    
     }
     </>
+
   );
 };
 export default home;

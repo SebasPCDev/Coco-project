@@ -37,7 +37,7 @@ export default function companyValidation(values: ICompaniesInfo): ICompaniesErr
         errors.quantityBeneficiaries = "Es necesario que al menos tengas un beneficiario";
     } else if (!values.businessSector) {
         errors.businessSector = "Es necesario el sector";
-    } else if (!/^.{3,50}$/.test(values.businessSector)) {
+    } else if (!/^.{2,50}$/.test(values.businessSector)) {
         errors.businessSector = "Es necesario el sector";
     } else if (!values.size && values.size !== 0) {
         errors.size = "Es necesario el tamaño";

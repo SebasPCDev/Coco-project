@@ -29,6 +29,7 @@ export default function RootLayout({
             <HeadersOpt/>
             {children}
           </div>
+
         </body>
       </UserProvider>
     </html>

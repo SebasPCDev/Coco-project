@@ -31,9 +31,10 @@ const userContext = createContext<IUserContext>({
 });
 
 const UserProvider = ({ children }: any) => {
-  const [token, setToken] = useState<string | undefined>(undefined);
-  const [user, setUser] = useState<IUser | undefined>(undefined);
-
+  const [token, setToken] = useState<string | undefined>(Cookie.get("token"));
+  const [user, setUser] = useState<IUser | undefined>(
+    JSON.parse(Cookie.get("user") || "null")
+  );
   useEffect(() => {
     const tokenFromCookie = Cookie.get("token");
     const userFromCookie = Cookie.get("user");

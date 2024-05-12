@@ -12,10 +12,9 @@ const PostLogin = async (data: ILoginForm) => {
         "Content-Type": "application/json",
       },
     });
-
     return response.data;
-  } catch (error) {
-    console.log("hay un error", error);
+  } catch (error: any) {
+    return { error: error.message || "error desconcido" };
   }
 };
 

@@ -3,6 +3,7 @@ import { useUserContext } from "@/components/context";
 import PostActivateCowork from "../../../../utils/posts/postActivateCowork";
 import IResponseRequest from "../../../../utils/types/responseRequets";
 import Swal from "sweetalert2";
+import PostActivateCompany from "../../../../utils/posts/postActivateComapnies";
 
 const CompanyList = ({ companies }: { companies: IResponseRequest[] }) => {
   const { token } = useUserContext();
@@ -17,7 +18,7 @@ const CompanyList = ({ companies }: { companies: IResponseRequest[] }) => {
       denyButtonText: `Cancelar`,
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await PostActivateCowork({ Id, token });
+        await PostActivateCompany({ Id, token });
         Swal.fire("El coworking ha sido aprobado!", "", "success");
       } else if (result.isDenied) {
         Swal.fire("Changes are not saved", "", "info");
@@ -39,8 +40,7 @@ const CompanyList = ({ companies }: { companies: IResponseRequest[] }) => {
           companies.map((company) => (
             <li
               key={company.id}
-              className="bg-white shadow-md rounded-lg mb-8 p-6"
-            >
+              className="bg-white shadow-md rounded-lg mb-8 p-6">
               <h2 className="text-xl font-bold mb-4">
                 {company.name} {company.lastname}
               </h2>
@@ -98,8 +98,7 @@ const CompanyList = ({ companies }: { companies: IResponseRequest[] }) => {
               <button
                 onClick={handleClick}
                 className="bg-custom-secondary text-custom-white py-3 px-6 rounded-lg text-xl font-bold"
-                id={company.id}
-              >
+                id={company.id}>
                 Aprobar
               </button>
             </li>

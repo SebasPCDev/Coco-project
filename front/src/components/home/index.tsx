@@ -12,6 +12,7 @@ import DropdownMenu from "../sinUtilizar/dropdownMenu";
 import { RiUserLine } from "@remixicon/react";
 import HeaderMain from "../mainHeader";
 import Link from "next/link";
+import Coworkings from "../coworkings";
 const home = () => {
   return (
     <div>
@@ -41,6 +42,7 @@ const home = () => {
       {/* <About/> */}
       <Service id="Service" />
       <Coworks id="Coworks" />
+      <Coworkings />
     </div>
   );
 };

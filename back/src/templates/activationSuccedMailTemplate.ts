@@ -129,7 +129,7 @@ function sendActivationMail(
           padding: 0;
           width: 100%;
         "
-        className="background"
+        class="background"
       >
         <tr>
           <td
@@ -159,7 +159,7 @@ function sendActivationMail(
                 width: inherit;
                 max-width: 560px;
               "
-              className="container"
+              class="container"
             >
               <!-- HERO IMAGE -->
               <!-- Image text color should be opposite to background color. Set your url, image src, alt and title. Alt text should fit the image size. Real image size should be x2 (wrapper x2). Do not set height for flexible images (including "auto"). URL format: http://domain.com/?utm_source={{Campaign-Source}}&utm_medium=email&utm_content={{Ìmage-Name}}&utm_campaign={{Campaign-Name}} -->
@@ -173,7 +173,7 @@ function sendActivationMail(
                     margin: 0;
                     padding: 0;
                   "
-                  className="hero"
+                  class="hero"
                 >
                   <a target="_blank" style="text-decoration: none"
                     ><img
@@ -224,7 +224,7 @@ function sendActivationMail(
                     color: #000000;
                     font-family: sans-serif;
                   "
-                  className="header"
+                  class="header"
                 >
                   ¡Bienvenid@ ${companyName} a la familia Coco+!
                 </td>
@@ -252,7 +252,7 @@ function sendActivationMail(
                     color: #000000;
                     font-family: sans-serif;
                   "
-                  className="subheader"
+                  class="subheader"
                 >
                   Tu cuenta ahora se encuentra activa
                 </td>
@@ -279,7 +279,7 @@ function sendActivationMail(
                     color: #000000;
                     font-family: sans-serif;
                   "
-                  className="paragraph"
+                  class="paragraph"
                 >
                   Para tu primer ingreso a la plataforma, haz click en el
                   siguiente link:
@@ -303,7 +303,7 @@ function sendActivationMail(
                     padding-top: 25px;
                     padding-bottom: 5px;
                   "
-                  className="button"
+                  class="button"
                 >
                   <a href="#" target="_blank" style="text-decoration: none">
                     <table
@@ -374,7 +374,7 @@ function sendActivationMail(
                     width: 87.5%;
                     padding-top: 25px;
                   "
-                  className="line"
+                  class="line"
                 >
                   <hr
                     color="#E0E0E0"
@@ -400,7 +400,7 @@ function sendActivationMail(
                     padding-left: 6.25%;
                     padding-right: 6.25%;
                   "
-                  className="list-item"
+                  class="list-item"
                 >
                   <table
                     align="center"
@@ -467,7 +467,7 @@ function sendActivationMail(
                           color: #000000;
                           font-family: sans-serif;
                         "
-                        className="paragraph"
+                        class="paragraph"
                       >
                         <b style="color: #333333">Usuario</b><br />
                         ${email}
@@ -526,7 +526,7 @@ function sendActivationMail(
                           color: #000000;
                           font-family: sans-serif;
                         "
-                        className="paragraph"
+                        class="paragraph"
                       >
                         <b style="color: #333333">Contraseña</b><br />
                         ${password}
@@ -552,7 +552,7 @@ function sendActivationMail(
                     width: 87.5%;
                     padding-top: 25px;
                   "
-                  className="line"
+                  class="line"
                 >
                   <hr
                     color="#E0E0E0"
@@ -587,7 +587,7 @@ function sendActivationMail(
                     color: #000000;
                     font-family: sans-serif;
                   "
-                  className="paragraph"
+                  class="paragraph"
                 >
                   ¿Tienes alguna pregunta?
                   <a
@@ -623,7 +623,7 @@ function sendActivationMail(
                 width: inherit;
                 max-width: 560px;
               "
-              className="wrapper"
+              class="wrapper"
             >
               <!-- SOCIAL NETWORKS -->
               <!-- Image text color should be opposite to background color. Set your url, image src, alt and title. Alt text should fit the image size. Real image size should be x2 -->
@@ -641,7 +641,7 @@ function sendActivationMail(
                     width: 87.5%;
                     padding-top: 25px;
                   "
-                  className="social-icons"
+                  class="social-icons"
                 >
                   <table
                     width="256"
@@ -826,7 +826,7 @@ function sendActivationMail(
                     color: #999999;
                     font-family: sans-serif;
                   "
-                  className="footer"
+                  class="footer"
                 >
                   Este es un correo electrónico de Coco+ •
                   <a

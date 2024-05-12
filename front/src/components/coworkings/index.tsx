@@ -56,7 +56,10 @@ const Coworkings: React.FC = (): React.ReactElement => {
 
   return (
     <>
-      <form className="grid grid-cols-1 md:grid-cols-3 gap-4 mx-8">
+      <h1 className="m-auto text-center my-6  font-bold mt-28 text-custom-fourth text-5xl">
+        Listado de Coworkings
+      </h1>
+      <form className="grid grid-cols-1 md:grid-cols-3 gap-4 mx-8 text-custom-fourth my-8 ">
         <select
           className="m-auto text-center my-6 text-3xl font-bold border rounded bg-gray-100 px-4 py-2 focus:outline-none"
           name="country"
@@ -91,10 +94,6 @@ const Coworkings: React.FC = (): React.ReactElement => {
           ))}
         </select>
       </form>
-
-      <h1 className="m-auto text-center my-6 text-3xl font-bold">
-        Listado de Coworkings
-      </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:w-3/4 m-auto">
         {coworkings.map((coworking: IResponseCoworking) => (

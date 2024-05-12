@@ -19,9 +19,6 @@ const Requests = ({ status, type }: { status: string; type: string }) => {
       } catch (error) {
         console.error("Error fetching requests:", error);
       }
-
-      console.log(requests);
-      
     };
 
     fetchData();
@@ -32,10 +29,7 @@ const Requests = ({ status, type }: { status: string; type: string }) => {
     }
   }, [token]);
 
-  return <>
-  <CompanyList companies={requests} />
-  <p>{requests}</p>
-  </>;
+  return <CompanyList companies={requests} />;
 };
 
 export default Requests;

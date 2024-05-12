@@ -1,5 +1,4 @@
-
-"use client"
+"use client";
 
 import Image from "next/image";
 import ButtonClient from "../buttons";
@@ -14,69 +13,37 @@ import { RiUserLine } from "@remixicon/react";
 import HeaderMain from "../mainHeader";
 import Link from "next/link";
 import Coworkings from "../coworkings";
-import { useUserContext } from "@/components/context"; // Importa el contexto de usuario
-import Cookie from "js-cookie";
-import { useEffect, useState } from "react";
-
-
 const home = () => {
-
-  const { user } = useUserContext();
-  const [userEnCookies, setUserEnCookies] = useState(Cookie.get("user"));
-  const [role, setRole] = useState("");
-
-  useEffect(() => {
-      const userFromCookie = Cookie.get("user");
-      setUserEnCookies(userFromCookie);
-      if (user && user.role) {
-        setRole(user.role);
-      }
-    }, [user]);
-
-
-
-  
   return (
-
-    <>
-    {role == "superadmin" ? 
-      <h1>Proximamente vista para superadmin</h1>
-     :
-
-     <div className="mb-20">
-     <section>
-       <div
-         style={{
-           display: "flex",
-           flexDirection: "row",
-           marginInlineStart: "2rem",
-           gap: "2rem",
-           paddingBlock: "1rem",
-         }}
-       >
-         <ButtonClient
-           buttonText="Soy Coworking"
-           path="coworkingsForm"
-           color="secondary"
-         />
-         <ButtonClient
-           buttonText="Soy Empresa"
-           path="companiesForm"
-           color="secondary"
-         />
-       </div>
-     </section>
-     <Banner />
-     <About />
-     <Service />
-     <Coworks />
-     <Coworkings />
-   </div>
-
-   
-    }
-    </>
-
+    <div>
+      <nav className="bg-zinc-950 shadow font-sans">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <img className="h-48 w-45" src="/LimaSinFondo.png" alt="Coco+" />
+              <div className="hidden md:flex items-center space-x-12 ml-12">
+                <NavBarLanding href="#Service">Cómo reservar</NavBarLanding>
+                <NavBarLanding href="#Coworks">Nuestros espacios</NavBarLanding>
+              </div>
+            </div>
+            <div>
+              <Link href="/login">
+                <button className="flex bg-green-500 hover:bg-green-600 text-white font-bold py-5 px-10 rounded-full text-3xl">
+                  <RiUserLine color="#ffffff" />
+                  Login
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <Banner />
+      <HeaderMain />
+      {/* <About/> */}
+      <Service id="Service" />
+      <Coworks id="Coworks" />
+      <Coworkings />
+    </div>
   );
 };
 export default home;

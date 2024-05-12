@@ -17,10 +17,13 @@ const Coworkings: React.FC = (): React.ReactElement => {
   useEffect(() => {
     const getCountries = async () => {
       const countries = await getCountriesfilter();
+      const currentcoworkings = await GetCoworkingsFilter({ filter });
+      setCoworkings(currentcoworkings.coworking);
       setCountries(countries);
     };
     getCountries();
   }, []);
+
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
     setFilter({ ...filter, [name]: value });
@@ -53,12 +56,12 @@ const Coworkings: React.FC = (): React.ReactElement => {
 
   return (
     <>
-      <form className=" grid grid-cols-3">
+      <form className="grid grid-cols-1 md:grid-cols-3 gap-4 mx-8">
         <select
-          className="m-auto text-center my-6 text-3xl font-bold"
+          className="m-auto text-center my-6 text-3xl font-bold border rounded bg-gray-100 px-4 py-2 focus:outline-none"
           name="country"
           onChange={handleChange}>
-          <option value="">seleciona un país</option>
+          <option value="">Selecciona un país</option>
           {countries.map((country) => (
             <option value={country} key={country}>
               {country}
@@ -66,28 +69,29 @@ const Coworkings: React.FC = (): React.ReactElement => {
           ))}
         </select>
         <select
-          className="m-auto text-center my-6 text-3xl font-bold"
+          className="m-auto text-center my-6 text-3xl font-bold border rounded bg-gray-100 px-4 py-2 focus:outline-none"
           name="state"
           onChange={handleChange}>
-          <option value="">seleciona un estado</option>
-          {states.map((country) => (
-            <option value={country} key={country}>
-              {country}
+          <option value="">Selecciona un estado</option>
+          {states.map((state) => (
+            <option value={state} key={state}>
+              {state}
             </option>
           ))}
         </select>
         <select
-          className="m-auto text-center my-6 text-3xl font-bold"
+          className="m-auto text-center my-6 text-3xl font-bold border rounded bg-gray-100 px-4 py-2 focus:outline-none"
           name="city"
           onChange={handleChange}>
-          <option value="">seleciona una ciudad</option>
-          {cities.map((country) => (
-            <option value={country} key={country}>
-              {country}
+          <option value="">Selecciona una ciudad</option>
+          {cities.map((city) => (
+            <option value={city} key={city}>
+              {city}
             </option>
           ))}
         </select>
       </form>
+
       <h1 className="m-auto text-center my-6 text-3xl font-bold">
         Listado de Coworkings
       </h1>

@@ -6,6 +6,10 @@ import CompanyList from "./request";
 import { useRouter } from "next/navigation";
 
 const Requests = ({ status, type }: { status: string; type: string }) => {
+
+  
+
+
   const router = useRouter();
   const [requests, setRequests] = useState([]);
   const { token } = useUserContext();

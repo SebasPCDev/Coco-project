@@ -1,0 +1,74 @@
+.container-bus {
+    position: relative;
+    border-radius: 1000px;
+    padding: 10px;
+    display: grid;
+    place-content: center;
+    z-index: 0;
+    max-width: 300px;
+    margin: 0 10px;
+  }
+  
+  .search-container {
+    position: relative;
+    width: 100%;
+    border-radius: 50px;
+    border: 1px solid #374e2a91;
+    background: linear-gradient(135deg, rgb(232, 255, 234) 0%, rgb(231, 255, 230) 100%);
+    display: flex;
+    align-items: center;
+    height: 3.2rem;
+}
+  
+  .input {
+    width: 100%;
+    height: 2.8rem;
+    border: none;
+    color: #002401;
+    font-size: 17px;
+    border-radius: 50px;
+    padding: 10px;
+  }
+  
+  .input:focus {
+    outline: none;
+    background: linear-gradient(135deg, rgb(240, 255, 239) 0%, rgb(189, 247, 191) 100%);
+  }
+  
+  .search__icon {
+    transition: all .1s ease;
+    width: 40px;
+    aspect-ratio: 1;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-radius: 50%;
+    padding-left: 12px;
+    margin-right: 10px;
+  }
+  
+  .search__icon:hover {
+    border-left: 1px solid rgb(0, 157, 58);
+  }
+  
+  .search__icon path {
+    fill: rgb(0, 87, 20);
+  }
+
+  .logo-norm{
+    width: 3rem;
+  }
+  
+  .logo-responsive{
+    display: none;
+  }
+
+  @media screen and (max-width: 500px){
+    .logo-responsive{
+      display: block;
+      margin-left: 3rem;
+    }
+
+    .logo-norm{
+      display: none;
+    }
+  }

@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { Amenities } from 'src/entities/amenities.entity';
 import { AmenitiesService } from './amenities.service';
 import { UUID } from 'crypto';
+import { CreateAmenityDto } from './amenities.dto';
 
 @Controller('amenities')
 export class AmenitiesController {
@@ -18,7 +19,7 @@ export class AmenitiesController {
   }
 
   @Post()
-  create(@Body() amenityData: Partial<Amenities>): Promise<Amenities> {
+  create(@Body() amenityData: CreateAmenityDto): Promise<Amenities> {
     return this.amenitiesService.create(amenityData);
   }
 
@@ -28,7 +29,7 @@ export class AmenitiesController {
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<void> {
+  delete(@Param('id') id: UUID): Promise<void> {
     return this.amenitiesService.delete(+id);
   }
 }

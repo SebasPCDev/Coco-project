@@ -22,7 +22,7 @@ const home = () => {
             <div className="flex items-center">
               <img className="h-48 w-45" src="/LimaSinFondo.png" alt="Coco+" />
               <div className="hidden md:flex items-center space-x-12 ml-12">
-                <NavBarLanding href="#Service">Cómo reservar</NavBarLanding>
+                <NavBarLanding href="#Service">Como reservar</NavBarLanding>
                 <NavBarLanding href="#Coworks">Nuestros espacios</NavBarLanding>
               </div>
             </div>

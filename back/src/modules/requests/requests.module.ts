@@ -10,4 +10,10 @@ import { Request } from 'src/entities/requests.entity';
   controllers: [RequestsController],
   exports: [RequestsService],
 })
-export class RequestsModule {}
+export class RequestsModule {
+  constructor(private readonly requestService: RequestsService) {}
+
+  async onModuleInit() {
+    await this.requestService.preloadRequest();
+  }
+}

@@ -13,7 +13,7 @@ const Logout = () => {
     setUser(undefined);
     Cookie.remove("token");
     Cookie.remove("user");
-    router.push("/login");
+    router.push("/");
   };
 
   return (

@@ -25,7 +25,7 @@ const getoptions = async ({ filter }: { filter: IFilterOptions }) => {
 
   const response = await fetch(url);
   const data = await response.json();
-  console.log(data);
+  console.log("OPTIONS!!!!!!!!!!!", data);
   return data;
 };
 

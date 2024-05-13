@@ -10,136 +10,78 @@ import {
 import getAllCoworks from "@/service/getAllCoworks";
 import FilterCoworks from "@/service/FilterCoworks";
 import CoworkCard from "@/components/CoworkCard";
+import IResponseCoworking from '../../../../utils/types/coworkingsResponse';
+import getCountriesfilter from '../../../../utils/gets/countriesFilter';
+import GetCoworkingsFilter from '../../../../utils/gets/getCoworkingsFilter';
+import getoptions from '../../../../utils/gets/getoptionsFilter';
+
+/////////////
+// Santiago
+//////////// 
+
 
 export const CoworksRoute: React.FC = () => {
-  const [filteredCoworks, setFilteredCoworks] = useState([]);
-  const [countries, setCountries] = useState<any[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<string>("");
-  const [states, setStates] = useState<any[]>([]);
-  const [selectedState, setSelectedState] = useState<string>("");
-  const [cities, setCities] = useState<any[]>([]);
-  const [selectedCity, setSelectedCity] = useState<string>("");
-  const [filter, setFilter] = useState({
-    location: { country: "", state: "", city: "" },
-    aviable: [],
-    rating: [],
-    capacity: [],
-  });
 
-  // //DESMARCAR CHECKBOX CUANDO SE MARCA OTRO
-  // const [selectedCheckbox, setSelectedCheckbox] = useState<string>('');
-  // const [selectedCheckboxRate, setSelectedCheckboxRate] = useState<string>('');
+  const [coworkings, setCoworkings] = useState<IResponseCoworking[]>([]);
+  const [countries, setCountries] = useState<any[]>([]);
+  const [states, setStates] = useState<any[]>([]);
+  const [cities, setCities] = useState<any[]>([]);
+  const [filter, setFilter] = useState({ country: "", state: "", city: "" });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const authToken = await generateAuthToken();
-        const countries = await fetchCountries(authToken);
-        setCountries(countries);
-      } catch (error) {
-        console.error("Error fetching countries:", error);
-      }
+    const getCountries = async () => {
+      const countries = await getCountriesfilter();
+      const currentcoworkings = await GetCoworkingsFilter({ filter });
+      setCoworkings(currentcoworkings.coworking);
+      setCountries(countries);
     };
-
-    fetchData();
+    getCountries();
   }, []);
 
-  const handleCountryChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    try {
-      const selectedCountry = e.target.value;
-      setSelectedCountry(selectedCountry);
-
-      const authToken = await generateAuthToken();
-      const states = await fetchStates(selectedCountry, authToken);
-      setStates(states);
-
-      setFilter((prevFilter) => ({
-        ...prevFilter,
-        location: { ...prevFilter.location, country: selectedCountry },
-      }));
-      console.log("Filter", filter);
-    } catch (error) {
-      console.error("Error fetching states:", error);
+  const handleChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    const newfilter = {country: '', state: '', city: ''}
+    if (name === 'country') {
+      newfilter.country = value
+      newfilter.state = ''
+      newfilter.city = ''
+      setCities([]);
+      setStates([]);
     }
-  };
-
-  const handleStateChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    try {
-      const selectedState = e.target.value;
-      setSelectedState(selectedState);
-
-      const authToken = await generateAuthToken();
-      const cities = await fetchCities(selectedState, authToken);
-      setCities(cities);
-
-      setFilter((prevFilter) => ({
-        ...prevFilter,
-        location: { ...prevFilter.location, state: selectedState },
-      }));
-      console.log("Filter", filter);
-    } catch (error) {
-      console.error("Error fetching states:", error);
+    if (name === 'state') {
+      newfilter.country = filter.country
+      newfilter.state = value
+      newfilter.city = ''
+      setCities([]);
     }
-  };
-
-  const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    try {
-      const selectedCity = e.target.value;
-      setSelectedCity(selectedCity);
-
-      setFilter((prevFilter) => ({
-        ...prevFilter,
-        location: { ...prevFilter.location, city: selectedCity },
-      }));
-      console.log(filter);
-    } catch (error) {
-      console.log("Error fetching cities:", error);
+    if (name === 'city') {
+      newfilter.country = filter.country
+      newfilter.state = filter.state
+      newfilter.city = value
     }
+    setFilter(newfilter);
   };
-
-  const handleCapacityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const capacityRange = e.target.value;
-    console.log(capacityRange);
-    setFilter((prevFilter) => {
-      if (e.target.checked) {
-        // Si el checkbox está marcado, agrega el valor al array
-        return {
-          ...prevFilter,
-          capacity: [...prevFilter.capacity, capacityRange],
-        };
+  useEffect(() => {
+    const getOptions = async () => {
+      const options = await getoptions({ filter });
+      if (filter.city) {
+        const currentcoworkings = await GetCoworkingsFilter({ filter });
+        setCoworkings(currentcoworkings.coworking);
+      } else if (filter.state) {
+        setCities(options);
+        const currentcoworkings = await GetCoworkingsFilter({ filter });
+        setCoworkings(currentcoworkings.coworking);
       } else {
-        // Si el checkbox no está marcado, elimina el valor del array
-        return {
-          ...prevFilter,
-          capacity: prevFilter.capacity.filter(
-            (item) => item !== capacityRange
-          ),
-        };
+        if (filter.country) setStates(options);
+        const currentcoworkings = await GetCoworkingsFilter({ filter });
+        setCoworkings(currentcoworkings.coworking);
       }
-    });
-  };
-
-  const handleReset = () => {
-    setFilter({
-      location: { country: "", state: "", city: "" },
-      aviable: [],
-      rating: [],
-      capacity: [],
-    });
-    setSelectedCountry("");
-    setSelectedState("");
-    setSelectedCity("");
-  };
+    };
+    getOptions();
+  }, [filter]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const coworks = await getAllCoworks();
-      console.log(coworks);
-      const resultFiltered = FilterCoworks(coworks, filter);
-      setFilteredCoworks(resultFiltered);
-    };
+    const fetchData = async () => {};
     fetchData();
   }, [filter]);
 
@@ -186,17 +128,15 @@ export const CoworksRoute: React.FC = () => {
                           paddingLeft: "17px",
                           borderRadius: "99px",
                         }}
+                        name="country"
                         id="country"
-                        onChange={handleCountryChange}
-                        value={selectedCountry}
+                        onChange={handleChange}
                       >
                         <option value="">País</option>
                         {countries.map((country, index) => (
-                          <option
-                            key={`${country.country_name}-${index}`}
-                            value={country.country_name}
-                          >
-                            {country.country_name}
+                          <option value={country} 
+                          key={`${country}-${index}`}>
+                            {country}
                           </option>
                         ))}
                       </select>
@@ -239,17 +179,13 @@ export const CoworksRoute: React.FC = () => {
                           borderRadius: "99px",
                         }}
                         id="state"
-                        onChange={handleStateChange}
-                        value={selectedState}
-                        disabled={!selectedCountry}
+                        name="state"
+                        onChange={handleChange}
                       >
                         <option value="">Estado/provincia</option>
                         {states.map((state, index) => (
-                          <option
-                            key={`${state.state_name}-${index}`}
-                            value={state.state_name}
-                          >
-                            {state.state_name}
+                          <option value={state} key={`${state}-${index}`}>
+                            {state}
                           </option>
                         ))}
                       </select>
@@ -292,131 +228,36 @@ export const CoworksRoute: React.FC = () => {
                           borderRadius: "99px",
                         }}
                         id="city"
-                        onChange={handleCityChange}
-                        value={selectedCity}
-                        disabled={!selectedState}
+                        name="city"
+                        onChange={handleChange}
                       >
                         <option value="">Ciudad</option>
                         {cities.map((city, index) => (
-                          <option
-                            key={`${city.city_name}-${index}`}
-                            value={city.city_name}
-                          >
-                            {city.city_name}
+                          <option value={city} key={`${city}-${index}`}>
+                            {city}
                           </option>
                         ))}
                       </select>
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-center">
-                  <button
-                    onClick={handleReset}
-                    className="text-color-600 mt-5 bg-gray-300 hover:bg-gray-400 text-white font-bold py-3 px-4 rounded-full text-2xl"
-                  >
-                    Reset
-                  </button>
-                </div>
               </div>
             </div>
 
-            {/* <div className="mt-7 box rounded-xl border border-gray-300 bg-white p-6 w-full md:max-w-sm">
-              <label className="font-medium text-sm leading-6 text-gray-800 mb-1">
-                Filtrar por capacidad
-              </label>
-              <div className="relative w-full mb-7">
-                <div className="check-container">
-                  <div className="checkbox-wrapper-33">
-                    <label className="checkbox">
-                      <input
-                        className="checkbox__trigger visuallyhidden"
-                        type="checkbox"
-                        value="10-20"
-                        onChange={handleCapacityChange}
-                      />
-                      <span className="checkbox__symbol">
-                        <svg
-                          aria-hidden="true"
-                          className="icon-checkbox"
-                          width="28px"
-                          height="28px"
-                          viewBox="0 0 28 28"
-                          version="1"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M4 14l8 7L24 7"></path>
-                        </svg>
-                      </span>
-                      <p className="checkbox__textwrapper">10-20 Box</p>
-                    </label>
-                  </div>
-
-                  <div className="checkbox-wrapper-33">
-                    <label className="checkbox">
-                      <input
-                        className="checkbox__trigger visuallyhidden"
-                        type="checkbox"
-                        value="20-30"
-                        onChange={handleCapacityChange}
-                      />
-                      <span className="checkbox__symbol">
-                        <svg
-                          aria-hidden="true"
-                          className="icon-checkbox"
-                          width="28px"
-                          height="28px"
-                          viewBox="0 0 28 28"
-                          version="1"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M4 14l8 7L24 7"></path>
-                        </svg>
-                      </span>
-                      <p className="checkbox__textwrapper">20-30 Box</p>
-                    </label>
-                  </div>
-                  <div className="checkbox-wrapper-33">
-                    <label className="checkbox">
-                      <input
-                        className="checkbox__trigger visuallyhidden"
-                        type="checkbox"
-                        value="30-40"
-                        onChange={handleCapacityChange}
-                      />
-                      <span className="checkbox__symbol">
-                        <svg
-                          aria-hidden="true"
-                          className="icon-checkbox"
-                          width="28px"
-                          height="28px"
-                          viewBox="0 0 28 28"
-                          version="1"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M4 14l8 7L24 7"></path>
-                        </svg>
-                      </span>
-                      <p className="checkbox__textwrapper">30-40 Box</p>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div> */}
-          </div>
+        </div>
           <div className="col-span-12 md:col-span-9">
             <div className="container-coworks">
               <ul className="cowork-list">
-                {filteredCoworks.map((cowork) => {
+                {coworkings.map((cowork) => {
                   return (
-                    <li key={cowork}>
+                    <li key={cowork.name}>
                       <CoworkCard cowork={cowork} />
                     </li>
                   );
                 })}
               </ul>
-            </div>
+            </div> 
 
-            {/* FIN DE RENDERIZADO DE COWORKS FILTRADOS */}
           </div>
         </div>
       </div>

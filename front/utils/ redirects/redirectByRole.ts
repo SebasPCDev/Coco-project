@@ -1,6 +1,6 @@
 const redirectionByRole = (role: string) => {
   if (role === "superadmin") {
-    return "/superadmin";
+    return "/superadminsup";
   } else if (role === "adminCoworking") {
     return "/adminCoworking";
   } else if (role === "adminCompany") {

@@ -10,6 +10,7 @@ import { StatusRequest } from 'src/models/statusRequest.enum';
 import { TypeCompany } from 'src/models/typeCompany.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { UpdateRequestCoworkingDto } from './requestCoworking.dto';
+import { loadDataRequest } from 'src/utils/loadData';
 
 @Injectable()
 export class RequestsService {
@@ -87,5 +88,26 @@ export class RequestsService {
 
     const updCoworking = this.requestsRepository.merge(request, changes);
     return this.requestsRepository.save(updCoworking);
+  }
+
+  async preloadRequest() {
+    const data = loadDataRequest();
+
+    for await (const request of data) {
+      const requestExist = await this.requestsRepository.findOne({
+        where: { email: request.email },
+      });
+
+      if (!requestExist) {
+        await this.requestsRepository.save(request);
+      }
+    }
+    console.log(`
+    ###############################################
+    ##### Requests data loaded successfully #####
+    ###############################################
+
+    `);
+    return true;
   }
 }

@@ -32,7 +32,7 @@ export class CoworkingsService {
     private requestsRepository: Repository<Request>,
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
-  ) {}
+  ) { }
 
   async getAllCoworkings(
     page: number,
@@ -60,8 +60,9 @@ export class CoworkingsService {
     return { page, limit, total, coworking };
   }
 
-  async getCoworkingById(id: string) {
+  async getCoworkingById(id: UUID) {
     const coworking = await this.coworkingsRepository.findOne({
+      relations: ['user'],
       where: { id },
     });
 
@@ -140,8 +141,8 @@ export class CoworkingsService {
     try {
       await queryRunner.startTransaction(); // START
       // 2- Crear user
-      const password = Math.random().toString(36).slice(-8);
-      // const password = 'Coco123!';
+      // const password = Math.random().toString(36).slice(-8);
+      const password = 'Coco123!';
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)
         throw new BadRequestException('Password could not be hashed');
@@ -209,7 +210,6 @@ export class CoworkingsService {
   }
 
   async update(id: UUID, changes: UpdateCoworkingsDto) {
-    // return `This action updates a #${id} ${changes} coworking`;
     const coworking = await this.getCoworkingById(id);
 
     const updCoworking = this.coworkingsRepository.merge(coworking, changes);

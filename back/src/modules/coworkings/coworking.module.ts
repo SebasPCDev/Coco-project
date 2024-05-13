@@ -15,9 +15,10 @@ import { Request } from 'src/entities/requests.entity';
   ],
   controllers: [CoworkingsController],
   providers: [CoworkingsService],
+  exports: [CoworkingsService]
 })
 export class CoworkingModule {
-  constructor(private readonly coworkingsService: CoworkingsService) {}
+  constructor(private readonly coworkingsService: CoworkingsService) { }
 
   async onModuleInit() {
     await this.coworkingsService.preloadCoworkings();

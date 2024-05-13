@@ -20,9 +20,7 @@ const PostActivateCompany = async ({
         Authorization: `Bearer ${token}`,
       },
     });
-
-    console.log(response.data);
-    console.log("la peticion fue exitosa");
+    return response.data;
   } catch (error) {
     console.log("hay un error", error);
   }

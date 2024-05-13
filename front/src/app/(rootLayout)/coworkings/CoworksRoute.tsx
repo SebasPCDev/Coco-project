@@ -14,6 +14,7 @@ import IResponseCoworking from "../../../../utils/types/coworkingsResponse";
 import getCountriesfilter from "../../../../utils/gets/countriesFilter";
 import GetCoworkingsFilter from "../../../../utils/gets/getCoworkingsFilter";
 import getoptions from "../../../../utils/gets/getoptionsFilter";
+import { CgLayoutGrid } from "react-icons/cg";
 
 /////////////
 // Santiago
@@ -29,12 +30,32 @@ export const CoworksRoute: React.FC = () => {
   useEffect(() => {
     const getCountries = async () => {
       const countries = await getCountriesfilter();
+      console.log(countries);
       const currentcoworkings = await GetCoworkingsFilter({ filter });
       setCoworkings(currentcoworkings.coworking);
       setCountries(countries);
     };
     getCountries();
   }, []);
+
+  useEffect(() => {
+    const getOptions = async () => {
+      const options = await getoptions({ filter });
+      if (filter.city) {
+        const currentcoworkings = await GetCoworkingsFilter({ filter });
+        setCoworkings(currentcoworkings.coworking);
+      } else if (filter.state) {
+        setCities(options);
+        const currentcoworkings = await GetCoworkingsFilter({ filter });
+        setCoworkings(currentcoworkings.coworking);
+      } else {
+        if (filter.country) setStates(options);
+        const currentcoworkings = await GetCoworkingsFilter({ filter });
+        setCoworkings(currentcoworkings.coworking);
+      }
+    };
+    getOptions();
+  }, [filter]);
 
   const handleChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
@@ -59,29 +80,6 @@ export const CoworksRoute: React.FC = () => {
     }
     setFilter(newfilter);
   };
-  useEffect(() => {
-    const getOptions = async () => {
-      const options = await getoptions({ filter });
-      if (filter.city) {
-        const currentcoworkings = await GetCoworkingsFilter({ filter });
-        setCoworkings(currentcoworkings.coworking);
-      } else if (filter.state) {
-        setCities(options);
-        const currentcoworkings = await GetCoworkingsFilter({ filter });
-        setCoworkings(currentcoworkings.coworking);
-      } else {
-        if (filter.country) setStates(options);
-        const currentcoworkings = await GetCoworkingsFilter({ filter });
-        setCoworkings(currentcoworkings.coworking);
-      }
-    };
-    getOptions();
-  }, [filter]);
-
-  useEffect(() => {
-    const fetchData = async () => {};
-    fetchData();
-  }, [filter]);
 
   return (
     <section className="py-8 relative">

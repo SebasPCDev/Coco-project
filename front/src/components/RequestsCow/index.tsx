@@ -31,10 +31,6 @@ export const RequestsCow = ({ cowork, fetchData }) => {
         Swal.fire("Changes are not saved", "", "info");
       }
     });
-    /*     e.preventDefault();
-    const Id = e.currentTarget.id;
-    const response = await PostActivateCowork({ Id, token });
-    console.log(response); */
   };
 
   return (

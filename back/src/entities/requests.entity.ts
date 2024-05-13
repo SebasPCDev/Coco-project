@@ -18,55 +18,47 @@ export class Request {
   id: string;
 
   @Column({
-    nullable: false,
     type: 'varchar',
   })
   name: string;
 
   @Column({
-    nullable: false,
     type: 'varchar',
   })
   lastname: string;
 
   @Column({
-    nullable: false,
     type: 'varchar',
+    length: 15
   })
   phone: string;
 
   @Column({
-    nullable: false,
     type: 'varchar',
   })
   email: string;
 
   @Column({
-    nullable: false,
     type: 'varchar',
   })
   identification: string;
 
   @Column({
-    nullable: false,
     type: 'varchar',
   })
   position: string;
 
   @Column({
-    nullable: false,
     type: 'varchar',
   })
   companyName: string;
 
   @Column({
-    nullable: false,
     type: 'varchar',
   })
   companyEmail: string;
 
   @Column({
-    nullable: false,
     type: 'varchar',
   })
   companyPhone: string;
@@ -133,7 +125,7 @@ export class Request {
   status: StatusRequest;
 
   @Column({
-    nullable: false,
+    nullable: true,
     type: 'text',
   })
   observation: string;
@@ -141,7 +133,6 @@ export class Request {
   @Column({
     type: 'enum',
     enum: TypeCompany,
-    nullable: false,
   })
   type: TypeCompany;
 

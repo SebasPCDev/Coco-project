@@ -24,7 +24,7 @@ export class Users {
   @Column({ type: 'varchar', length: 150 })
   lastname: string;
 
-  @Column({ type: 'varchar', length: 12 })
+  @Column({ type: 'varchar', length: 15 })
   phone: string;
 
   @Column({ type: 'varchar', length: 255, unique: true })

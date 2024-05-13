@@ -21,7 +21,7 @@ export class Coworkings {
   @Column({ type: 'varchar', length: 255, unique: true })
   name: string;
 
-  @Column({ type: 'varchar', length: 10 })
+  @Column({ type: 'varchar', length: 15 })
   phone: string;
 
   @Column({ type: 'varchar', length: 150 })

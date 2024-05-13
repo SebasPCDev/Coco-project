@@ -2,7 +2,7 @@
 import { RiMenuLine, RiUserLine } from "@remixicon/react";
 import Link from "next/link";
 import { useUserContext } from "@/components/context";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Logout from "../logout";
 
 const HeaderRight = ({ initialToken }: { initialToken: string }) => {

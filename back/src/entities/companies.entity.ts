@@ -20,7 +20,7 @@ export class Companies {
   @Column({ type: 'varchar', length: 150 })
   email: string;
 
-  @Column({ type: 'varchar', length: 10 })
+  @Column({ type: 'varchar', length: 15 })
   phone: string;
 
   @Column({ type: 'int', name: 'quantity_beneficiaries' })

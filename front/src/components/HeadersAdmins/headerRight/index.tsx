@@ -5,9 +5,15 @@ import { useUserContext } from "@/components/context";
 import { useEffect, useState } from "react";
 import Logout from "../logout";
 
-const HeaderRight = () => {
-  const [visibleLogin, setVisibleLogin] = useState("block");
-  const [visibleProfile, setVisibleProfile] = useState("hidden");
+const HeaderRight = ({ initialToken }: { initialToken: string }) => {
+  const [visibleLogin, setVisibleLogin] = useState(
+    initialToken ? "hidden" : "block"
+  );
+  const [visibleProfile, setVisibleProfile] = useState(
+    initialToken ? "flex" : "hidden"
+  );
+  const [firstLetter, setFirstLetter] = useState("");
+  const [name, setName] = useState("");
 
   const { user, token } = useUserContext();
 
@@ -15,6 +21,8 @@ const HeaderRight = () => {
     if (token) {
       setVisibleLogin("hidden");
       setVisibleProfile("flex");
+      setFirstLetter(user ? user.name.slice(0, 1) : "");
+      setName(user ? user.name : "");
     } else {
       setVisibleLogin("block");
       setVisibleProfile("hidden");
@@ -34,11 +42,10 @@ const HeaderRight = () => {
         </div>
       </div>
       <div className={` ${visibleProfile} gap-4 items-center `}>
-        
         <div className="w-12 h-12 rounded-full bg-custom-primary flex justify-center items-center text-custom-secondary">
-          {user?.name.slice(0, 1)}
+          {firstLetter}
         </div>
-        <div className="text-custom-white text-3xl">{user?.name}</div>
+        <div className="text-custom-white text-3xl">{name}</div>
         <Logout />
       </div>
     </div>

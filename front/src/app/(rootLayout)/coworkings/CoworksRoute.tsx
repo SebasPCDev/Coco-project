@@ -111,8 +111,8 @@ export const CoworksRoute: React.FC = () => {
                       >
                         <path
                           strokeWidth="4"
-                          stroke-linejoin="round"
-                          stroke-linecap="round"
+                          strokeLinejoin="round"
+                          strokeLinecap="round"
                           fill="none"
                           d="M60.7,53.6,50,64.3m0,0L39.3,53.6M50,64.3V35.7m0,46.4A32.1,32.1,0,1,1,82.1,50,32.1,32.1,0,0,1,50,82.1Z"
                           className="w-16 h-16 svg-stroke-primary"
@@ -160,8 +160,8 @@ export const CoworksRoute: React.FC = () => {
                       >
                         <path
                           strokeWidth="4"
-                          stroke-linejoin="round"
-                          stroke-linecap="round"
+                          strokeLinejoin="round"
+                          strokeLinecap="round"
                           fill="none"
                           d="M60.7,53.6,50,64.3m0,0L39.3,53.6M50,64.3V35.7m0,46.4A32.1,32.1,0,1,1,82.1,50,32.1,32.1,0,0,1,50,82.1Z"
                           className="w-16 h-16 svg-stroke-primary"
@@ -209,8 +209,8 @@ export const CoworksRoute: React.FC = () => {
                       >
                         <path
                           strokeWidth="4"
-                          stroke-linejoin="round"
-                          stroke-linecap="round"
+                          strokeLinejoin="round"
+                          strokeLinecap="round"
                           fill="none"
                           d="M60.7,53.6,50,64.3m0,0L39.3,53.6M50,64.3V35.7m0,46.4A32.1,32.1,0,1,1,82.1,50,32.1,32.1,0,0,1,50,82.1Z"
                           className="w-16 h-16 svg-stroke-primary"

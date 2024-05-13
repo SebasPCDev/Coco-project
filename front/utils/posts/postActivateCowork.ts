@@ -21,10 +21,9 @@ const PostActivateCowork = async ({
       },
     });
 
-    console.log(response.data);
-    console.log("la peticion fue exitosa");
+    return response.data;
   } catch (error) {
-    console.log("hay un error", error);
+    console.error("Error al activar el coworking:", error);
   }
 };
 

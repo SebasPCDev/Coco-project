@@ -16,7 +16,7 @@ import Coworkings from "../coworkings";
 const home = () => {
   return (
     <div>
-      <nav className="bg-zinc-950 shadow font-sans">
+      {/* <nav className="bg-zinc-950 shadow font-sans">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -36,7 +36,7 @@ const home = () => {
             </div>
           </div>
         </div>
-      </nav>
+      </nav> */}
       <Banner />
       <HeaderMain />
       {/* <About/> */}

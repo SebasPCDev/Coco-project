@@ -1,5 +1,6 @@
 "use client";
 import { RiMenuLine, RiUserLine } from "@remixicon/react";
+import { useHeaderContext } from "@/components/headerconstext";
 import Link from "next/link";
 import { useUserContext } from "@/components/context";
 import { useEffect, useState } from "react";
@@ -9,6 +10,7 @@ const HeaderRight = () => {
   const [visibleLogin, setVisibleLogin] = useState("block");
   const [visibleProfile, setVisibleProfile] = useState("hidden");
 
+  const { setMenuActive, isMenuActive } = useHeaderContext();
   const { user, token } = useUserContext();
 
   useEffect(() => {
@@ -20,27 +22,33 @@ const HeaderRight = () => {
       setVisibleProfile("hidden");
     }
   }, [token]);
-
+  const handleClick = () => {
+    setMenuActive(!isMenuActive);
+  };
   return (
-    <div className=" mx-20">
+    <>
+      <div onClick={handleClick} className="md:hidden">
+        <RiMenuLine color="white" />
+      </div>
       <div className={visibleLogin}>
         <div className="hidden md:block">
-          <Link href="/login">
-            <button className="flex bg-green-500 hover:bg-green-600 text-white font-bold py-5 px-10 rounded-full text-3xl">
-              <RiUserLine color="#ffffff" />
-              Login
-            </button>
+          <Link
+            href="/login"
+            className="text-custom-white flex flex-row gap-2 "
+            onClick={handleClick}>
+            <li className="list-none">Login</li>
+            <RiUserLine color="white" />
           </Link>
         </div>
       </div>
-      <div className={` ${visibleProfile} gap-4 items-center `}>
-        <div className="w-12 h-12 rounded-full bg-custom-primary flex justify-center items-center text-custom-secondary">
+      <div className={` ${visibleProfile} gap-2`}>
+        <div className="w-6 h-6 rounded-full bg-custom-primary flex justify-center items-center text-custom-secondary">
           {user?.name.slice(0, 1)}
         </div>
-        <div className="text-custom-white text-3xl">{user?.name}</div>
+        <div className="text-custom-white">{user?.name}</div>
         <Logout />
       </div>
-    </div>
+    </>
   );
 };
 

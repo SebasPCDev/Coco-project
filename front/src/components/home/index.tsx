@@ -41,8 +41,8 @@ const home = () => {
       <HeaderMain />
       {/* <About/> */}
       <Service id="Service" />
-      {/* <Coworks id="Coworks" /> */}
-      <Coworkings />
+      <Coworks id="Coworks" />
+      {/* <Coworkings /> */}
     </div>
   );
 };

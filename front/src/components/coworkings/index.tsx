@@ -7,6 +7,9 @@ import getCountriesfilter from "../../../utils/gets/countriesFilter";
 import getoptions from "../../../utils/gets/getoptionsFilter";
 import GetCoworkingsFilter from "../../../utils/gets/getCoworkingsFilter";
 
+////////////////
+// DAVID
+///////////////
 const Coworkings: React.FC = (): React.ReactElement => {
   const [coworkings, setCoworkings] = useState<IResponseCoworking[]>([]);
   const [countries, setCountries] = useState<any[]>([]);

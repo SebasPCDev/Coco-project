@@ -1,6 +1,10 @@
 import CoworksRoute from "@/app/(rootLayout)/coworkings/CoworksRoute";
 import "./style.css";
 
+/////////////
+// Santiago
+//////////// 
+
 export const Coworks: React.FC<{ id: string }> = (props) => {
   return (
     <section id={props.id} className="section property" aria-label="property">

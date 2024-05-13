@@ -347,7 +347,7 @@ function sendActivationMail(
   
                               text-decoration: none;
                             "
-                            href="#"
+                            href="http://localhost:3001/login" 
                           >
                             Iniciar sesión
                           </a>

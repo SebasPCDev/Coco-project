@@ -63,8 +63,8 @@ export class CompaniesService {
       if (user) throw new BadRequestException('Usuario existente');
 
       // 2- Crear user
-      // const password = Math.random().toString(36).slice(-8);
-      const password = 'Coco123!';
+      const password = Math.random().toString(36).slice(-8);
+      // const password = 'Coco123!';
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)
         throw new BadRequestException('Password could not be hashed');

@@ -34,8 +34,14 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
   ) {}
 
-   async getAllCoworkings(page: number, limit: number, country: string, state: string, city: string, status: CoworkingStatus) {
-    
+  async getAllCoworkings(
+    page: number,
+    limit: number,
+    country: string,
+    state: string,
+    city: string,
+    status: CoworkingStatus,
+  ) {
     const where: FindOptionsWhere<Coworkings> = {};
     if (country) where.country = country;
     if (state) where.state = state;
@@ -45,11 +51,12 @@ export class CoworkingsService {
     const skip = (page - 1) * limit;
 
     const conditions = {
-     skip: skip,
-     take: limit,
-     where
+      skip: skip,
+      take: limit,
+      where,
     };
-    const [coworking, total] = await this.coworkingsRepository.findAndCount(conditions);
+    const [coworking, total] =
+      await this.coworkingsRepository.findAndCount(conditions);
     return { page, limit, total, coworking };
   }
 
@@ -67,48 +74,49 @@ export class CoworkingsService {
 
   async getCountries() {
     const countries = await this.coworkingsRepository
-    .createQueryBuilder('coworking')
-    .distinct(true)
-    .select('country')
-    .where('coworking.status = :status')
-    .setParameter('status', CoworkingStatus.ACTIVE)
-    .execute()
-    
-    const countriesArr = countries.map((coworking: Coworkings) =>  coworking.country);
+      .createQueryBuilder('coworking')
+      .distinct(true)
+      .select('country')
+      .where('coworking.status = :status')
+      .setParameter('status', CoworkingStatus.ACTIVE)
+      .execute();
+
+    const countriesArr = countries.map(
+      (coworking: Coworkings) => coworking.country,
+    );
     return countriesArr;
   }
 
   async getStates(country: string) {
     const states = await this.coworkingsRepository
-    .createQueryBuilder('coworking')
-    .distinct(true)
-    .select('state')
-    .where('coworking.status = :status')
-    .where('coworking.country = :country')
-    .setParameter('status', CoworkingStatus.ACTIVE)
-    .setParameter('country', country)
-    .execute()
-    
-    const statesArr = states.map((coworking: Coworkings) =>  coworking.state);
+      .createQueryBuilder('coworking')
+      .distinct(true)
+      .select('state')
+      .where('coworking.status = :status')
+      .where('coworking.country = :country')
+      .setParameter('status', CoworkingStatus.ACTIVE)
+      .setParameter('country', country)
+      .execute();
+
+    const statesArr = states.map((coworking: Coworkings) => coworking.state);
     return statesArr;
   }
 
   async getCities(country: string, state: string) {
     const cities = await this.coworkingsRepository
-    .createQueryBuilder('coworking')
-    .distinct(true)
-    .select('city')
-    .where('coworking.status = :status')
-    .where('coworking.country = :country')
-    .where('coworking.state = :state')
-    .setParameter('status', CoworkingStatus.ACTIVE)
-    .setParameter('country', country)
-    .setParameter('state', state)
-    .execute()
-    
-    const citiesArr = cities.map((coworking: Coworkings) =>  coworking.city);
-    return citiesArr;
+      .createQueryBuilder('coworking')
+      .distinct(true)
+      .select('city')
+      .where('coworking.status = :status')
+      .where('coworking.country = :country')
+      .where('coworking.state = :state')
+      .setParameter('status', CoworkingStatus.ACTIVE)
+      .setParameter('country', country)
+      .setParameter('state', state)
+      .execute();
 
+    const citiesArr = cities.map((coworking: Coworkings) => coworking.city);
+    return citiesArr;
   }
 
   async create(userId: UUID, data: CreateCoworkingsDto) {
@@ -132,8 +140,8 @@ export class CoworkingsService {
     try {
       await queryRunner.startTransaction(); // START
       // 2- Crear user
-      // const password = Math.random().toString(36).slice(-8);
-      const password = 'Coco123!';
+      const password = Math.random().toString(36).slice(-8);
+      // const password = 'Coco123!';
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)
         throw new BadRequestException('Password could not be hashed');

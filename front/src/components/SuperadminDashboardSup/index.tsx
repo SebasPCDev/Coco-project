@@ -19,7 +19,7 @@ export const SuperadminDashboardSup = () => {
           <div className="">
             <div className="h-[9em] w-full border-1 border-[rgba(54,133,30,0.5)] rounded-[6px] bg-gradient-to-br from-[#97ef8a] to-[rgba(30,133,32,0.01)] text-gray-800 font-nunito p-[1em] flex justify-center items-left flex-col gap-[0.75em] backdrop-blur-[12px]">
               <div>
-                <h1 className="text-[2em] font-medium text-center">
+                <h1 className="text-[2em] font-medium text-center ">
                   Solicitudes Pendientes
                 </h1>
               </div>
@@ -29,7 +29,7 @@ export const SuperadminDashboardSup = () => {
           <button
             onClick={handleOnClickView}
             value={"cow"}
-            className="w-full hover:brightness-110 hover:animate-pulse font-bold py-3 px-6 rounded-full bg-gradient-to-r from-green-300 to-green-400 text-gray-800"
+            className="w-full bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#009b49] before:to-[rgb(105,184,141)] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]"
           >
             Coworkings
           </button>
@@ -37,13 +37,16 @@ export const SuperadminDashboardSup = () => {
           <button
             onClick={handleOnClickView}
             value={"com"}
-            className="w-full hover:brightness-110 hover:animate-pulse font-bold py-3 px-6 rounded-full bg-gradient-to-r from-green-300 to-green-400 text-gray-800"
+            className="w-full bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-[#009b49] before:to-[rgb(105,184,141)] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]"
           >
             Companies
           </button>
         </div>
       </section>
-      <section className="mr-10 col-span-2 max-h-screen overflow-scroll">
+      {/* <div class="scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300 h-32 overflow-y-scroll">
+       */}
+
+      <section className="mr-10 col-span-2 max-h-screen scrollbar-thumb-rounded-full scrollbar-thumb-lime-600 scrollbar-track-rounded-full scrollbar scrollbar-track-lime-200 scrollbar-w-3 overflow-y-scroll">
         {viewTemp === "cow" && <RenCowReq />}
         {viewTemp === "com" && <RenEmpReq />}
       </section>

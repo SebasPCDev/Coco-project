@@ -17,3 +17,9 @@ export const loadDataRequest = () => {
   const parseData = JSON.parse(data);
   return parseData;
 };
+
+export const loadDataRequestCompany = () => {
+  const data = readFileSync('src/utils/preloadRequestCompany.json', 'utf8');
+  const parseData = JSON.parse(data);
+  return parseData;
+};

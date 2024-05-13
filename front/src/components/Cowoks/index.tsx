@@ -3,7 +3,7 @@ import "./style.css";
 
 /////////////
 // Santiago
-//////////// 
+////////////
 
 export const Coworks: React.FC<{ id: string }> = (props) => {
   return (

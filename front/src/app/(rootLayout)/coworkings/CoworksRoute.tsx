@@ -10,18 +10,16 @@ import {
 import getAllCoworks from "@/service/getAllCoworks";
 import FilterCoworks from "@/service/FilterCoworks";
 import CoworkCard from "@/components/CoworkCard";
-import IResponseCoworking from '../../../../utils/types/coworkingsResponse';
-import getCountriesfilter from '../../../../utils/gets/countriesFilter';
-import GetCoworkingsFilter from '../../../../utils/gets/getCoworkingsFilter';
-import getoptions from '../../../../utils/gets/getoptionsFilter';
+import IResponseCoworking from "../../../../utils/types/coworkingsResponse";
+import getCountriesfilter from "../../../../utils/gets/countriesFilter";
+import GetCoworkingsFilter from "../../../../utils/gets/getCoworkingsFilter";
+import getoptions from "../../../../utils/gets/getoptionsFilter";
 
 /////////////
 // Santiago
-//////////// 
-
+////////////
 
 export const CoworksRoute: React.FC = () => {
-
   const [coworkings, setCoworkings] = useState<IResponseCoworking[]>([]);
   const [countries, setCountries] = useState<any[]>([]);
   const [states, setStates] = useState<any[]>([]);
@@ -40,24 +38,24 @@ export const CoworksRoute: React.FC = () => {
 
   const handleChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
-    const newfilter = {country: '', state: '', city: ''}
-    if (name === 'country') {
-      newfilter.country = value
-      newfilter.state = ''
-      newfilter.city = ''
+    const newfilter = { country: "", state: "", city: "" };
+    if (name === "country") {
+      newfilter.country = value;
+      newfilter.state = "";
+      newfilter.city = "";
       setCities([]);
       setStates([]);
     }
-    if (name === 'state') {
-      newfilter.country = filter.country
-      newfilter.state = value
-      newfilter.city = ''
+    if (name === "state") {
+      newfilter.country = filter.country;
+      newfilter.state = value;
+      newfilter.city = "";
       setCities([]);
     }
-    if (name === 'city') {
-      newfilter.country = filter.country
-      newfilter.state = filter.state
-      newfilter.city = value
+    if (name === "city") {
+      newfilter.country = filter.country;
+      newfilter.state = filter.state;
+      newfilter.city = value;
     }
     setFilter(newfilter);
   };
@@ -134,8 +132,7 @@ export const CoworksRoute: React.FC = () => {
                       >
                         <option value="">País</option>
                         {countries.map((country, index) => (
-                          <option value={country} 
-                          key={`${country}-${index}`}>
+                          <option value={country} key={`${country}-${index}`}>
                             {country}
                           </option>
                         ))}
@@ -243,8 +240,7 @@ export const CoworksRoute: React.FC = () => {
                 </div>
               </div>
             </div>
-
-        </div>
+          </div>
           <div className="col-span-12 md:col-span-9">
             <div className="container-coworks">
               <ul className="cowork-list">
@@ -256,8 +252,7 @@ export const CoworksRoute: React.FC = () => {
                   );
                 })}
               </ul>
-            </div> 
-
+            </div>
           </div>
         </div>
       </div>

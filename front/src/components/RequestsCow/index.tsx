@@ -5,7 +5,7 @@ import PostActivateCowork from "../../../utils/posts/postActivateCowork";
 import IResponseRequest from "../../../utils/types/responseRequets";
 import Swal from "sweetalert2";
 
-export const RequestsCow = ({ cowork }) => {
+export const RequestsCow = ({ cowork, fetchData }) => {
   const { token } = useUserContext();
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -13,13 +13,19 @@ export const RequestsCow = ({ cowork }) => {
     Swal.fire({
       title: "Seguro que desea aprobar la solicitud?",
       showDenyButton: true,
-      showCancelButton: true,
+      showCancelButton: false,
       confirmButtonText: "Si",
       denyButtonText: `Cancelar`,
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await PostActivateCowork({ Id, token });
-        Swal.fire("El coworking ha sido aprobado!", "", "success");
+        const result = await PostActivateCowork({ Id, token });
+        if (result) {
+          Swal.fire("El coworking ha sido aprobado!", "", "success");
+          fetchData();
+        } else {
+          Swal.fire("Hubo un error al aprobar el coworking", "", "error");
+        }
+        fetchData();
       } else if (result.isDenied) {
         Swal.fire("Changes are not saved", "", "info");
       }

@@ -8,10 +8,7 @@ const HeaderLeft = () => {
         <Link href="/">
           <img className="h-48 w-45" src="/LimaSinFondo.png" alt="Coco+" />
         </Link>
-        <div className="hidden md:flex items-center space-x-12 ml-12">
-          <NavBarLanding href="#Service">Como reservar</NavBarLanding>
-          <NavBarLanding href="#Coworks">Nuestros espacios</NavBarLanding>
-        </div>
+        <div className="hidden md:flex items-center space-x-12 ml-12"></div>
       </div>
     </div>
   );

@@ -34,6 +34,7 @@ const HeaderRight = () => {
         </div>
       </div>
       <div className={` ${visibleProfile} gap-4 items-center `}>
+        
         <div className="w-12 h-12 rounded-full bg-custom-primary flex justify-center items-center text-custom-secondary">
           {user?.name.slice(0, 1)}
         </div>

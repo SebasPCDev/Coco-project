@@ -12,11 +12,16 @@ export class AmenitiesService {
       ) {}
     
       async findAll(): Promise<Amenities[]> {
-        return await this.amenityRepository.find();
+        return await this.amenityRepository.find({
+          relations: ['coworkings'],
+        });
       }
     
       async findOne(id: UUID): Promise<Amenities> {
-        return await this.amenityRepository.findOne({where:{id}});
+        return await this.amenityRepository.findOne({
+          where:{id},
+          relations: ['coworkings'],
+        });
      }
     
       async create(amenityData: Partial<Amenities>): Promise<Amenities> {
@@ -26,7 +31,10 @@ export class AmenitiesService {
     
       async update(id: UUID, amenityData: Partial<Amenities>): Promise<Amenities> {
         await this.amenityRepository.update(id, amenityData);
-        return await this.amenityRepository.findOne({where:{id}});
+        return await this.amenityRepository.findOne({
+          where:{id},
+          relations: ['coworkings'],
+        });
       }
     
       async delete(id: number): Promise<void> {

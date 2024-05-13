@@ -35,7 +35,8 @@ const HeaderRight = () => {
           <Link
             href="/login"
             className="text-custom-white flex flex-row gap-2 "
-            onClick={handleClick}>
+            onClick={handleClick}
+          >
             <li className="list-none">Login</li>
             <RiUserLine color="white" />
           </Link>

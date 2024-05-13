@@ -19,6 +19,7 @@ export const RequestsCow = ({ cowork, fetchData }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const result = await PostActivateCowork({ Id, token });
+        console.log(result);
         if (result) {
           Swal.fire("El coworking ha sido aprobado!", "", "success");
           fetchData();

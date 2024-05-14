@@ -7,17 +7,19 @@ import { CoworkingsController } from './coworkings.controller';
 import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
 import { Request } from 'src/entities/requests.entity';
+import { CoworkingImages } from 'src/entities/coworkingImages.entity';
 
 @Module({
   imports: [
     NodemailerModule,
-    TypeOrmModule.forFeature([Coworkings, Request, Users]),
+    TypeOrmModule.forFeature([Coworkings, Request, Users, CoworkingImages]),
   ],
   controllers: [CoworkingsController],
   providers: [CoworkingsService],
+  exports: [CoworkingsService]
 })
 export class CoworkingModule {
-  constructor(private readonly coworkingsService: CoworkingsService) {}
+  constructor(private readonly coworkingsService: CoworkingsService) { }
 
   async onModuleInit() {
     await this.coworkingsService.preloadCoworkings();

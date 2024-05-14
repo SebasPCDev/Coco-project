@@ -20,6 +20,7 @@ import { CreateUsersDto } from '../users/users.dto';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { CoworkingImages } from 'src/entities/coworkingImages.entity';
 
 @Injectable()
 export class CoworkingsService {
@@ -32,7 +33,9 @@ export class CoworkingsService {
     private requestsRepository: Repository<Request>,
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
-  ) {}
+    @InjectRepository(CoworkingImages)
+    private coworkingImagesRepository: Repository<CoworkingImages>,
+  ) { }
 
   async getAllCoworkings(
     page: number,
@@ -60,8 +63,9 @@ export class CoworkingsService {
     return { page, limit, total, coworking };
   }
 
-  async getCoworkingById(id: string) {
+  async getCoworkingById(id: UUID) {
     const coworking = await this.coworkingsRepository.findOne({
+      relations: ['user', 'images'],
       where: { id },
     });
 
@@ -140,8 +144,8 @@ export class CoworkingsService {
     try {
       await queryRunner.startTransaction(); // START
       // 2- Crear user
-      const password = Math.random().toString(36).slice(-8);
-      // const password = 'Coco123!';
+      // const password = Math.random().toString(36).slice(-8);
+      const password = process.env.SUPERADMIN_PASSWORD;
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)
         throw new BadRequestException('Password could not be hashed');
@@ -209,12 +213,25 @@ export class CoworkingsService {
   }
 
   async update(id: UUID, changes: UpdateCoworkingsDto) {
-    // return `This action updates a #${id} ${changes} coworking`;
     const coworking = await this.getCoworkingById(id);
 
     const updCoworking = this.coworkingsRepository.merge(coworking, changes);
     return await this.coworkingsRepository.save(updCoworking);
   }
+
+  async addImage(id: UUID, secure_url: string) {
+
+    const coworking = await this.getCoworkingById(id);
+
+    const image = this.coworkingImagesRepository.create({ secure_url });
+
+    image.coworking = coworking;
+
+    await this.coworkingImagesRepository.save(image);
+
+    return await this.getCoworkingById(id);;
+  }
+
 
   // remove(id: number) {
   //   return `This action removes a #${id} coworking`;

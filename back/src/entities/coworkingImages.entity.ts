@@ -2,7 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
+  // JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -35,6 +35,6 @@ export class CoworkingImages {
   updatedAt: Date;
 
   @ManyToOne(() => Coworkings, (coworking) => coworking.images)
-  @JoinColumn({ name: 'coworking_id' })
+  // @JoinColumn({ name: 'coworking_id' })
   coworking: Coworkings;
 }

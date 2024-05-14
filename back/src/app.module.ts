@@ -13,6 +13,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AmenitiesModule } from './modules/amenities/amenities.module';
 import { NodemailerModule } from './modules/nodemailer/nodemailer.module';
 import { CompaniesModule } from './modules/companies/companies.module';
+import { FilesModule } from './modules/files/files.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CompaniesModule } from './modules/companies/companies.module';
     }),
     AmenitiesModule,
     NodemailerModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

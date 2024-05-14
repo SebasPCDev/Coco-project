@@ -28,7 +28,7 @@ export class CompaniesService {
     private employeesRepository: Repository<Employees>,
     private dataSource: DataSource,
     private readonly nodemailerService: NodemailerService,
-  ) {}
+  ) { }
 
   async getAllCompanies() {
     return await this.companiesRepository.find();
@@ -63,7 +63,8 @@ export class CompaniesService {
       if (user) throw new BadRequestException('Usuario existente');
 
       // 2- Crear user
-      const password = Math.random().toString(36).slice(-8);
+      // const password = Math.random().toString(36).slice(-8);
+      const password = process.env.SUPERADMIN_PASSWORD;
       // const password = 'Coco123!';
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)

@@ -30,15 +30,15 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 
-@ApiTags('corokings')
+@ApiTags('coworkings')
 @UseGuards(AuthGuard)
 @Controller('coworkings')
 export class CoworkingsController {
-  constructor(private readonly coworkingsService: CoworkingsService) {}
+  constructor(private readonly coworkingsService: CoworkingsService) { }
 
   @Get()
   @Public()
-  getAllCoworkings( 
+  getAllCoworkings(
     @Query('country') country: string,
     @Query('state') state: string,
     @Query('city') city: string,
@@ -50,20 +50,20 @@ export class CoworkingsController {
 
   @Get('countries')
   @Public()
-  getCountries(){ 
+  getCountries() {
     return this.coworkingsService.getCountries();
   }
 
   @Get('country/:country')
   @Public()
-  getStates(@Param('country') country: string) { 
+  getStates(@Param('country') country: string) {
     return this.coworkingsService.getStates(country);
   }
 
   @Get('country/:country/state/:state')
   @Public()
   getCities(@Param('country') country: string,
-  @Param('state') state: string){  
+    @Param('state') state: string) {
     return this.coworkingsService.getCities(country, state);
   }
 

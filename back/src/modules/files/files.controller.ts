@@ -1,4 +1,4 @@
-import { Controller, FileTypeValidator, ForbiddenException, InternalServerErrorException, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, FileTypeValidator, InternalServerErrorException, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { FilesService } from './files.service';
@@ -8,6 +8,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UUID } from 'crypto';
 import { CoworkingsService } from '../coworkings/coworkings.service';
+import { UserAuthGuard } from 'src/guards/userAuth.guard';
 
 @ApiBearerAuth()
 @ApiTags('Files')
@@ -33,7 +34,7 @@ export class FilesController {
     },
   })
   @Roles(Role.ADMIN_COWORKING)
-  @UseGuards(RolesGuard)
+  @UseGuards(RolesGuard, UserAuthGuard)
   @UseInterceptors(FileInterceptor('image', { limits: { files: 1 } }))
   async uploadThumbnailCoworking(
     @Param('id', ParseUUIDPipe) id: UUID,
@@ -53,13 +54,6 @@ export class FilesController {
     )
     file: Express.Multer.File,
   ) {
-
-    // Validar que el coworking pertence al ADMIN
-    //TODO: Crear un guard?
-    const user = request.user;
-    const dbCoworking = await this.coworkingsService.getCoworkingById(id);
-    const valUser = dbCoworking.user.findIndex((coworkingAdmin) => coworkingAdmin.id === user.id)
-    if (valUser === -1) throw new ForbiddenException('Solo el administrador del Coworking puede cargar imágenes')
 
     // Upload Image   
     const image = await this.filesService.uploadImage(file);
@@ -86,7 +80,7 @@ export class FilesController {
     },
   })
   @Roles(Role.ADMIN_COWORKING)
-  @UseGuards(RolesGuard)
+  @UseGuards(RolesGuard, UserAuthGuard)
   @UseInterceptors(FileInterceptor('image', { limits: { files: 1 } }))
   async uploadImageCoworking(
     @Param('id', ParseUUIDPipe) id: UUID,
@@ -107,15 +101,8 @@ export class FilesController {
     file: Express.Multer.File,
   ) {
 
-    // Validar que el coworking pertence al ADMIN
-    //TODO: Crear un guard?
-    const user = request.user;
-    const dbCoworking = await this.coworkingsService.getCoworkingById(id);
-    const valUser = dbCoworking.user.findIndex((coworkingAdmin) => coworkingAdmin.id === user.id)
-    if (valUser === -1) throw new ForbiddenException('Solo el administrador del Coworking puede cargar imágenes')
 
     // Upload Image   
-
     const image = await this.filesService.uploadImage(file)
     if (!image)
       throw new InternalServerErrorException('Error cargando la imagen')

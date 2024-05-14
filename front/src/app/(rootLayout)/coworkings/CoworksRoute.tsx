@@ -15,6 +15,7 @@ import getCountriesfilter from "../../../../utils/gets/countriesFilter";
 import GetCoworkingsFilter from "../../../../utils/gets/getCoworkingsFilter";
 import getoptions from "../../../../utils/gets/getoptionsFilter";
 import { CgLayoutGrid } from "react-icons/cg";
+import Link from "next/link";
 
 /////////////
 // Santiago
@@ -245,7 +246,9 @@ export const CoworksRoute: React.FC = () => {
                 {coworkings.map((cowork) => {
                   return (
                     <li key={cowork.name}>
-                      <CoworkCard cowork={cowork} />
+                      <Link href={`http://localhost:3001/coworkings/${cowork.id}`}>
+                        <CoworkCard cowork={cowork} />
+                      </Link>
                     </li>
                   );
                 })}

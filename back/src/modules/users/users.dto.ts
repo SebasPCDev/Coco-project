@@ -2,11 +2,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDate,
   IsEmail,
+  IsEmpty,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
+import { UUID } from 'crypto';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
 
@@ -35,8 +39,7 @@ export class CreateUsersDto {
   @IsNotEmpty()
   position: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsEmpty()
   password: string;
 
   @IsString()
@@ -52,6 +55,20 @@ export class CreateUsersDto {
 
   @IsEnum(UserStatus)
   status: UserStatus;
+}
+
+export class CreateEmployeeDto extends CreateUsersDto {
+  @IsUUID()
+  @IsNotEmpty()
+  companyId: UUID;
+
+  @IsNumber()
+  @IsNotEmpty()
+  passes: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  passesAvailable: number;
 }
 
 export class LoginUserDto {

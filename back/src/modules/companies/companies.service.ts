@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateCompaniesDto } from './companies.dto';
 import { loadDataCompanies } from 'src/utils/loadData';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,7 +7,7 @@ import { DataSource, Repository } from 'typeorm';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { Users } from 'src/entities/users.entity';
 import * as bcrypt from 'bcrypt';
-import { CreateUsersDto } from '../users/users.dto';
+import { CreateEmployeeDto, CreateUsersDto } from '../users/users.dto';
 import { UUID } from 'crypto';
 import { Request } from 'src/entities/requests.entity';
 import { UserStatus } from 'src/models/userStatus.enum';
@@ -65,7 +65,6 @@ export class CompaniesService {
       // 2- Crear user
       // const password = Math.random().toString(36).slice(-8);
       const password = process.env.SUPERADMIN_PASSWORD;
-      // const password = 'Coco123!';
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)
         throw new BadRequestException('Password could not be hashed');
@@ -101,9 +100,7 @@ export class CompaniesService {
       const employee = {
         passes: 1,
         passesAvailable: 1,
-        //userId: newUser.id,
         user: newUser,
-        // companyId: newCompany.id,
         company: newCompany,
       };
 
@@ -135,10 +132,64 @@ export class CompaniesService {
     }
   }
 
+  async createEmployee(adminCompanyId: UUID, data: CreateEmployeeDto) {
+
+    const dbUser = await this.usersRepository.findOneBy({
+      email: data.email,
+    });
+    if (dbUser) throw new BadRequestException('Usuario existente');
+
+    const adminCompany = await this.usersRepository.findOne({ where: { id: adminCompanyId }, relations: ['employee.company'] });
+
+    if (adminCompany.employee.company.id !== data.companyId) throw new ForbiddenException('No tienes los permisos necesarios');
+
+    const company = await this.companiesRepository.findOneBy({ id: data.companyId });
+    if (!company) throw new BadRequestException('Empresa existente');
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+
+    try {
+
+      await queryRunner.startTransaction(); // START
+
+      const password = process.env.SUPERADMIN_PASSWORD;
+      const hashedPass = await bcrypt.hash(password, 10);
+      if (!hashedPass)
+        throw new BadRequestException('Password could not be hashed');
+
+      data.password = hashedPass;
+      data.role = Role.EMPLOYEE;
+      const user = this.usersRepository.create(data);
+      const newUser = await queryRunner.manager.save(user);
+
+      const employee = {
+        passes: data.passes,
+        passesAvailable: data.passesAvailable,
+        user: newUser,
+        company,
+      };
+
+      const newEmployee = this.employeesRepository.create(employee);
+      await queryRunner.manager.save(newEmployee);
+
+      await queryRunner.commitTransaction(); //COMMIT
+      await queryRunner.release(); // RELEASE
+
+      return await this.usersRepository.findOneBy({
+        email: data.email,
+      });
+    } catch (err) {
+      await queryRunner.rollbackTransaction(); // ROLLBACK
+      await queryRunner.release(); // RELEASE
+      throw err;
+    }
+  }
+
   /*   update(id: number, updateCompanyDto: UpdateCompanyDto) {
     return `This action updates a #${id} company`;
   }
- */
+  */
   remove(id: number) {
     return `This action removes a #${id} company`;
   }

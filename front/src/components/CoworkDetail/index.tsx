@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react";
-import "./style.css"
+import styles from "./CoworkDetail.module.css"
 
 const slides = [
     { url: "https://www.thedigitalnomad.asia/wp-content/uploads/2022/02/Coworking-spaces.jpeg", title: "Imagen cowork 1" },
@@ -105,14 +105,14 @@ export const CoworkDetail =({...cowork})=>{
     return(
         <>
             <main>
-                <section className="section prodmin" aria-label="prodmin">
-                  <div className="contenedor cont-producto">
+                <section className={`${styles.section} ${styles.prodmin}`} aria-label="prodmin">
+                  <div className={`{styles.contenedor} ${styles.contproducto}`}>
 
-                    <div className="imagenes-deslizable">
+                    <div className={styles.imagenesdeslizable}>
                 
 
                       {/* =============== swiper IMAGENES-DESLIZABLE THUMBNAIL ===============  */}
-                      <div className="imagenes-deslizable__overflow">
+                      <div className={styles.imagenesdeslizable__overflow}>
                     <div className="" style={containerStyles}>
                     <div style={sliderStyles}>
                         <div>
@@ -141,37 +141,37 @@ export const CoworkDetail =({...cowork})=>{
                       </div>
                   </div>
 
-                      <div className="prodmin-content">
+                      <div className={styles.prodmincontent}>
 
 
-                      <h2 style={{marginBottom: "1rem"}} className="h2 section-title">{cowork.name}</h2>
+                      <h2 style={{marginBottom: "1rem"}} className={`${styles.h2} ${styles.sectiontitle}`}>{cowork.name}</h2>
 
-                      <article className="job-card">
+                      <article className={styles.jobcard}>
                           <div>
-                            <p className="text-title">{cowork.address}</p>
-                            <p className="post-date">Posted on 23 Dec, 2023</p>
+                            <p className={styles.texttitle}>{cowork.address}</p>
+                            <p className={styles.postdate}>Posted on 23 Dec, 2023</p>
                           </div>
 
-                          <div className="budget-exp">
+                          <div className={styles.budgetexp}>
                             <div>
-                              <p className="value">Apertura</p>
-                              <p className="label">{cowork.open}</p>
+                              <p className={styles.value}>Apertura</p>
+                              <p className={styles.label}>{cowork.open}</p>
                             </div>
                             <div>
-                              <p className="value">Cierre</p>
-                              <p className="label">{cowork.open}</p>
+                              <p className={styles.value}>Cierre</p>
+                              <p className={styles.label}>{cowork.open}</p>
                             </div>
                             <div>
-                              <p className="value">Capacidad</p>
-                              <p className="label">{cowork.capacity}</p>
+                              <p className={styles.value}>Capacidad</p>
+                              <p className={styles.label}>{cowork.capacity}</p>
                             </div>
                           </div>
 
-                          <p className="text-body">
+                          <p className={styles.textbody}>
                             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga, quis possimus dignissimos ex ut libero quasi voluptatum recusandae sapiente odit veritatis corrupti neque 
                           </p>
 
-                          <div className="tags">
+                          <div className={styles.tags}>
                             <article>
                               <p>{cowork.phone}</p>
                               <p>{cowork.email}</p>
@@ -180,37 +180,31 @@ export const CoworkDetail =({...cowork})=>{
 
                           <div>
                             <a href="/job/<%= job._id %>">
-                              <button className="card-btn">Reservar</button>
+                              <button className={styles.cardbtn}>Reservar</button>
                             </a>
                           </div>
                         </article>
-
-
-
-
-
-
                       </div>
                   </div>
                 </section>
 
-                <section className="inmueble-caract">
-                    <div className="contenedor">
-                      <div className="cont-general-caract">
-                        <div className="caract-inf-basica">
-                          <h3 className="caract-title">Ubicacion</h3>
+                <section className={styles.inmueblecaract}>
+                    <div className={styles.contenedor}>
+                      <div className={styles.contgeneralcaract}>
+                        <div className={styles.caractinfbasica}>
+                          <h3 className={styles.caracttitle}>Ubicacion</h3>
                         </div>
 
-                        <div className="cont-general-caract-checks"> 
-                          <p className="caract-checks">
+                        <div className={styles.contgeneralcaractchecks}> 
+                          <p className={styles.caractchecks}>
                             <i className="fa-solid fa-check"></i> Pais: {cowork.country}<br/>
                             <i className="fa-solid fa-check"></i> Estado/Provincia: {cowork.state}<br/>
                             <i className="fa-solid fa-check"></i> Ciudad: {cowork.city}<br/>
                           </p>
                         </div>
 
-                        <div className="cont-general-caract-checks2">
-                          <p className="caract-checks">
+                        <div className={styles.contgeneralcaractchecks2}>
+                          <p className={styles.caractchecks}>
                             <i className="fa-solid fa-check"></i> extra: 1 <br/>
                             <i className="fa-solid fa-check"></i> extra: 4<br/>
                             <i className="fa-solid fa-check"></i> extra <br/>
@@ -218,34 +212,34 @@ export const CoworkDetail =({...cowork})=>{
                           </p>
                         </div>
 
-                        <div className="cont-general-caract-sup">
-                          <h3 className="caract-title">Informacion extra</h3>
+                        <div className={styles.contgeneralcaractsup}>
+                          <h3 className={styles.caracttitle}>Informacion extra</h3>
                         </div>
 
-                        <div className="cont-general-caract-sup-checks">
-                                          <p className="caract-checks">
+                        <div className={styles.contgeneralcaractsupchecks}>
+                                          <p className={styles.caractchecks}>
                             <i className="fa-solid fa-ruler-combined"></i> extra extra extra<br/>
                           </p>
                         </div>
 
-                        <div className="cont-general-caract-desc"> 
+                        <div className={styles.contgeneralcaractdesc}> 
                           <h3 className="caract-title">Descripción</h3>
                         </div>
 
-                        <div className="cont-general-caract-desc-cont">
-                          <p className="caract-descripcion">
+                        <div className={styles.contgeneralcaractdesccont}>
+                          <p className={styles.caractdescripcion}>
                             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repudiandae, similique. Aperiam quae harum eos? Natus, autem! Voluptatibus quos amet veritatis veniam, maxime quo ipsam sequi, reiciendis fugit ducimus culpa doloribus!
                           </p>
                         </div>
 
-                        <div className="cont-general-caract-serv">
-                          <p className="caract-checks">
-                            <h3 className="caract-title">Informacion extra</h3>
+                        <div className={styles.contgeneralcaractserv}>
+                          <p className={styles.caractchecks}>
+                            <h3 className={styles.caracttitle}>Informacion extra</h3>
                           </p>
                         </div>
 
-                        <div className="cont-general-caract-serv-checks">
-                          <p className="caract-checks">
+                        <div className={styles.contgeneralcaractservchecks}>
+                          <p className={styles.caractchecks}>
                             <i className="fa-solid fa-bolt"></i> extra <br/>
                             <i className="fa-solid fa-faucet-drip"></i> extra extra<br/>
                             <i className="fa-solid fa-fire-flame-simple"></i> extra extra <br/>
@@ -257,10 +251,10 @@ export const CoworkDetail =({...cowork})=>{
                     </div>
                 </section>
 
-                <section className="mapa-direccion">
-                  <div className="contenedor">
-                    <h2 className="mapa-titulo">Ubicación (ejemplo)</h2>
-                    <div className="google-maps-link">
+                <section className={styles.mapadireccion}>
+                  <div className={styles.contenedor}>
+                    <h2 className={styles.mapatitulo}>Ubicación (ejemplo)</h2>
+                    <div className={styles.googlemapslink}>
                       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3281.2606598425305!2d-58.353735624866346!3d-34.673370261178974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a3331dcd68fd89%3A0x92dfdde0df93960a!2sAv.%20Bartolom%C3%A9%20Mitre%2C%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1691671696243!5m2!1ses!2sar" ></iframe>
                     </div>
                   </div>

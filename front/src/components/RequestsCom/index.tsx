@@ -1,5 +1,4 @@
 "use client";
-import "./style.css";
 import { useUserContext } from "@/components/context";
 import PostActivateCowork from "../../../utils/posts/postActivateCowork";
 import IResponseRequest from "../../../utils/types/responseRequets";

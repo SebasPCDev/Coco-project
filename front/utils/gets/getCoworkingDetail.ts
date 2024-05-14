@@ -10,7 +10,6 @@ const GetCoworkingDetail = async (id: string) => {
       const response = await axios.get(url);      
 
     return response.data;
-    console.log("la petición ");
   } catch (error) {
     console.log("hay un error", error);
   }

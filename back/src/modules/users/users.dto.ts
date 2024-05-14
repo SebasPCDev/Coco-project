@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import {
   IsDate,
   IsEmail,
@@ -9,8 +9,10 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  Validate,
 } from 'class-validator';
 import { UUID } from 'crypto';
+import { MatchPass } from 'src/decorators/MatchPass.decorator';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
 
@@ -55,6 +57,19 @@ export class CreateUsersDto {
 
   @IsEnum(UserStatus)
   status: UserStatus;
+}
+
+export class UpdateUsersDto extends PartialType(OmitType(CreateUsersDto, ['status', 'password'])) {
+
+  @IsString()
+  @IsOptional()
+  readonly password?: string;
+
+  @IsString()
+  @IsOptional()
+  @Validate(MatchPass, ['password'])
+  readonly confPassword?: string;
+
 }
 
 export class CreateEmployeeDto extends CreateUsersDto {

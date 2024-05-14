@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsString,
@@ -201,4 +202,4 @@ export class CreateRequestCoworkingDto {
 
 export class UpdateRequestCoworkingDto extends PartialType(
   CreateRequestCoworkingDto,
-) {}
+) { }

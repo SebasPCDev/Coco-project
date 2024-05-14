@@ -59,4 +59,44 @@ export class FilesController {
       thumbnail: image.secure_url,
     });
   }
+
+  @Put('upload-image-coworking/:id')
+  @Roles(Role.ADMIN_COWORKING)
+  @UseGuards(RolesGuard)
+  @UseInterceptors(FileInterceptor('image', { limits: { files: 1 } }))
+  async uploadImageCoworking(
+    @Param('id', ParseUUIDPipe) id: UUID,
+    @Req() request,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 300000,
+            message: `El archivo debe ser menor a 300kb`,
+          }),
+          new FileTypeValidator({
+            fileType: /(jpg|jpeg|png|webp)$/,
+          }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+
+    // Validar que el coworking pertence al ADMIN
+    //TODO: Crear un guard?
+    const user = request.user;
+    const dbCoworking = await this.coworkingsService.getCoworkingById(id);
+    const valUser = dbCoworking.user.findIndex((coworkingAdmin) => coworkingAdmin.id === user.id)
+    if (valUser === -1) throw new ForbiddenException('Solo el administrador del Coworking puede cargar imágenes')
+
+    // Upload Image   
+
+    const image = await this.filesService.uploadImage(file)
+    if (!image)
+      throw new InternalServerErrorException('Error cargando la imagen')
+
+    // Update Coworking
+    return await this.coworkingsService.addImage(id, image.secure_url)
+  }
 }

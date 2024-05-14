@@ -20,6 +20,7 @@ import { CreateUsersDto } from '../users/users.dto';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { CoworkingImages } from 'src/entities/coworkingImages.entity';
 
 @Injectable()
 export class CoworkingsService {
@@ -32,6 +33,8 @@ export class CoworkingsService {
     private requestsRepository: Repository<Request>,
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
+    @InjectRepository(CoworkingImages)
+    private coworkingImagesRepository: Repository<CoworkingImages>,
   ) { }
 
   async getAllCoworkings(
@@ -62,7 +65,7 @@ export class CoworkingsService {
 
   async getCoworkingById(id: UUID) {
     const coworking = await this.coworkingsRepository.findOne({
-      relations: ['user'],
+      relations: ['user', 'images'],
       where: { id },
     });
 
@@ -215,6 +218,20 @@ export class CoworkingsService {
     const updCoworking = this.coworkingsRepository.merge(coworking, changes);
     return await this.coworkingsRepository.save(updCoworking);
   }
+
+  async addImage(id: UUID, secure_url: string) {
+
+    const coworking = await this.getCoworkingById(id);
+
+    const image = this.coworkingImagesRepository.create({ secure_url });
+
+    image.coworking = coworking;
+
+    await this.coworkingImagesRepository.save(image);
+
+    return await this.getCoworkingById(id);;
+  }
+
 
   // remove(id: number) {
   //   return `This action removes a #${id} coworking`;

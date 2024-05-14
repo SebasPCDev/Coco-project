@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  // IsArray,
   IsEmail,
   IsNotEmpty,
   IsNumber,
@@ -11,7 +10,6 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-// import { Employees } from 'src/entities/employees.entity';
 
 export class CreateCompaniesDto {
   @ApiProperty({
@@ -61,8 +59,6 @@ export class CreateCompaniesDto {
   @Min(0, { message: 'El tamaño debe ser mayor o igual a 0' })
   size: number;
 
-  // @IsArray()
-  // employees: Employees[];
 }
 
 export class ActivateCoworkingsDto {

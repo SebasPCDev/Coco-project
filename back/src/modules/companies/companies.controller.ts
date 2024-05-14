@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 
 import { CreateCompaniesDto } from './companies.dto';
@@ -18,13 +19,14 @@ import { Role } from 'src/models/roles.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { CompaniesService } from './companies.service';
 import { UUID } from 'crypto';
+import { CreateEmployeeDto } from '../users/users.dto';
 
 @ApiTags('companies')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller('companies')
 export class CompaniesController {
-  constructor(private readonly companiesService: CompaniesService) {}
+  constructor(private readonly companiesService: CompaniesService) { }
 
   @Get(':id')
   getCompanyById(@Param('id') id: string) {
@@ -49,6 +51,15 @@ export class CompaniesController {
   activateCoworking(@Body() data: { id: UUID }) {
     return this.companiesService.activateCompany(data.id as UUID);
   }
+
+  @Roles(Role.ADMIN_COMPANY)
+  @UseGuards(RolesGuard)
+  @Post('create-employee')
+  createEmployee(@Req() request, @Body() data: CreateEmployeeDto) {
+    const adminCompanyId = request.user.id;
+    return this.companiesService.createEmployee(adminCompanyId as UUID, data);
+  }
+
 
   /* @Put(':id')
   update(@Param('id') id: string, @Body() updateCompaniesDto: UpdateCompaniesDto) {

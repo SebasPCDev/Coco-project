@@ -136,7 +136,7 @@ export class CoworkingsService {
     // 1- Busco la solicitud
     const requestCoworking = await this.requestsRepository.findOneBy({ id });
     if (!requestCoworking || requestCoworking.status === StatusRequest.CLOSE)
-      throw new BadRequestException('socolitud procesada o inexistente');
+      throw new BadRequestException('Solicitud procesada o inexistente');
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();

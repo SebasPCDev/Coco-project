@@ -1,5 +1,5 @@
 import { Controller, FileTypeValidator, ForbiddenException, InternalServerErrorException, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { FilesService } from './files.service';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -20,6 +20,18 @@ export class FilesController {
   ) { }
 
   @Put('upload-thumbnail-coworking/:id')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @Roles(Role.ADMIN_COWORKING)
   @UseGuards(RolesGuard)
   @UseInterceptors(FileInterceptor('image', { limits: { files: 1 } }))
@@ -61,6 +73,18 @@ export class FilesController {
   }
 
   @Put('upload-image-coworking/:id')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @Roles(Role.ADMIN_COWORKING)
   @UseGuards(RolesGuard)
   @UseInterceptors(FileInterceptor('image', { limits: { files: 1 } }))

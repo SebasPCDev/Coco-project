@@ -1,4 +1,4 @@
-import { Controller, FileTypeValidator, InternalServerErrorException, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, FileTypeValidator, InternalServerErrorException, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { FilesService } from './files.service';
@@ -8,7 +8,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UUID } from 'crypto';
 import { CoworkingsService } from '../coworkings/coworkings.service';
-import { UserAuthGuard } from 'src/guards/userAuth.guard';
+import { UserAuthCoworkingGuard } from 'src/guards/userAuthCoworking.guard';
 
 @ApiBearerAuth()
 @ApiTags('Files')
@@ -34,11 +34,10 @@ export class FilesController {
     },
   })
   @Roles(Role.ADMIN_COWORKING)
-  @UseGuards(RolesGuard, UserAuthGuard)
+  @UseGuards(RolesGuard, UserAuthCoworkingGuard)
   @UseInterceptors(FileInterceptor('image', { limits: { files: 1 } }))
   async uploadThumbnailCoworking(
     @Param('id', ParseUUIDPipe) id: UUID,
-    @Req() request,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -80,11 +79,10 @@ export class FilesController {
     },
   })
   @Roles(Role.ADMIN_COWORKING)
-  @UseGuards(RolesGuard, UserAuthGuard)
+  @UseGuards(RolesGuard, UserAuthCoworkingGuard)
   @UseInterceptors(FileInterceptor('image', { limits: { files: 1 } }))
   async uploadImageCoworking(
     @Param('id', ParseUUIDPipe) id: UUID,
-    @Req() request,
     @UploadedFile(
       new ParseFilePipe({
         validators: [

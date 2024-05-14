@@ -3,20 +3,22 @@ import {
   Get,
   Post,
   Body,
-  //Put,
   Param,
-  Delete,
+  // Delete,
   ParseUUIDPipe,
   UseGuards,
+  Req,
+  Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUsersDto } from './users.dto';
+import { CreateUsersDto, UpdateUsersDto } from './users.dto';
 import { UUID } from 'crypto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { UserAuthGuard } from 'src/guards/userAuth.guard';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -37,19 +39,27 @@ export class UsersController {
     return this.userService.create(createUserDto);
   }
 
+  @Get('profile')
+  getProfile(@Req() request) {
+    const userId = request.user.id
+    return this.userService.findOne(userId);
+  }
 
+  @Roles(Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.userService.findOne(id);
   }
 
-  /*   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  } */
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @UseGuards(UserAuthGuard)
+  @Put(':id')
+  update(@Param('id', ParseUUIDPipe) id: UUID, @Body() changes: UpdateUsersDto) {
+    return this.userService.update(id, changes);
   }
+
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.userService.remove(+id);
+  // }
 }

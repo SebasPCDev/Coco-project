@@ -1,17 +1,15 @@
 import {
-  BadRequestException,
   CanActivate,
   ExecutionContext,
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { CoworkingsService } from 'src/modules/coworkings/coworkings.service';
+import { Role } from '../models/roles.enum';
 
 @Injectable()
 export class UserAuthGuard implements CanActivate {
   constructor(private readonly reflector: Reflector,
-    private readonly coworkingsService: CoworkingsService,
   ) { }
 
   async canActivate(
@@ -21,22 +19,13 @@ export class UserAuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 
+    console.log('paramId', request.params);
     const paramId = request.params.id;
+    if (paramId) {
+      if (paramId !== user.id && !user.roles.includes(Role.SUPERADMIN))
+        throw new ForbiddenException('You do not have permission and are not allowed to access this route');
+    }
 
-    if (!paramId) throw new BadRequestException('Id no encontrado');
-    const dbCoworking = await this.coworkingsService.getCoworkingById(paramId);
-
-    const valUser = dbCoworking.user.findIndex((coworkingAdmin) => coworkingAdmin.id === user.id)
-    if (valUser === -1) throw new ForbiddenException('Solo el administrador del Coworking puede cargar imágenes')
-
-
-    const valid = user && valUser !== -1;
-
-    if (!valid)
-      throw new ForbiddenException(
-        'You do not have permission and are not allowed to access this route',
-      );
-
-    return valid;
+    return true;
   }
 }

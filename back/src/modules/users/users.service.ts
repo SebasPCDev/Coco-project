@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUsersDto } from './users.dto';
+import { CreateUsersDto, UpdateUsersDto } from './users.dto';
 import * as bcrypt from 'bcrypt';
 import { Users } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
@@ -12,7 +12,7 @@ export class UsersService {
   constructor(
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
-  ) {}
+  ) { }
 
   async create(data: CreateUsersDto) {
     const user = await this.getUserByEmail(data.email);
@@ -44,9 +44,18 @@ export class UsersService {
     return user;
   }
 
-  /*   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  } */
+  async update(id: UUID, changes: UpdateUsersDto) {
+    const user = await this.findOne(id);
+
+    if (changes.password) {
+      const hashedPass = await bcrypt.hash(changes.password, 10);
+      changes = { ...changes, password: hashedPass };
+    }
+
+    const updUser = this.usersRepository.merge(user, changes);
+    return this.usersRepository.save(updUser);
+
+  }
 
   remove(id: number) {
     return `This action removes a #${id} user`;

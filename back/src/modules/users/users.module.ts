@@ -5,13 +5,13 @@ import { Users } from 'src/entities/users.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Users])],
   controllers: [UsersController],
   providers: [UsersService],
-  imports: [TypeOrmModule.forFeature([Users])],
   exports: [UsersService],
 })
 export class UsersModule {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   async onModuleInit() {
     await this.usersService.preloadSuperAdminUser();

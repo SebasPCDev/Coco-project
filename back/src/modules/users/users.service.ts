@@ -54,7 +54,6 @@ export class UsersService {
 
     const updUser = this.usersRepository.merge(user, changes);
     return this.usersRepository.save(updUser);
-
   }
 
   remove(id: number) {

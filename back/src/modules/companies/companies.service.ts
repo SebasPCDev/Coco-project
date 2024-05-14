@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { CreateCompaniesDto } from './companies.dto';
+import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
 import { loadDataCompanies } from 'src/utils/loadData';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Companies } from 'src/entities/companies.entity';
@@ -34,7 +34,7 @@ export class CompaniesService {
     return await this.companiesRepository.find();
   }
 
-  async getCompanyById(id: string) {
+  async getCompanyById(id: UUID) {
     return await this.companiesRepository.findOne({
       where: { id },
     });
@@ -186,10 +186,13 @@ export class CompaniesService {
     }
   }
 
-  /*   update(id: number, updateCompanyDto: UpdateCompanyDto) {
-    return `This action updates a #${id} company`;
+  async update(id: UUID, changes: UpdateCompaniesDto) {
+    const company = await this.getCompanyById(id);
+
+    const updCompany = this.companiesRepository.merge(company, changes);
+    return this.companiesRepository.save(updCompany);
   }
-  */
+
   remove(id: number) {
     return `This action removes a #${id} company`;
   }

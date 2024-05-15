@@ -11,8 +11,8 @@ export default function companyValidation(values: ICompaniesInfo): ICompaniesErr
         errors.lastname = "El apellido es requerido";
     } else if (!/^(?=\S)(?!.*[^\x20-\x7E])(?=.{3,50}$)[a-zA-Z ]+$/.test(values.lastname)) {
         errors.lastname = "El apellido es inválido";
-    } else if (!values.phone) {
-        errors.phone = "El teléfono es requerido";
+    } else if (!/^\s*(\+\d{1,3}\s*)?\d{11,15}\s*$/.test(values.phone)) {
+        errors.phone = "El teléfono debe tener entre 11 y 15 caracteres";
     } else if (!/\S+@\S+\.\S+/.test(values.email)) {
         errors.email = "El correo es requerido";
     } else if (!/^\w{1,15}$/.test(values.identification)) {
@@ -23,8 +23,8 @@ export default function companyValidation(values: ICompaniesInfo): ICompaniesErr
         errors.companyName = "El nombre de la empresa debe tener entre 3 y 50 caracteres";
     } else if (!/\S+@\S+\.\S+/.test(values.companyEmail)) {
         errors.companyEmail = "El correo de la empresa es requerido";
-    } else if (!values.companyPhone) {
-        errors.companyPhone = "El teléfono de la empresa es requerido";
+    } else if (!/^\s*(\+\d{1,3}\s*)?\d{11,15}\s*$/.test(values.companyPhone)) {
+        errors.companyPhone = "El teléfono debe tener entre 11 y 15 caracteres";
     /* Implementar Agregar país y ciudades */    
     /* } else if (!values.country || values.country.length > 50) {
         errors.country = "Country is required and must be at most 50 characters";

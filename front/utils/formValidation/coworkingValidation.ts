@@ -11,8 +11,8 @@ export default function coworkingValidation(values: ICoworkingsInfo): ICoworking
             errors.lastname = "El apellido es requerido";
         } else if (!/^(?=\S)(?!.*[^\x20-\x7E])(?=.{2,50}$)[a-zA-Z ]+$/.test(values.lastname)) {
             errors.lastname = "El apellido es inválido";
-        } else if (!values.phone) {
-            errors.phone = "El teléfono es requerido";
+        } else if (!/^\s*(\+\d{1,3}\s*)?\d{11,15}\s*$/.test(values.phone)) {
+            errors.phone = "El teléfono debe tener entre 11 y 15 caracteres";        
         } else if (!/\S+@\S+\.\S+/.test(values.email)) {
             errors.email = "El correo es requerido";
         } else if (!/^\w{1,15}$/.test(values.identification)) {
@@ -23,8 +23,8 @@ export default function coworkingValidation(values: ICoworkingsInfo): ICoworking
             errors.companyName = "El nombre de la empresa debe tener entre 3 y 50 caracteres";
         } else if (!/\S+@\S+\.\S+/.test(values.companyEmail)) {
             errors.companyEmail = "El correo de la empresa es requerido";
-        } else if (!values.companyPhone) {
-            errors.companyPhone = "El teléfono de la empresa es requerido";
+        } else if (!/^\s*(\+\d{1,3}\s*)?\d{11,15}\s*$/.test(values.companyPhone)) {
+            errors.companyPhone = "El teléfono debe tener entre 10 y 15 caracteres";
         } else if (!/^.{5,255}$/.test(values.address)) {    
             errors.address = "La dirección debe tener entre 5 y 255 caracteres";
         } else if (!/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(values.website)) {

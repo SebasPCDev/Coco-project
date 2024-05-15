@@ -16,7 +16,7 @@ const config = {
   migrations: ['dist/migrations/*{.ts,.js}'],
   synchronize: true,
   logging: ['error'],
-  // logging: true,
+  //logging: true,
   dropSchema: true,
 };
 

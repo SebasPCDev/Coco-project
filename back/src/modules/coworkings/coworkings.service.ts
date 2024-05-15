@@ -252,6 +252,12 @@ export class CoworkingsService {
   async update(id: UUID, changes: UpdateCoworkingsDto) {
     const coworking = await this.getCoworkingById(id);
 
+    if (changes.status) {
+      const geography = (coworking.country && coworking.state && coworking.city && coworking.lat && coworking.long);
+
+      if (changes.status === CoworkingStatus.ACTIVE && !geography || !coworking.thumbnail) throw new BadRequestException('The country, state, city, lat, long and thumbnail data are required to activate coworking');
+    }
+
     const updCoworking = this.coworkingsRepository.merge(coworking, changes);
     return await this.coworkingsRepository.save(updCoworking);
   }

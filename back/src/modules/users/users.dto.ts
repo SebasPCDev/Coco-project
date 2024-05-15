@@ -17,45 +17,94 @@ import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
 
 export class CreateUsersDto {
-  @IsString()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: 'Juan',
+    description: 'Nombre del usuario',
+  })
+  @IsString({ message: 'name debe ser un string' })
+  @IsNotEmpty({ message: 'name no debe estar vacío' })
   name: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: 'Perez',
+    description: 'Apellido del usuario',
+  })
+  @IsString({ message: 'lastname debe ser un string' })
+  @IsNotEmpty({ message: 'lastname no debe estar vacío' })
   lastname: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: '123456789',
+    description: 'Número de teléfono del usuario',
+  })
+  @IsString({ message: 'phone debe ser un string' })
+  @IsNotEmpty({ message: 'phone no debe estar vacío' })
   phone: string;
 
-  @IsEmail()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: 'juan@example.com',
+    description: 'Correo electrónico del usuario',
+  })
+  @IsEmail({}, { message: 'email debe ser un correo electrónico válido' })
+  @IsNotEmpty({ message: 'email no debe estar vacío' })
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: '1234567890',
+    description: 'Identificación del usuario',
+  })
+  @IsString({ message: 'identification debe ser un string' })
+  @IsNotEmpty({ message: 'identification no debe estar vacío' })
   identification: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: 'Gerente',
+    description: 'Posición del usuario',
+  })
+  @IsString({ message: 'position debe ser un string' })
+  @IsNotEmpty({ message: 'position no debe estar vacío' })
   position: string;
 
-  @IsEmpty()
+  @ApiProperty({
+    example: '',
+    description: 'Contraseña del usuario (se establece dentro del endpoint, se envía null)',
+    nullable: true,
+  })
+  @IsEmpty({ message: 'password debe ser nulo' })
   password: string;
 
-  @IsString()
+  @ApiProperty({
+    example: 'TokenDeRecuperación123',
+    description: 'Token de recuperación del usuario (opcional)',
+    nullable: true,
+  })
+  @IsString({ message: 'recoveryToken debe ser un string' })
   @IsOptional()
   recoveryToken?: string;
 
-  @IsDate()
+  @ApiProperty({
+    example: '2024-05-15',
+    description: 'Fecha de activación del usuario (opcional)',
+    nullable: true,
+  })
+  @IsDate({ message: 'activationDate debe ser una fecha válida' })
   @IsOptional()
   activationDate?: Date;
 
-  @IsEnum(Role)
+  @ApiProperty({
+    example: 'Admin',
+    description: 'Rol del usuario',
+    enum: Role,
+  })
+  @IsEnum(Role, { message: 'role debe ser un valor válido de Role' })
   role: Role;
 
-  @IsEnum(UserStatus)
+  @ApiProperty({
+    example: 'Active',
+    description: 'Estado del usuario',
+    enum: UserStatus,
+  })
+  @IsEnum(UserStatus, { message: 'status debe ser un valor válido de UserStatus' })
   status: UserStatus;
 }
 
@@ -73,22 +122,38 @@ export class UpdateUsersDto extends PartialType(OmitType(CreateUsersDto, ['statu
 }
 
 export class CreateEmployeeDto extends CreateUsersDto {
-  @IsUUID()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: '123e4567-e89b-12d3-a456-426614174000',
+    description: 'ID de la compañía',
+  })
+  @IsUUID('4', { message: 'companyId debe ser un UUID válido' })
+  @IsNotEmpty({ message: 'companyId no debe estar vacío' })
   companyId: UUID;
 
-  @IsNumber()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: 5,
+    description: 'Número de pases',
+  })
+  @IsNumber({}, { message: 'passes debe ser un número' })
+  @IsNotEmpty({ message: 'passes no debe estar vacío' })
   passes: number;
 
-  @IsNumber()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: 2,
+    description: 'Número de pases disponibles',
+  })
+  @IsNumber({}, { message: 'passesAvailable debe ser un número' })
+  @IsNotEmpty({ message: 'passesAvailable no debe estar vacío' })
   passesAvailable: number;
 }
 
 export class CreateUserCoworkingsDto extends CreateUsersDto {
-  @IsUUID()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: '123e4567-e89b-12d3-a456-426614174000',
+    description: 'ID del coworking',
+  })
+  @IsUUID('4', { message: 'coworkingId debe ser un UUID válido' })
+  @IsNotEmpty({ message: 'coworkingId no debe estar vacío' })
   coworkingId: UUID;
 }
 

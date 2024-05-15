@@ -49,7 +49,7 @@ export class CompaniesService {
     // 1- Busco la solicitud
     const requestCoworking = await this.requestsRepository.findOneBy({ id });
     if (!requestCoworking || requestCoworking.status === StatusRequest.CLOSE)
-      throw new BadRequestException('socolitud procesada o inexistente');
+      throw new BadRequestException('solicitud procesada o inexistente');
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -137,14 +137,14 @@ export class CompaniesService {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
-    if (dbUser) throw new BadRequestException('Usuario existente');
+    if (dbUser) throw new BadRequestException('User found');
 
     const adminCompany = await this.usersRepository.findOne({ where: { id: adminCompanyId }, relations: ['employee.company'] });
 
-    if (adminCompany.employee.company.id !== data.companyId) throw new ForbiddenException('No tienes los permisos necesarios');
+    if (adminCompany.employee.company.id !== data.companyId) throw new ForbiddenException('You do not have permission and are not allowed to access this route');
 
     const company = await this.companiesRepository.findOneBy({ id: data.companyId });
-    if (!company) throw new BadRequestException('Empresa existente');
+    if (!company) throw new BadRequestException('Company not found');
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();

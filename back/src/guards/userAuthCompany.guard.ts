@@ -23,10 +23,12 @@ export class UserAuthCompanyGuard implements CanActivate {
     const user = request.user;
 
     const paramId = request.params.id;
-
     if (!paramId) throw new BadRequestException('Id no encontrado');
 
     const dbUser = await this.usersService.findOne(user.id);
+
+    console.log("dbUser.employee.company.id", dbUser.employee.company.id);
+    console.log("paramId", paramId);
 
     const valid = dbUser.employee.company.id === paramId;
 

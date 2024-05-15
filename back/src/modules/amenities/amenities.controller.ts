@@ -3,7 +3,9 @@ import { Amenities } from 'src/entities/amenities.entity';
 import { AmenitiesService } from './amenities.service';
 import { UUID } from 'crypto';
 import { CreateAmenityDto } from './amenities.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('amenities')
 @Controller('amenities')
 export class AmenitiesController {
     constructor(private readonly amenitiesService: AmenitiesService) {}

@@ -78,3 +78,10 @@ body {
 .Button_Form {
   @apply bg-custom-secondary text-white rounded-md px-4 py-4;
 }
+
+/* Para inputs de tipo phone */
+.react-international-phone-input, .react-international-phone-country-selector-button  {
+  background-color:rgb(229 231 235) !important;
+  height: 4.5rem !important;
+}
+

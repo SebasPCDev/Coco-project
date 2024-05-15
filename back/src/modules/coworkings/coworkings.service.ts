@@ -16,7 +16,7 @@ import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
 import { Request } from 'src/entities/requests.entity';
 import { CreateCoworkingsDto, UpdateCoworkingsDto } from './coworkings.dto';
-import { CreateUsersDto } from '../users/users.dto';
+import { CreateUserCoworkingsDto, CreateUsersDto } from '../users/users.dto';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
@@ -205,6 +205,42 @@ export class CoworkingsService {
       await queryRunner.release(); // RELEASE
 
       return newCoworking;
+    } catch (err) {
+      await queryRunner.rollbackTransaction(); // ROLLBACK
+      await queryRunner.release(); // RELEASE
+      throw err;
+    }
+  }
+
+  async createUserCoworking(data: CreateUserCoworkingsDto) {
+
+    const dbUser = await this.usersRepository.findOneBy({
+      email: data.email,
+    });
+    if (dbUser) throw new BadRequestException('User found');
+
+    const coworking = await this.coworkingsRepository.findOneBy({ id: data.coworkingId });
+    if (!coworking) throw new BadRequestException('Coworking not found');
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+
+    try {
+      await queryRunner.startTransaction(); // START
+
+      data.role = Role.COWORKING;
+      data.status = UserStatus.ACTIVE;
+      const user = this.usersRepository.create(data);
+      const newUser = await queryRunner.manager.save(user);
+
+      coworking.user = [newUser];
+
+      const updCoworking = await queryRunner.manager.save(coworking);
+
+      await queryRunner.commitTransaction(); //COMMIT
+      await queryRunner.release(); // RELEASE
+
+      return updCoworking;
     } catch (err) {
       await queryRunner.rollbackTransaction(); // ROLLBACK
       await queryRunner.release(); // RELEASE

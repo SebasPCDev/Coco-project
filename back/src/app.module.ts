@@ -26,9 +26,9 @@ import { FilesModule } from './modules/files/files.module';
       useFactory: (configService: ConfigService) =>
         configService.get('typeorm'),
     }),
+    UsersModule,
     CompaniesModule,
     CoworkingModule,
-    UsersModule,
     BookingsModule,
     AuthModule,
     RequestsModule,
@@ -44,4 +44,4 @@ import { FilesModule } from './modules/files/files.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

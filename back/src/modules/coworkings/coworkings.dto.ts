@@ -14,7 +14,6 @@ import {
   MaxLength,
   MinLength,
   registerDecorator,
-  Validate,
   ValidationArguments,
   ValidationOptions
 
@@ -31,6 +30,7 @@ export function IsTimeRange(validationOptions?: ValidationOptions) {
       constraints: [],
       options: validationOptions,
       validator: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         validate(value: any, args: ValidationArguments) {
           const timeRegex = /^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
           if (!value.match(timeRegex)) {
@@ -186,7 +186,7 @@ export class CreateCoworkingsDto {
   user: Users[];
 }
 
-export class UpdateCoworkingsDto extends PartialType(CreateCoworkingsDto) {}
+export class UpdateCoworkingsDto extends PartialType(CreateCoworkingsDto) { }
 
 export class ActivateCoworkingsDto {
   @ApiProperty({

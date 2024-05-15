@@ -86,6 +86,13 @@ export class CreateEmployeeDto extends CreateUsersDto {
   passesAvailable: number;
 }
 
+export class CreateUserCoworkingsDto extends CreateUsersDto {
+  @IsUUID()
+  @IsNotEmpty()
+  coworkingId: UUID;
+}
+
+
 export class LoginUserDto {
   @ApiProperty({
     example: 'example@email.com',

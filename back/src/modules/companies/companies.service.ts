@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { CreateCompaniesDto } from './companies.dto';
+import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
 import { loadDataCompanies } from 'src/utils/loadData';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Companies } from 'src/entities/companies.entity';
@@ -34,7 +34,7 @@ export class CompaniesService {
     return await this.companiesRepository.find();
   }
 
-  async getCompanyById(id: string) {
+  async getCompanyById(id: UUID) {
     return await this.companiesRepository.findOne({
       where: { id },
     });
@@ -49,7 +49,7 @@ export class CompaniesService {
     // 1- Busco la solicitud
     const requestCoworking = await this.requestsRepository.findOneBy({ id });
     if (!requestCoworking || requestCoworking.status === StatusRequest.CLOSE)
-      throw new BadRequestException('socolitud procesada o inexistente');
+      throw new BadRequestException('solicitud procesada o inexistente');
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -137,14 +137,14 @@ export class CompaniesService {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
-    if (dbUser) throw new BadRequestException('Usuario existente');
+    if (dbUser) throw new BadRequestException('User found');
 
     const adminCompany = await this.usersRepository.findOne({ where: { id: adminCompanyId }, relations: ['employee.company'] });
 
-    if (adminCompany.employee.company.id !== data.companyId) throw new ForbiddenException('No tienes los permisos necesarios');
+    if (adminCompany.employee.company.id !== data.companyId) throw new ForbiddenException('You do not have permission and are not allowed to access this route');
 
     const company = await this.companiesRepository.findOneBy({ id: data.companyId });
-    if (!company) throw new BadRequestException('Empresa existente');
+    if (!company) throw new BadRequestException('Company not found');
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -186,10 +186,13 @@ export class CompaniesService {
     }
   }
 
-  /*   update(id: number, updateCompanyDto: UpdateCompanyDto) {
-    return `This action updates a #${id} company`;
+  async update(id: UUID, changes: UpdateCompaniesDto) {
+    const company = await this.getCompanyById(id);
+
+    const updCompany = this.companiesRepository.merge(company, changes);
+    return this.companiesRepository.save(updCompany);
   }
-  */
+
   remove(id: number) {
     return `This action removes a #${id} company`;
   }

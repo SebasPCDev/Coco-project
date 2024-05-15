@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
@@ -58,8 +58,9 @@ export class CreateCompaniesDto {
   @IsNotEmpty({ message: 'El tamaño no puede estar vacío' })
   @Min(0, { message: 'El tamaño debe ser mayor o igual a 0' })
   size: number;
-
 }
+
+export class UpdateCompaniesDto extends PartialType(CreateCompaniesDto) { }
 
 export class ActivateCoworkingsDto {
   @ApiProperty({

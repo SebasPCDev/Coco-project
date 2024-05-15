@@ -29,6 +29,8 @@ import { Public } from 'src/decorators/public.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
+import { CreateUserCoworkingsDto } from '../users/users.dto';
+import { UserAuthCoworkingGuard } from 'src/guards/userAuthCoworking.guard';
 
 @ApiTags('coworkings')
 @UseGuards(AuthGuard)
@@ -81,6 +83,14 @@ export class CoworkingsController {
     const user = request.user;
     return this.coworkingsService.create(user.id as UUID, data);
   }
+
+  @Roles(Role.ADMIN_COWORKING)
+  @UseGuards(RolesGuard, UserAuthCoworkingGuard)
+  @Post('create-user-coworking')
+  createUserCoworking(@Req() request, @Body() data: CreateUserCoworkingsDto) {
+    return this.coworkingsService.createUserCoworking(data);
+  }
+
 
   @ApiBearerAuth()
   @Roles(Role.SUPERADMIN)

@@ -3,14 +3,15 @@ import {
   Get,
   Post,
   Body,
-  //Put,
   Param,
-  Delete,
+  // Delete,
   UseGuards,
   Req,
+  Put,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 
-import { CreateCompaniesDto } from './companies.dto';
+import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
 
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -20,6 +21,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { CompaniesService } from './companies.service';
 import { UUID } from 'crypto';
 import { CreateEmployeeDto } from '../users/users.dto';
+import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
 
 @ApiTags('companies')
 @ApiBearerAuth()
@@ -29,7 +31,7 @@ export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) { }
 
   @Get(':id')
-  getCompanyById(@Param('id') id: string) {
+  getCompanyById(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.companiesService.getCompanyById(id);
   }
 
@@ -60,14 +62,15 @@ export class CompaniesController {
     return this.companiesService.createEmployee(adminCompanyId as UUID, data);
   }
 
-
-  /* @Put(':id')
-  update(@Param('id') id: string, @Body() updateCompaniesDto: UpdateCompaniesDto) {
-    return this.CompaniesService.update(+id, updateCompaniesDto);
-  } */
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.companiesService.remove(+id);
+  @Roles(Role.ADMIN_COMPANY)
+  @UseGuards(RolesGuard, UserAuthCompanyGuard)
+  @Put(':id')
+  update(@Param('id', ParseUUIDPipe) id: UUID, @Body() changes: UpdateCompaniesDto) {
+    return this.companiesService.update(id, changes);
   }
+
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.companiesService.remove(+id);
+  // }
 }

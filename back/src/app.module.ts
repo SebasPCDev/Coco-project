@@ -26,12 +26,12 @@ import { FilesModule } from './modules/files/files.module';
       useFactory: (configService: ConfigService) =>
         configService.get('typeorm'),
     }),
+    RequestsModule,
     UsersModule,
     CompaniesModule,
     CoworkingModule,
     BookingsModule,
     AuthModule,
-    RequestsModule,
     JwtModule.register({
       global: true,
       // signOptions: { expiresIn: '1h' },
@@ -44,4 +44,4 @@ import { FilesModule } from './modules/files/files.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

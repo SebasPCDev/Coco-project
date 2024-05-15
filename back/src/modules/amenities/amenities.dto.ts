@@ -10,7 +10,7 @@ export class CreateAmenityDto {
   @ApiProperty({ example: 'Área equipada para hacer ejercicio', description: 'Descripción de la amenidad' })
   @IsNotEmpty({ message: 'La descripción es obligatoria' })
   @IsString({ message: 'La descripción debe ser una cadena de caracteres' })
-  descripcion: string;
+  description: string;
 }
 
 export class UpdateAmenityDto {

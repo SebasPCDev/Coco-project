@@ -6,7 +6,7 @@ const HeaderMain: React.FC = () => {
   return (
     <div className="flex">
       <div className="w-full flex flex-col md:flex-row items-center">
-        <div className="w-full px-60 md:w-1/2 mb-8 md:mb-0 md:mr-4">
+        <div className="w-full px-50 md:w-1/2 mb-8 md:mb-0 md:mr-4">
           {/* Agregamos un margen derecho para separar los componentes */}
           <OfertaSection />
         </div>

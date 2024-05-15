@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const OfertaSection: React.FC = () => {
   return (
-    <div>
+    <div style={{padding: "2rem", maxWidth: "800px", marginInline: "auto", marginLeft: "8rem"}}>
       <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-8">
         Ofrece a tus equipos remotos acceso a <span className="text-green-500">espacios de trabajo flexibles</span>
       </h1>

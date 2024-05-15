@@ -1,0 +1,100 @@
+
+  .propertycard {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.25s ease;
+    border: 1px solid #838383;
+  }
+  
+  .propertycard:is(:hover, :focus-within) { box-shadow: 0 20px 25px -5px hsla(214, 19%, 29%, 0.10),
+                0 10px 10px -5px hsla(214, 19%, 29%, 0.10);; }
+  
+  .propertycard .cardactionbtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: hsl(0, 0%, 100%);
+    padding: 8px;
+    border-radius: 7px;
+  }
+  
+  .propertycard .cardcontent {
+    color: hsl(224, 34%, 13%);
+    padding: 25px;
+    background: #d1d1d1;
+  }
+  
+  .propertycard .cardtitle {
+    transition: 0.25s ease;
+  }
+  
+  .propertycard .cardtitle:is(:hover, :focus) { color: hsl(142, 76%, 36%); }
+  
+  .propertycard .cardlist {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4px;
+    padding-block: 9px;
+    border-block: 1px solid hsl(0deg 0% 55.53%);
+    margin-block: 13px;
+}
+
+  .propertycard .cardlist .carditem svg{
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: none;
+    stroke-width: 2px;
+    stroke: #161616;
+  }
+
+  
+  .propertycard .carditem {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .propertycard .carditem .itemtext{
+    font-size: 13px;
+  }
+  
+  .propertycard .itemicon {
+    color: hsl(142, 76%, 36%);
+    font-size: 24px;
+  }
+    
+  .property-card .cardmeta {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: 10px;
+  }
+  
+  .propertycard .metatitle {
+    color: #424242;
+    font-size: 12px;
+  }
+
+  .propertycard .metatitle svg{
+    width: 2rem;
+    height: 2rem;
+    stroke-width: 2px;
+    stroke: #7a0000;
+    fill: none;
+    display: inline;
+    margin-bottom: 4px;
+    margin-right: 2px;
+  }
+  
+  .propertycard .metatext {
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    gap: 8px;
+  }
+  

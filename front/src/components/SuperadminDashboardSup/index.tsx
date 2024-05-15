@@ -1,5 +1,4 @@
 "use client";
-import "./style.css";
 import { useEffect, useState } from "react";
 import RenCowReq from "../RenCowReq";
 import RenEmpReq from "../RenEmpReq";
@@ -15,7 +14,7 @@ export const SuperadminDashboardSup = () => {
   return (
     <main className="grid grid-cols-3 flex-row gap-5 mt-10 px-20 min-h-full">
       <section className="">
-        <div className="buttonview-container button">
+        <div style={{display: "flex", flexDirection: "column", gap: "1rem"}}>
           <div className="">
             <div className="h-[9em] w-full border-1 border-[rgba(54,133,30,0.5)] rounded-[6px] bg-gradient-to-br from-[#97ef8a] to-[rgba(30,133,32,0.01)] text-gray-800 font-nunito p-[1em] flex justify-center items-left flex-col gap-[0.75em] backdrop-blur-[12px]">
               <div>

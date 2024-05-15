@@ -1,0 +1,121 @@
+  .btn {
+    background-color: hsl(142, 76%, 36%);
+    color: hsl(0, 0%, 100%);
+    font-weight: 500;
+    max-width: max-content;
+    padding: 12px 28px;
+  }
+  
+  .btn:is(:hover, :focus) { background-color: hsl(142, 72%, 29%); }
+  
+  .btn-primary { border-radius: 16px; }
+  
+  .h1 { font-size: 3.6rem; }
+  
+  .h2,
+  .h3 {
+    color: hsl(224, 34%, 13%);
+    line-height: 1.5;
+  }
+  
+  .h2 {
+    font-size: 2.4rem;
+    font-weight: 500;
+  }
+  
+  .h3 {
+    font-size: 2rem;
+    font-weight: 500;
+  }
+  
+  .imgholder {
+    background-color: hsl(220, 13%, 91%);
+  }
+  
+  .imgcover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .sectiontitle { color: hsl(224, 34%, 13%); }
+  
+  .sectiontext { line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .service{
+    margin-top: 8rem;
+  }
+  
+  .service :is(.sectiontitle, .sectiontext) { text-align: center; }
+  
+  .service .sectiontext { margin-block: 15px 60px; }
+  
+  .servicelist {
+    margin-top: 4rem;
+    display: grid;
+    gap: 30px;
+  }
+  
+  .servicecard { text-align: center; }
+  
+  .servicecard .cardicon {
+    background-color: hsl(146, 41%, 97%);
+    width: 100px;
+    height: 100px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    margin-inline: auto;
+  }
+  
+  .servicecard .cardicon ion-icon {
+    font-size: 30px;
+    color: hsl(142, 76%, 36%);
+    --ionicon-stroke-width: 45px;
+  }
+  
+  .servicecard .cardtitle { margin-block: 25px 12px; }
+  
+  .servicecard .cardtext { line-height: 1.6; }
+  
+  @media (min-width: 640px) {
+  
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      margin-inline: auto;
+      text-align: center;
+    }
+}
+  
+  @media (min-width: 750px) {
+
+    .container,
+    .heroformwrapper { max-width: 780px; }
+
+    .servicelist{ grid-template-columns: 1fr 1fr; }
+  
+  }
+  
+  @media (min-width: 920px) {
+
+    .container,
+    .heroformwrapper { max-width: 900px; }
+
+    .servicelist{ grid-template-columns: repeat(3, 1fr); }
+  
+  }
+  
+
+  
+  @media (min-width: 1200px) {
+
+    .container,
+    .heroformwrapper { max-width: 1120px; }
+  
+    .prodmin.sectiontext { max-width: unset; }
+  
+  }

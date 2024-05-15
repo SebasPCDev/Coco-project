@@ -1,0 +1,410 @@
+
+  .contenedor { padding-inline: 20px; }
+  
+  .btn {
+    background: rgb(255,68,0);
+    background: linear-gradient(323deg, rgb(228, 61, 0) 0%, rgb(235, 172, 0) 100%);
+    color: hsl(0, 0%, 100%);
+    font-weight: 500;
+    max-width: max-content;
+    padding: 12px 28px;
+    box-shadow:  -5px -5px 10px #b6b6b6,
+               5px 5px 10px #ededed;
+  }
+  
+  .btn:is(:hover, :focus) { background-color: hsl(142, 72%, 29%); }
+  
+  .btnsecondary { border-radius: 50px; }
+  
+  .btn-secondary i{
+    font-size: 12px;
+    margin-left: 5px;
+  }
+  
+  .btnprimary { border-radius: 6px; }
+  
+  
+  
+  .h2,
+  .h3 {
+    color: hsl(224, 34%, 13%);
+    line-height: 1.5;
+  }
+  
+  .h2 {
+    font-size: 2.4rem;
+    font-weight: 500;
+  }
+  
+  .h3 {
+    font-size: 2rem;
+    font-weight: 500;
+  }
+  
+  .section { padding-block: 35px; }
+  
+  .section-buscador{
+    padding-block: 5px;
+  }
+  
+  .imgholder {
+    background-color: hsl(220, 13%, 91%);
+  }
+  
+  .imgcover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .sectiontitle { color: hsl(224, 34%, 13%); }
+  
+  .textoseccion { line-height: 1.6; }
+  
+  .spangreen{
+    color: #008300;
+  }
+  
+  /*producto independiente*/
+  
+  .contproducto{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+    gap: 3.7rem;
+  }
+
+  /*=================================================*/
+  
+  
+  .gridinfoproducto{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    border: 1px solid #a7a7a7;
+    border-radius: 25px;
+    background: linear-gradient(315deg, #c5c5c5, #ececec);
+  box-shadow:  -9px -9px 30px #d1d1d1,
+               9px 9px 30px #fbfbfb;
+    margin-top: 2rem;
+    padding: 2rem;
+  }
+  
+  .tipopago { grid-area: 1 / 1 / 2 / 3; }
+  .tipoprecio { grid-area: 2 / 1 / 3 / 3; }
+  .tipopropiedad { grid-area: 3 / 1 / 4 / 2; }
+  .tipoubicacion { grid-area: 3 / 2 / 4 / 3; }
+  .tipopropiedad-res { grid-area: 4 / 1 / 5 / 2; }
+  .tipoubicacion-res { grid-area: 4 / 2 / 5 / 3; }
+  .tipodormitorios { grid-area: 5 / 1 / 6 / 2; }
+  .tipoantiguedad { grid-area: 5 / 2 / 6 / 3; }
+  .tipodormitorios-res { grid-area: 6 / 1 / 7 / 2; }
+  .tipoantiguedad-res { grid-area: 6 / 2 / 7 / 3; }
+  
+  .tipopago{
+    background: linear-gradient(140deg, rgba(72, 255, 0, 0.938) 0%, rgba(186,186,186,0) 60%);
+    border-radius: 30px;
+    padding: 2.2rem;
+    height: 6rem;
+  
+  }
+  
+  .tipoprecio{
+    padding: 1rem;
+    margin: 1rem;
+    border-bottom: 1px solid #b3b3b3;
+  }
+  
+  .tipopropiedad, .tipo-ubicacion, .tipo-dormitorios, .tipo-antiguedad{
+    padding: 1rem 1rem 0 1rem;
+  }
+  
+  .tipopropiedad-res, .tipo-ubicacion-res, .tipo-dormitorios-res, .tipo-antiguedad-res{
+    padding: 0 1rem 1rem 1rem;
+  }
+  
+  .prodmintext{
+    color: #1f1f1f;
+    font-size: 20px;
+  }
+  
+  
+  /*======================================*/
+  
+  
+  .contgeneralcaract{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  
+  .caractinfbasica, 
+  .contgeneralcaractsup, 
+  .contgeneralcaractdesc, 
+  .contgeneralcaractserv{
+    margin-top: 5rem;
+    height: 5rem;
+    padding: 1rem;
+    border-bottom: 1px solid #b3b3b3;
+  }
+  
+  .cont-generalcaractchecks,
+  .cont-generalcaractchecks2,
+  .cont-generalcaractsup-checks,
+  .cont-generalcaractdesc-cont,
+  .cont-generalcaractserv-checks{
+    padding: 1.3rem;
+  }
+  
+  .contgeneralcaractdesccont{
+    font-size: 15px;
+    line-height: 20px;
+    color: #252525;
+  }
+  
+  .caractchecks{
+    font-size: 15px;
+    line-height: 24px;
+    color: #252525;
+  }
+  
+  .caractchecks i{
+    font-size: 16px;
+    margin-right: 4px;
+    color: #015e01f1;
+  }
+  
+  .caracttitle {
+    background: linear-gradient(90deg, rgb(0, 142, 7) 0%, rgb(113, 212, 0) 100%);
+      background-clip: border-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  
+  /*========================================*/
+  
+  .mapatitulo{
+    color: #303030;
+    padding: 2rem;
+    margin: 10rem 2rem 2rem 0;
+    border-top: 1px solid #b3b3b3;
+  }
+  
+  .googlemapslink iframe{
+    width: 100%;
+    height: 45rem;
+    border: 1.5px solid #858585;
+    border-radius: 21px;
+    box-shadow:  -9px -9px 30px #c2c2c2,
+               9px 9px 30px #ffffff;
+  }
+  
+  @media screen and (min-width: 754px) {
+  
+    /*Producto independiente*/
+  
+    .imagenesdeslizable {
+      height: 38rem;
+      margin: 1rem 0 0 0 ;
+      display: grid;
+      align-content: center;
+      justify-content: center;
+    }
+  
+    .imagenesdeslizable-articulo {
+      position: relative;
+      width: 47rem;
+      height: 25rem;
+      margin-left: auto;
+      margin-right: auto;
+      overflow: hidden;
+    }
+    .imagenesdeslizable-cards{
+      width: 38rem;
+      height: 25rem;
+      margin-bottom: 2rem;
+    }
+  
+    .gridinfoproducto{
+      width: 37rem;
+    }
+    
+  }
+  
+  
+  @media screen and (min-width: 820px) {
+    .imagenesdeslizable {
+      height: 38rem;
+      margin: 1rem 0 0 0 ;
+      display: grid;
+      align-content: center;
+      justify-content: center;
+    }
+  
+    .imagenesdeslizablearticulo {
+      position: relative;
+      width: 47rem;
+      height: 32rem;
+      margin-left: auto;
+      margin-right: auto;
+      overflow: hidden;
+    }
+    .imagenesdeslizablecards{
+      width: 38rem;
+      height: 35rem;
+      margin-bottom: 2rem;
+    }
+  
+    .contgeneralcaract{
+      width: 80%;
+      margin-inline: auto;
+    }
+  
+    .contgeneralcaractchecks{
+      position: absolute;
+      margin-top: 10rem;
+      margin-left: 35rem;
+    }
+  
+    .contproducto{
+      padding-top: 10rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content:center;
+      gap: 3.7rem;
+    }
+    
+  }
+  
+  @media (min-width: 1030px) {
+  
+    .contenedor,
+    .principalopcionesbusqueda { max-width: 900px; }
+  
+    .imagenesdeslizable {
+      height: 43rem;
+      margin: 1rem 0 0 0 ;
+      display: grid;
+      align-content: center;
+      justify-content: center;
+    }
+  
+    .imagenesdeslizablearticulo {
+      position: relative;
+      width: 47rem;
+      height: 29rem;
+      margin-left: auto;
+      margin-right: auto;
+      overflow: hidden;
+    }
+    .imagenesdeslizablecards{
+      width: 47rem;
+      height: 32rem;
+      margin-bottom: 2rem;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+  
+    .contenedor{ max-width: 1120px; }
+    .principalcontenido { padding-inline: calc(50% - 560px); }
+  
+    .prodmin.textoseccion { max-width: unset; }
+  
+  }
+  
+  .none-li, .nonesection{
+    position: absolute;
+  }
+  
+  .nonearticle{
+    display: none;
+  }
+
+  /* Apper Card ---details of cowork--- */
+
+  .jobcard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.2em;
+    background: #eeeeee;
+    box-shadow: #091e4240 0px 1px 1px, #091e4221 0px 0px 1px 1px;
+    border-radius: 10px;
+    padding: 2em;
+    max-width: 39em;
+  }
+  
+  .texttitle {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 2.25em;
+    font-weight: 600;
+    font-family: "Noto Sans", sans-serif;
+  }
+  
+  .textbody {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 15px;
+    font-family: "Poppins", sans-serif;
+    letter-spacing: 0.4px;
+  }
+  
+  .postdate {
+    font-size: 13px;
+    color: #0c5000;
+  }
+  
+  .budgetexp {
+    display: flex;
+    gap: 3em;
+  }
+  
+  .budgetexp .value {
+    font-size: 1.5em;
+    font-weight: 600;
+  }
+  
+  .budgetexp .label {
+    font-size: 1.5em;
+    color: #072e00;
+  }
+  
+  .cardbtn {
+    border: none;
+    font-size: 1.5em;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    padding: 0.6em 1em;
+  }
+  
+  .cardbtn:hover {
+    background-color: #026602;
+  }
+  
+  .tags article {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6em;
+  }
+  
+  .tags p {
+    border-radius: 5px;
+    padding: 0.2em 0.5em;
+    font-size: 13px;
+    background-color: #dadada;
+    color: #0f6300;
+  }
+  

@@ -1,5 +1,5 @@
 "use client";
-import "./style.css";
+import styles from "../coworkings/CoworksRoute.module.css";
 import React, { useState, useEffect } from "react";
 import {
   fetchCountries,
@@ -139,7 +139,7 @@ export const CoworksRoute: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="input-wrapper my-2 w-80">
+                  <div className= {`my-2 w-80`}>
                     <div className="h-15 rounded-full relative group w-full bg-gray-100 overflow-hidden before:absolute before:w-14 before:h-12 before:content[''] before:right-0 before:bg-green-300 before:rounded-full before:blur-lg before:[box-shadow:-60px_20px_10px_10px_#f7fac8] border border-gray-300 border-solid before:rotate-45">
                       <svg
                         y="0"
@@ -188,7 +188,7 @@ export const CoworksRoute: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="input-wrapper my-2 w-80">
+                  <div className="my-2 w-80">
                     <div className="h-15 rounded-full relative group w-full bg-gray-100 overflow-hidden before:absolute before:w-14 before:h-12 before:content[''] before:right-0 before:bg-green-300 before:rounded-full before:blur-lg before:[box-shadow:-60px_20px_10px_10px_#f7fac8] border border-gray-300 border-solid before:rotate-180">
                       <svg
                         y="0"
@@ -241,8 +241,8 @@ export const CoworksRoute: React.FC = () => {
             </div>
           </div>
           <div className="col-span-12 md:col-span-9">
-            <div className="container-coworks">
-              <ul className="cowork-list">
+            <div className={styles.containercoworks}>
+              <ul className={styles.coworklist}>
                 {coworkings.map((cowork) => {
                   return (
                     <li key={cowork.name}>

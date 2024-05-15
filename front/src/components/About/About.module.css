@@ -1,0 +1,151 @@
+ç
+  .btn {
+    background-color: hsl(142, 76%, 36%);
+    color: hsl(0, 0%, 100%);
+    font-weight: 500;
+    max-width: max-content;
+    padding: 12px 28px;
+  }
+  
+  .btn:is(:hover, :focus) { background-color: hsl(142, 72%, 29%); }
+  
+  .btnprimary { border-radius: 16px; }
+  
+  .h1 { font-size: 3.6rem; }
+  
+  .h2,
+  .h3 {
+    color: hsl(224, 34%, 13%);
+    line-height: 1.5;
+  }
+  
+  .h2 {
+    font-size: 2.4rem;
+    font-weight: 500;
+  }
+  
+  .h3 {
+    font-size: 2rem;
+    font-weight: 500;
+  }
+  
+  .imgcover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .sectiontitle { color: hsl(224, 34%, 13%); }
+  
+  .sectiontext { line-height: 1.6; }
+  
+  .prodmin{
+    margin-top: 5rem;
+    padding-top: 10px;
+    margin-inline: auto;
+  }
+  
+  .prodmin.sectiontitle { max-width: 20ch; }
+  
+  .prodminbanner {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    margin-block-end: 30px;
+  }
+
+  .prodmincontent{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: start;
+    max-width: 40rem;
+  }
+  
+  .prodminbanner .playbtn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(142, 76%, 36%);
+    padding: 30px;
+    font-size: 20px;
+    border-radius: 50px;
+  }
+  
+  .prodmin.sectiontext { margin-block: 20px 25px; }
+
+  @media (min-width: 640px) {
+ 
+    .container {
+      max-width: 600px;
+      width: 100%;
+      margin-inline: auto;
+    }
+  
+  }
+  
+
+  @media (min-width: 750px) {
+  
+    :root {
+
+      --fs-2: 3rem;
+  
+    }
+  
+    .container,
+    .heroformwrapper { max-width: 780px; }
+
+     .prodmin{
+      display: flex;
+    }
+  
+    .prodmin.container {
+      display: grid;
+      grid-template-columns: 0.7fr 1fr;
+      align-items: center;
+      gap: 30px;
+    }
+  
+    .prodminbanner { margin-block-end: 0; }
+  
+  }
+  
+  
+  @media (min-width: 920px) {
+  
+
+    :root {
+
+      --fs-1: 4.8rem;
+
+      --section-padding: 40px;
+  
+    }
+  
+    .container,
+    .heroformwrapper { max-width: 900px; }
+  
+     .prodmin.container {
+      display: grid;
+      grid-template-columns: 0.7fr 1fr;
+      align-items: start;
+      gap: 50px;
+    }
+  
+    .prodminbanner { margin-block-end: 0; }
+  
+  }
+  
+
+  @media (min-width: 1200px) {
+  
+
+    .container,
+    .heroformwrapper { max-width: 1120px; }
+
+    .prodmin.sectiontext { max-width: unset; }
+  
+  }

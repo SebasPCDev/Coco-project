@@ -70,9 +70,9 @@ html {
 }
 
 body {
-  background-color: var(--white);
+  background-color: hsl(0, 0%, 100%);
   font-size: var(--fs-5);
-  color: var(--cadet-gray);
+  color:  hsl(215, 20%, 65%);
 }
 
 .Button_Form {

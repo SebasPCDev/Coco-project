@@ -96,7 +96,7 @@ export class Coworkings {
       name: 'amenitie_id', // Relación con la otra entidad.
     },
   })
-  amenitie: Amenities[];
+  amenities: Amenities[];
 
   @ManyToMany(() => Users, (user) => user.coworkings, { nullable: true })
   @JoinTable({

@@ -35,7 +35,7 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
     @InjectRepository(CoworkingImages)
     private coworkingImagesRepository: Repository<CoworkingImages>,
-  ) {}
+  ) { }
 
   async getAllCoworkings(
     page: number,
@@ -65,7 +65,7 @@ export class CoworkingsService {
 
   async getCoworkingById(id: UUID) {
     const coworking = await this.coworkingsRepository.findOne({
-      relations: ['user', 'images'],
+      relations: ['user', 'images', 'amenities'],
       where: { id },
     });
 

@@ -1,0 +1,42 @@
+[
+    {
+      "name": "Gimnasio",
+      "description": "Área equipada para hacer ejercicio"
+    },
+    {
+      "name": "Piscina",
+      "description": "Espacio con piscina para nadar y relajarse"
+    },
+    {
+      "name": "Área de parrilla",
+      "description": "Espacio con parrillas para hacer asados al aire libre"
+    },
+    {
+      "name": "Sala de juegos",
+      "description": "Espacio con juegos de mesa y entretenimiento"
+    },
+    {
+      "name": "Cancha de tenis",
+      "description": "Cancha para practicar tenis individual o dobles"
+    },
+    {
+      "name": "Salón de eventos",
+      "description": "Salón amplio para celebrar eventos y reuniones"
+    },
+    {
+      "name": "Sauna",
+      "description": "Espacio con sauna para relajación y desintoxicación"
+    },
+    {
+      "name": "Cancha de fútbol",
+      "description": "Cancha para jugar fútbol con amigos y familiares"
+    },
+    {
+      "name": "Área de juegos infantiles",
+      "description": "Espacio con juegos para niños y áreas de recreación"
+    },
+    {
+      "name": "Spa",
+      "description": "Espacio para tratamientos de belleza y relajación"
+    }
+  ]

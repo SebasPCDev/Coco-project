@@ -9,4 +9,10 @@ import { Amenities } from 'src/entities/amenities.entity';
   controllers: [AmenitiesController],
   imports: [TypeOrmModule.forFeature([Amenities])]
 })
-export class AmenitiesModule {}
+export class AmenitiesModule {
+  constructor(private readonly amenitiesService:AmenitiesService ) {}
+
+  async onModuleInit() {
+    await this.amenitiesService.preloadAmenities();
+  }
+}

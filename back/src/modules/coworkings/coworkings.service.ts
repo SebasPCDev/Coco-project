@@ -35,7 +35,7 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
     @InjectRepository(CoworkingImages)
     private coworkingImagesRepository: Repository<CoworkingImages>,
-  ) { }
+  ) {}
 
   async getAllCoworkings(
     page: number,
@@ -213,13 +213,14 @@ export class CoworkingsService {
   }
 
   async createUserCoworking(data: CreateUserCoworkingsDto) {
-
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
     if (dbUser) throw new BadRequestException('User found');
 
-    const coworking = await this.coworkingsRepository.findOneBy({ id: data.coworkingId });
+    const coworking = await this.coworkingsRepository.findOneBy({
+      id: data.coworkingId,
+    });
     if (!coworking) throw new BadRequestException('Coworking not found');
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -251,12 +252,17 @@ export class CoworkingsService {
   async update(id: UUID, changes: UpdateCoworkingsDto) {
     const coworking = await this.getCoworkingById(id);
 
+    if (changes.status) {
+      const geography = (coworking.country && coworking.state && coworking.city && coworking.lat && coworking.long);
+
+      if (changes.status === CoworkingStatus.ACTIVE && !geography || !coworking.thumbnail) throw new BadRequestException('The country, state, city, lat, long and thumbnail data are required to activate coworking');
+    }
+
     const updCoworking = this.coworkingsRepository.merge(coworking, changes);
     return await this.coworkingsRepository.save(updCoworking);
   }
 
   async addImage(id: UUID, secure_url: string) {
-
     const coworking = await this.getCoworkingById(id);
 
     const image = this.coworkingImagesRepository.create({ secure_url });
@@ -265,9 +271,8 @@ export class CoworkingsService {
 
     await this.coworkingImagesRepository.save(image);
 
-    return await this.getCoworkingById(id);;
+    return await this.getCoworkingById(id);
   }
-
 
   // remove(id: number) {
   //   return `This action removes a #${id} coworking`;
@@ -276,6 +281,7 @@ export class CoworkingsService {
   async preloadCoworkings() {
     const data = loadDataCoworkings();
 
+    //precarga de coworkings
     for await (const coworking of data) {
       const coworkingExists = await this.coworkingsRepository.findOne({
         where: { email: coworking.email },
@@ -285,6 +291,7 @@ export class CoworkingsService {
         await this.coworkingsRepository.save(coworking);
       }
     }
+
     console.log(`
     ###############################################
     ##### Coworkings data loaded successfully #####

@@ -11,12 +11,16 @@ import { TypeCompany } from 'src/models/typeCompany.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { UpdateRequestCoworkingDto } from './requestCoworking.dto';
 import { loadDataRequest, loadDataRequestCompany } from 'src/utils/loadData';
+import { CoworkingsService } from '../coworkings/coworkings.service';
+import { CompaniesService } from '../companies/companies.service';
 
 @Injectable()
 export class RequestsService {
   constructor(
     @InjectRepository(Request)
     private requestsRepository: Repository<Request>,
+    private readonly coworkingsService: CoworkingsService,
+    private readonly companiesService: CompaniesService,
   ) {}
 
   async getRequestByEmail(email: string) {
@@ -113,12 +117,21 @@ export class RequestsService {
         await this.requestsRepository.save(request);
       }
     }
-    console.log(`
-    ###############################################
-    ##### Requests data loaded successfully #####
-    ###############################################
 
-    `);
+    const firstCoworking = await this.requestsRepository.find({
+      take: 1,
+      where: { type: TypeCompany.COWORKING },
+    });
+    const firtsCompany = await this.requestsRepository.find({
+      take: 1,
+      where: { type: TypeCompany.COMPANY },
+    });
+
+    await this.coworkingsService.activateCoworking(
+      firstCoworking[0].id as UUID,
+    );
+    await this.companiesService.activateCompany(firtsCompany[0].id as UUID);
+
     return true;
   }
 }

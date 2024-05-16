@@ -17,6 +17,8 @@ import ICompaniesErrorInfo from "../../../utils/types/companiesFormErrorInterfac
 
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import { PhoneInput } from "react-international-phone";
+import 'react-international-phone/style.css'; 
 
 const CompaniesForm = () => {
   const router = useRouter();
@@ -67,6 +69,14 @@ const CompaniesForm = () => {
     });
     console.log(companiesInfo);
   };
+
+  const handleChangePhone = (name: string, value: string) => {
+    setCompaniesInfo({
+      ...companiesInfo,
+      [name]: value,
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -101,17 +111,26 @@ const CompaniesForm = () => {
               <label htmlFor={name} className="block text-gray-700 font-bold mb-2 text-lg">
                 {label}
               </label>
-              <input
-                type={type}
-                name={name}
-                placeholder={placeholder}
-                required={required}
-                className={`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-6 px-8 rounded-lg text-xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${
-                  name === "message" ? "md:col-span-2" : ""
-                }`}
-                onChange={handleChange}
-                value={companiesInfo[name as keyof ICompaniesInfo]}
-              />
+              {name === "phone" || name === "companyPhone" ? (
+                <PhoneInput                    
+                  defaultCountry="ar"
+                  name={name}
+                  value={companiesInfo[name as keyof ICompaniesInfo].toString()}
+                  onChange={(phone) => handleChangePhone(name, phone)}
+                />
+              ) : (
+                <input
+                  type={type}
+                  name={name}
+                  placeholder={placeholder}
+                  required={required}
+                  className={`block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-6 px-8 rounded-lg text-xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${
+                    name === "message" ? "md:col-span-2" : ""
+                  }`}
+                  onChange={handleChange}
+                  value={companiesInfo[name as keyof ICompaniesInfo]}
+                />
+              )}
               <p className="text-red-500 mt-2 text-lg">{companiesInfoError[name as keyof ICompaniesInfo]}</p>
             </div>
           ))}

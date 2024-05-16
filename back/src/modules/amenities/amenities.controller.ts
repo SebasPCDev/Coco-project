@@ -17,21 +17,26 @@ export class AmenitiesController {
 
   @Get(':id')
   findOne(@Param('id') id: UUID): Promise<Amenities> {
+    
     return this.amenitiesService.findOne(id);
   }
 
   @Post()
   create(@Body() amenityData: CreateAmenityDto): Promise<Amenities> {
+
     return this.amenitiesService.create(amenityData);
   }
 
   @Put(':id')
   update(@Param('id') id: UUID, @Body() amenityData: Partial<Amenities>): Promise<Amenities> {
+
     return this.amenitiesService.update(id, amenityData);
   }
 
   @Delete(':id')
   delete(@Param('id') id: UUID): Promise<void> {
+
     return this.amenitiesService.delete(+id);
   }
+
 }

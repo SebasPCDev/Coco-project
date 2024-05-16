@@ -23,3 +23,9 @@ export const loadDataRequestCompany = () => {
   const parseData = JSON.parse(data);
   return parseData;
 };
+
+export const loadDataAmenities = () => {
+  const data = readFileSync('src/utils/preloadAmenities.json', 'utf8');
+  const parseData = JSON.parse(data);
+  return parseData;
+};

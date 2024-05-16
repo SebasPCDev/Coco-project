@@ -50,6 +50,7 @@ export class UsersService {
     if (changes.password) {
       const hashedPass = await bcrypt.hash(changes.password, 10);
       changes = { ...changes, password: hashedPass };
+      if (!user.activationDate) changes = { ...changes, activationDate: new Date() };
     }
 
     const updUser = this.usersRepository.merge(user, changes);

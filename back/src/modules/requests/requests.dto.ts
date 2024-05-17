@@ -114,7 +114,7 @@ export class CreateRequestDto {
     example: 'Esto es una observacion',
     description: 'Observacion de la request',
   })
-  @IsString({ message: 'observation debe ser un string' })
+  @IsEmpty()
   observation: string;
 
   @ApiProperty({

@@ -231,6 +231,15 @@ export class CoworkingsService {
 
       data.role = Role.COWORKING;
       data.status = UserStatus.ACTIVE;
+
+      // const password = Math.random().toString(36).slice(-8);
+      const password = process.env.SUPERADMIN_PASSWORD;
+      const hashedPass = await bcrypt.hash(password, 10);
+      if (!hashedPass)
+        throw new BadRequestException('Password could not be hashed');
+
+      data.password = hashedPass;
+
       const user = this.usersRepository.create(data);
       const newUser = await queryRunner.manager.save(user);
 

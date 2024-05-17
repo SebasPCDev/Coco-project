@@ -13,6 +13,7 @@ import { UpdateRequestCoworkingDto } from './requestCoworking.dto';
 import { loadDataRequest, loadDataRequestCompany } from 'src/utils/loadData';
 import { CoworkingsService } from '../coworkings/coworkings.service';
 import { CompaniesService } from '../companies/companies.service';
+import { UpdateRequestDto } from './requestCompany.dto';
 
 @Injectable()
 export class RequestsService {
@@ -21,7 +22,7 @@ export class RequestsService {
     private requestsRepository: Repository<Request>,
     private readonly coworkingsService: CoworkingsService,
     private readonly companiesService: CompaniesService,
-  ) {}
+  ) { }
 
   async getRequestByEmail(email: string) {
     const existingRequest = await this.requestsRepository.findOne({
@@ -87,12 +88,19 @@ export class RequestsService {
     return request;
   }
 
+  async declineRequest(id: UUID, changes: UpdateRequestDto) {
+    const request = await this.findById(id);
+    const updRequest = this.requestsRepository.merge(request, changes);
+    return await this.requestsRepository.save(updRequest);
+  }
+
   async update(id: UUID, changes: UpdateRequestCoworkingDto) {
     const request = await this.getCoworkingById(id);
 
     const updCoworking = this.requestsRepository.merge(request, changes);
-    return this.requestsRepository.save(updCoworking);
+    return await this.requestsRepository.save(updCoworking);
   }
+
 
   async preloadRequest() {
     const dataCoworks = loadDataRequest();

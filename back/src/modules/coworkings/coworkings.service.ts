@@ -241,16 +241,21 @@ export class CoworkingsService {
       data.password = hashedPass;
 
       const user = this.usersRepository.create(data);
+      user.coworkings = [coworking]
       const newUser = await queryRunner.manager.save(user);
 
-      coworking.user = [newUser];
 
-      const updCoworking = await queryRunner.manager.save(coworking);
+      // console.log("coworking.user ", coworking.user, typeof coworking.user); coworking.user
+
+      // coworking.user = [...coworking.user, newUser];
+
+      // const updCoworking = await queryRunner.manager.save(coworking);
 
       await queryRunner.commitTransaction(); //COMMIT
+
       await queryRunner.release(); // RELEASE
 
-      return updCoworking;
+      return newUser;
     } catch (err) {
       await queryRunner.rollbackTransaction(); // ROLLBACK
       await queryRunner.release(); // RELEASE

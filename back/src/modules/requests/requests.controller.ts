@@ -4,8 +4,11 @@ import {
   Controller,
   Get,
   HttpStatus,
+  // Param,
   ParseEnumPipe,
+  // ParseUUIDPipe,
   Post,
+  // Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -21,6 +24,7 @@ import { Role } from 'src/models/roles.enum';
 import { Public } from 'src/decorators/public.decorator';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { QueryParamsValidator } from 'src/pipes/queryParamsValidator.pipe';
+//import { UUID } from 'crypto';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
@@ -91,5 +95,15 @@ export class RequestsController {
     }
   }
 
+  // @ApiBearerAuth()
+  // @Roles(Role.SUPERADMIN)
+  // @UseGuards(RolesGuard)
+  // @Put(':id')
+  // update(
+  //   @Param('id', ParseUUIDPipe) id: UUID,
+  //   @Body() changes: UpdateRequestsDto,
+  // ) {
+  //   return this.requestsService.update(id, changes);
+  // }
 
 }

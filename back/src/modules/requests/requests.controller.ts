@@ -4,14 +4,17 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   ParseEnumPipe,
+  ParseUUIDPipe,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateRequestCoworkingDto } from './requestCoworking.dto';
-import { RequestDtoCompany } from './requestCompany.dto';
+import { RequestDtoCompany, UpdateRequestDto } from './requestCompany.dto';
 import { RequestsService } from './requests.service';
 import { TypeCompany } from 'src/models/typeCompany.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -21,13 +24,14 @@ import { Role } from 'src/models/roles.enum';
 import { Public } from 'src/decorators/public.decorator';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { QueryParamsValidator } from 'src/pipes/queryParamsValidator.pipe';
+import { UUID } from 'crypto';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @ApiTags('requests')
 @Controller('requests')
 export class RequestsController {
-  constructor(private readonly requestsService: RequestsService) {}
+  constructor(private readonly requestsService: RequestsService) { }
 
   @Public()
   @Post('coworking')
@@ -91,4 +95,15 @@ export class RequestsController {
       throw error;
     }
   }
+
+  @Roles(Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Put('decline/:id')
+  declineRequest(
+    @Param('id', ParseUUIDPipe) id: UUID,
+    @Body() changes: UpdateRequestDto,
+  ) {
+    return this.requestsService.declineRequest(id, changes);
+  }
+
 }

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 
 import {
   IsString,
@@ -146,3 +146,6 @@ export class RequestDtoCompany {
   @IsEmpty({ message: 'Debe ser nullo' })
   type: TypeCompany;
 }
+
+
+export class UpdateRequestDto extends PartialType(RequestDtoCompany) { }

@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import { CompanySize } from 'src/models/companySize.enum';
 
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { TypeCompany } from 'src/models/typeCompany.enum';
@@ -75,11 +76,8 @@ export class Request {
   })
   businessSector: string;
 
-  @Column({
-    nullable: true,
-    type: 'int',
-  })
-  size: number;
+  @Column({ type: 'enum', enum: CompanySize, nullable: true })
+  size: CompanySize;
 
   @Column({
     nullable: true,

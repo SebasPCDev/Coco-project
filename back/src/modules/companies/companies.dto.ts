@@ -1,6 +1,8 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsEmail,
+  IsEmpty,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -10,6 +12,8 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
+import { CompanySize } from 'src/models/companySize.enum';
+import { CompanyStatus } from 'src/models/companyStatus.enum';
 
 export class CreateCompaniesDto {
   @ApiProperty({
@@ -54,10 +58,20 @@ export class CreateCompaniesDto {
   @IsNotEmpty({ message: 'El sector empresarial no puede estar vacío' })
   businessSector: string;
 
-  @IsNumber({}, { message: 'El tamaño debe ser un número' })
-  @IsNotEmpty({ message: 'El tamaño no puede estar vacío' })
-  @Min(0, { message: 'El tamaño debe ser mayor o igual a 0' })
-  size: number;
+  @IsEnum(CompanySize, { message: 'El tamaño debe ser 0-30, 31-100, 101-500, 500-en adelante' })
+  @IsNotEmpty({ message: 'El tamaño es obligatorio' })
+  size: CompanySize;
+
+  @IsEmpty()
+  total_passes: number
+
+  @ApiProperty({
+    example: 'pending',
+    description: 'Estado de la compañía',
+  })
+  @IsEnum(CompanyStatus, { message: 'El estado puede ser pending, active, inactive' })
+  status: CompanyStatus;
+
 }
 
 export class UpdateCompaniesDto extends PartialType(CreateCompaniesDto) { }

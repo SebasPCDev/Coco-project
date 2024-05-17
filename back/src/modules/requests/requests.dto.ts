@@ -1,22 +1,24 @@
-import { ApiProperty } from '@nestjs/swagger';
-
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsString,
   IsOptional,
   IsInt,
   IsEmail,
   IsNotEmpty,
+  IsUrl,
   IsEmpty,
   IsEnum,
 } from 'class-validator';
+
 import { TypeCompany } from 'src/models/typeCompany.enum';
 import { StatusRequest } from 'src/models/statusRequest.enum';
+import { IsTimeRange } from 'src/decorators/IsTimeRange.decorator';
 import { CompanySize } from 'src/models/companySize.enum';
 
-export class RequestDtoCompany {
+export class CreateRequestDto {
   @ApiProperty({
     example: 'John',
-    description: 'Nombre del solicitante ',
+    description: 'Nombre del solicitante',
   })
   @IsString({ message: 'El nombre debe ser una cadena de texto' })
   @IsNotEmpty({ message: 'El nombre es obligatorio' })
@@ -58,14 +60,14 @@ export class RequestDtoCompany {
 
   @ApiProperty({
     example: 'General manager',
-    description: 'El rol del solicitante, cargo dentro de la empresa',
+    description: 'El position del solicitante, cargo dentro de la empresa',
   })
   @IsString({ message: 'El position debe ser una cadena de texto' })
   @IsNotEmpty({ message: 'El position es obligatorio' })
   position: string;
 
   @ApiProperty({
-    example: 'Ejemplo Compañía',
+    example: 'Ejemplo cowork',
     description: 'Nombre de la empresa del solicitante',
   })
   @IsString({ message: 'El nombre de la empresa debe ser una cadena de texto' })
@@ -73,8 +75,8 @@ export class RequestDtoCompany {
   companyName: string;
 
   @ApiProperty({
-    example: 'ejemplo@empresa.com',
-    description: 'El correo electrónico de la empresa del solicitante',
+    example: 'ejemplo@cowork.com',
+    description: 'El correo electrónico del cowork del solicitante',
   })
   @IsEmail(
     {},
@@ -92,31 +94,6 @@ export class RequestDtoCompany {
   })
   @IsNotEmpty({ message: 'El número de teléfono de la empresa es obligatorio' })
   companyPhone: string;
-
-  @ApiProperty({
-    example: 5,
-    description: 'Numero de beneficiarios',
-  })
-  @IsOptional()
-  @IsInt({ message: 'quantityBeneficiaries debe ser un numero' })
-  quantityBeneficiaries: number;
-
-  @ApiProperty({
-    example: 'Technology',
-    description: 'Sector de la compañia',
-  })
-  @IsOptional()
-  @IsString({ message: 'businessSector debe ser un string' })
-  businessSector: string;
-
-  @ApiProperty({
-    example: 500,
-    description: 'Cantidad de empleados, tamaño de la empresa',
-  })
-
-  @IsEnum(CompanySize, { message: 'El tamaño debe ser 0-30, 31-100, 101-500, 500-en adelante' })
-  @IsNotEmpty({ message: 'El tamaño es obligatorio' })
-  size: CompanySize;
 
   @ApiProperty({
     example: 'Esto es un mensaje de prueba',
@@ -142,9 +119,86 @@ export class RequestDtoCompany {
 
   @ApiProperty({
     example: '',
-    description: 'Debe estar vacio (se setea detro del endpoint)',
+    description: 'Debe estar vacio (se seta detro del endpoint), se envia null',
     nullable: true,
   })
   @IsEmpty({ message: 'Debe ser nullo' })
   type: TypeCompany;
 }
+
+export class CreateRequestCoworkingDto extends CreateRequestDto {
+  @ApiProperty({
+    example: '123 Main St',
+    description: 'La dirección del Cowork',
+  })
+  @IsOptional()
+  @IsString()
+  address: string;
+
+  @ApiProperty({
+    example: 'www.example.com',
+    description: 'El website de cowork',
+  })
+  @IsOptional()
+  @IsString({
+    message: 'El website de la empresa debe ser una cadena de texto',
+  })
+  @IsUrl({}, { message: 'El website debe ser una URL válida' })
+  website: string;
+
+  @ApiProperty({
+    example: '09:00',
+    description: 'Hora en la que abre el cowork tipo date',
+  })
+  @IsOptional()
+  @IsString({ message: 'El open debe ser un valor tipo string' })
+  @IsTimeRange({ message: 'El horario de apertura debe estar en el rango de 00:00 a 23:59' })
+  open: string;
+
+  @ApiProperty({
+    example: '17:00',
+    description: 'Hora en la que cierra el cowork tipo date',
+  })
+  @IsOptional()
+  @IsString({ message: 'El close debe ser un valor tipo string' })
+  @IsTimeRange({ message: 'El horario de apertura debe estar en el rango de 00:00 a 23:59' })
+  close: string;
+
+  @ApiProperty({
+    example: 10,
+    description: 'Capacidad  de numero de personas',
+  })
+  @IsOptional()
+  @IsInt({ message: 'El capacity debe ser un valor tipo int' })
+  capacity: number;
+}
+
+export class CreateRequestCompanyDto extends CreateRequestDto {
+  @ApiProperty({
+    example: 5,
+    description: 'Numero de beneficiarios',
+  })
+  @IsOptional()
+  @IsInt({ message: 'quantityBeneficiaries debe ser un numero' })
+  quantityBeneficiaries: number;
+
+  @ApiProperty({
+    example: 'Technology',
+    description: 'Sector de la compañia',
+  })
+  @IsOptional()
+  @IsString({ message: 'businessSector debe ser un string' })
+  businessSector: string;
+
+  @ApiProperty({
+    example: 500,
+    description: 'Cantidad de empleados, tamaño de la empresa',
+  })
+  @IsEnum(CompanySize, { message: 'El tamaño debe ser 0-30, 31-100, 101-500, 500-en adelante' })
+  @IsNotEmpty({ message: 'El tamaño es obligatorio' })
+  size: CompanySize;
+}
+
+export class UpdateRequestCoworkingDto extends PartialType(
+  CreateRequestCoworkingDto,
+) { }

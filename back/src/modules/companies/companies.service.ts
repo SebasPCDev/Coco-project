@@ -14,6 +14,7 @@ import { UserStatus } from 'src/models/userStatus.enum';
 import { Role } from 'src/models/roles.enum';
 import { Employees } from 'src/entities/employees.entity';
 import { StatusRequest } from 'src/models/statusRequest.enum';
+import { CompanyStatus } from 'src/models/companyStatus.enum';
 
 @Injectable()
 export class CompaniesService {
@@ -91,6 +92,8 @@ export class CompaniesService {
         quantityBeneficiaries: requestCoworking.quantityBeneficiaries,
         businessSector: requestCoworking.businessSector,
         size: requestCoworking.size,
+        status: CompanyStatus.PENDING,
+        total_passes: 0,
       };
 
       const newCompanyTemp = this.companiesRepository.create(company);

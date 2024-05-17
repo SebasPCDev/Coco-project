@@ -8,6 +8,8 @@ import {
 } from 'typeorm';
 
 import { Employees } from './employees.entity';
+import { CompanySize } from 'src/models/companySize.enum';
+import { CompanyStatus } from 'src/models/companyStatus.enum';
 
 @Entity('companies')
 export class Companies {
@@ -29,8 +31,18 @@ export class Companies {
   @Column({ type: 'varchar', name: 'business_sector', length: 150 })
   businessSector: string;
 
-  @Column({ type: 'int' })
-  size: number;
+  @Column({ type: 'enum', enum: CompanySize })
+  size: CompanySize;
+
+  @Column({ type: 'int', nullable: true })
+  total_passes: number;
+
+  @Column({
+    type: 'enum',
+    enum: CompanyStatus,
+    default: CompanyStatus.PENDING,
+  })
+  status: CompanyStatus;
 
   @Exclude()
   @CreateDateColumn({

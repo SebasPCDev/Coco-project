@@ -13,7 +13,7 @@
     "businessSector": "Servicios",
     "message": "Looking forward to contributing to our team's success.",
     "status": "pending",
-    "size": 500,
+    "size": "101 - 500",
     "observation": "Previous experience in customer service preferred.",
     "type": "company"
   },
@@ -31,7 +31,7 @@
     "businessSector": "Tecnología",
     "message": "Excited about the opportunity to innovate and contribute to cutting-edge projects in the tech industry.",
     "status": "pending",
-    "size": 2000,
+    "size": "501 - en adelante",
     "observation": "Proficiency in programming languages such as Java and Python required.",
     "type": "company"
   },
@@ -49,7 +49,7 @@
     "businessSector": "Publicidad",
     "message": "Passionate about developing creative marketing strategies and driving brand awareness. Eager to contribute to the success of your team.",
     "status": "pending",
-    "size": 750,
+    "size": "501 - en adelante",
     "observation": "Experience in digital marketing and social media management preferred.",
     "type": "company"
   }

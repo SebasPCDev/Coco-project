@@ -27,39 +27,7 @@ import { QueryParamsValidator } from 'src/pipes/queryParamsValidator.pipe';
 @ApiTags('requests')
 @Controller('requests')
 export class RequestsController {
-  constructor(private readonly requestsService: RequestsService) {}
-
-  @Public()
-  @Post('coworking')
-  async addCowork(@Body() coworking: CreateRequestCoworkingDto) {
-    coworking.type = TypeCompany.COWORKING;
-
-    try {
-      const result = await this.requestsService.addCowork(coworking);
-      return result;
-    } catch (error) {
-      if (error instanceof ConflictException) {
-        return { message: 'El correo ya está en uso' };
-      }
-      throw error;
-    }
-  }
-
-  @Public()
-  @Post('company')
-  async addCompany(@Body() company: RequestDtoCompany) {
-    company.type = TypeCompany.COMPANY;
-
-    try {
-      const result = await this.requestsService.addCompany(company);
-      return result;
-    } catch (error) {
-      if (error instanceof ConflictException) {
-        return { message: 'El correo ya está en uso' };
-      }
-      throw error;
-    }
-  }
+  constructor(private readonly requestsService: RequestsService) { }
 
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
@@ -91,4 +59,37 @@ export class RequestsController {
       throw error;
     }
   }
+
+  @Public()
+  @Post('coworking')
+  async addCowork(@Body() coworking: CreateRequestCoworkingDto) {
+    coworking.type = TypeCompany.COWORKING;
+
+    try {
+      const result = await this.requestsService.addCowork(coworking);
+      return result;
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        return { message: 'El correo ya está en uso' };
+      }
+      throw error;
+    }
+  }
+
+  @Public()
+  @Post('company')
+  async addCompany(@Body() company: RequestDtoCompany) {
+    company.type = TypeCompany.COMPANY;
+    try {
+      const result = await this.requestsService.addCompany(company);
+      return result;
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        return { message: 'El correo ya está en uso' };
+      }
+      throw error;
+    }
+  }
+
+
 }

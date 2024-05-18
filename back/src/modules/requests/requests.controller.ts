@@ -3,11 +3,11 @@ import {
   Controller,
   Get,
   HttpStatus,
-  // Param,
+  Param,
   ParseEnumPipe,
-  // ParseUUIDPipe,
+  ParseUUIDPipe,
   Post,
-  // Put,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -21,8 +21,8 @@ import { Role } from 'src/models/roles.enum';
 import { Public } from 'src/decorators/public.decorator';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { QueryParamsValidator } from 'src/pipes/queryParamsValidator.pipe';
-import { CreateRequestCompanyDto, CreateRequestCoworkingDto } from './requests.dto';
-//import { UUID } from 'crypto';
+import { UUID } from 'crypto';
+import { CreateRequestCompanyDto, CreateRequestCoworkingDto, UpdateRequestCoworkingDto } from './requests.dto';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
@@ -30,6 +30,20 @@ import { CreateRequestCompanyDto, CreateRequestCoworkingDto } from './requests.d
 @Controller('requests')
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) { }
+
+  @Public()
+  @Post('coworking')
+  async addCowork(@Body() coworking: CreateRequestCoworkingDto) {
+    coworking.type = CompanyType.COWORKING;
+    return await this.requestsService.addCowork(coworking);
+  }
+
+  @Public()
+  @Post('company')
+  async addCompany(@Body() company: CreateRequestCompanyDto) {
+    company.type = CompanyType.COMPANY;
+    return await this.requestsService.addCompany(company);
+  }
 
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
@@ -62,31 +76,14 @@ export class RequestsController {
     }
   }
 
-  @Public()
-  @Post('coworking')
-  async addCowork(@Body() coworking: CreateRequestCoworkingDto) {
-    coworking.type = CompanyType.COWORKING;
-    return this.requestsService.addCowork(coworking);
-
+  @Roles(Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Put('decline/:id')
+  declineRequest(
+    @Param('id', ParseUUIDPipe) id: UUID,
+    @Body() changes: UpdateRequestCoworkingDto,
+  ) {
+    return this.requestsService.declineRequest(id, changes);
   }
-
-  @Public()
-  @Post('company')
-  async addCompany(@Body() company: CreateRequestCompanyDto) {
-    company.type = CompanyType.COMPANY;
-    return this.requestsService.addCompany(company);
-
-  }
-
-  // @ApiBearerAuth()
-  // @Roles(Role.SUPERADMIN)
-  // @UseGuards(RolesGuard)
-  // @Put(':id')
-  // update(
-  //   @Param('id', ParseUUIDPipe) id: UUID,
-  //   @Body() changes: UpdateRequestsDto,
-  // ) {
-  //   return this.requestsService.update(id, changes);
-  // }
 
 }

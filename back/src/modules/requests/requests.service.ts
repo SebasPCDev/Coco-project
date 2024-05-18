@@ -9,7 +9,7 @@ import { Request } from 'src/entities/requests.entity';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { CompanyType } from 'src/models/companyType.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { UpdateRequestCoworkingDto } from './requests.dto';
+import { UpdateRequestCoworkingDto, UpdateRequestDto } from './requests.dto';
 import { loadDataRequest, loadDataRequestCompany } from 'src/utils/loadData';
 import { CoworkingsService } from '../coworkings/coworkings.service';
 import { CompaniesService } from '../companies/companies.service';
@@ -80,12 +80,19 @@ export class RequestsService {
     return request;
   }
 
+  async declineRequest(id: UUID, changes: UpdateRequestDto) {
+    const request = await this.findById(id);
+    const updRequest = this.requestsRepository.merge(request, changes);
+    return await this.requestsRepository.save(updRequest);
+  }
+
   async update(id: UUID, changes: UpdateRequestCoworkingDto) {
     const request = await this.getCoworkingById(id);
 
     const updCoworking = this.requestsRepository.merge(request, changes);
-    return this.requestsRepository.save(updCoworking);
+    return await this.requestsRepository.save(updCoworking);
   }
+
 
   async preloadRequest() {
     const dataCoworks = loadDataRequest();

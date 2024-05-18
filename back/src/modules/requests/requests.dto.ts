@@ -203,3 +203,5 @@ export class CreateRequestCompanyDto extends CreateRequestDto {
 export class UpdateRequestCoworkingDto extends PartialType(
   CreateRequestCoworkingDto,
 ) { }
+
+export class UpdateRequestDto extends PartialType(CreateRequestDto) { }

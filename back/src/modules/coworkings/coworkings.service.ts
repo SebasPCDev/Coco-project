@@ -231,17 +231,31 @@ export class CoworkingsService {
 
       data.role = Role.COWORKING;
       data.status = UserStatus.ACTIVE;
+
+      // const password = Math.random().toString(36).slice(-8);
+      const password = process.env.SUPERADMIN_PASSWORD;
+      const hashedPass = await bcrypt.hash(password, 10);
+      if (!hashedPass)
+        throw new BadRequestException('Password could not be hashed');
+
+      data.password = hashedPass;
+
       const user = this.usersRepository.create(data);
+      user.coworkings = [coworking]
       const newUser = await queryRunner.manager.save(user);
 
-      coworking.user = [newUser];
 
-      const updCoworking = await queryRunner.manager.save(coworking);
+      // console.log("coworking.user ", coworking.user, typeof coworking.user); coworking.user
+
+      // coworking.user = [...coworking.user, newUser];
+
+      // const updCoworking = await queryRunner.manager.save(coworking);
 
       await queryRunner.commitTransaction(); //COMMIT
+
       await queryRunner.release(); // RELEASE
 
-      return updCoworking;
+      return newUser;
     } catch (err) {
       await queryRunner.rollbackTransaction(); // ROLLBACK
       await queryRunner.release(); // RELEASE

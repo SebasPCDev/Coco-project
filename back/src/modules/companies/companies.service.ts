@@ -36,9 +36,14 @@ export class CompaniesService {
   }
 
   async getCompanyById(id: UUID) {
-    return await this.companiesRepository.findOne({
+    const company = await this.companiesRepository.findOne({
       where: { id },
+      relations: ['employees', 'employees.user']
     });
+
+    if (!company) throw new BadRequestException('Company not found')
+    console.log("company", company);
+    return company
   }
 
   create(data: CreateCompaniesDto) {

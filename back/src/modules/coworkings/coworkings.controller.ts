@@ -99,7 +99,7 @@ export class CoworkingsController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.ADMIN_COWORKING)
+  @Roles(Role.ADMIN_COWORKING, Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Put(':id')
   update(

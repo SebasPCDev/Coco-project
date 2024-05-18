@@ -32,10 +32,12 @@ export class CompaniesService {
     private readonly nodemailerService: NodemailerService,
   ) { }
 
-  async getAllCompanies(status: CompanyStatus, page: number, limit: number) {
+  async getAllCompanies(status: CompanyStatus, name: string, page: number, limit: number) {
     const where: FindOptionsWhere<Companies> = {};
 
     if (status) where.status = status;
+    if (name) where.name = name;
+
     const skip = (page - 1) * limit;
 
     const conditions = {

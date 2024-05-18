@@ -238,20 +238,6 @@
     "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/gettyimages-1161987904-640x640_gtz1ok.jpg"
   },
   {
-    "name": "Coworking 18",
-    "phone": "1313131313",
-    "email": "coworking18@mail.com",
-    "open": "09:30",
-    "close": "21:30",
-    "address": "Calle 18, 474849",
-    "country": "Argentina",
-    "state": "Buenos Aires",
-    "city": "Pilar",
-    "capacity": 17,
-    "status": "active",
-    "thumbnail": "https://res.cloudinary.com/drwhxgsfu/image/upload/v1715195174/coworkings_coco%2B/istockphoto-1252070153-640x640_p3exwd.jpg"
-  },
-  {
     "name": "Coworking 19",
     "phone": "1414141414",
     "email": "coworking19@mail.com",

@@ -31,20 +31,6 @@ import { CreateRequestCompanyDto, CreateRequestCoworkingDto, UpdateRequestCowork
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) { }
 
-  @Public()
-  @Post('coworking')
-  async addCowork(@Body() coworking: CreateRequestCoworkingDto) {
-    coworking.type = CompanyType.COWORKING;
-    return await this.requestsService.addCowork(coworking);
-  }
-
-  @Public()
-  @Post('company')
-  async addCompany(@Body() company: CreateRequestCompanyDto) {
-    company.type = CompanyType.COMPANY;
-    return await this.requestsService.addCompany(company);
-  }
-
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Get()
@@ -74,6 +60,20 @@ export class RequestsController {
     } catch (error) {
       throw error;
     }
+  }
+
+  @Public()
+  @Post('coworking')
+  async addCowork(@Body() coworking: CreateRequestCoworkingDto) {
+    coworking.type = CompanyType.COWORKING;
+    return await this.requestsService.addCowork(coworking);
+  }
+
+  @Public()
+  @Post('company')
+  async addCompany(@Body() company: CreateRequestCompanyDto) {
+    company.type = CompanyType.COMPANY;
+    return await this.requestsService.addCompany(company);
   }
 
   @Roles(Role.SUPERADMIN)

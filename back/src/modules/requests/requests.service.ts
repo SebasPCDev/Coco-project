@@ -95,6 +95,13 @@ export class RequestsService {
 
 
   async preloadRequest() {
+
+    const request = await this.companiesService.getAllCompanies()
+    if (request.length > 0) {
+      console.log("Ya existen existen compañías");
+      return
+    }
+
     const dataCoworks = loadDataRequest();
     const dataCompanies = loadDataRequestCompany();
 

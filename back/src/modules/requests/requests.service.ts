@@ -96,7 +96,7 @@ export class RequestsService {
 
   async preloadRequest() {
 
-    const request = await this.companiesService.getAllCompanies()
+    const request = await this.requestsRepository.find()
     if (request.length > 0) {
       console.log("Ya existen existen compañías");
       return

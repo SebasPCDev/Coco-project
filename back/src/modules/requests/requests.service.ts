@@ -7,9 +7,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UUID } from 'crypto';
 import { Request } from 'src/entities/requests.entity';
 import { StatusRequest } from 'src/models/statusRequest.enum';
-import { TypeCompany } from 'src/models/typeCompany.enum';
+import { CompanyType } from 'src/models/companyType.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { UpdateRequestCoworkingDto } from './requestCoworking.dto';
+import { UpdateRequestCoworkingDto } from './requests.dto';
 import { loadDataRequest, loadDataRequestCompany } from 'src/utils/loadData';
 import { CoworkingsService } from '../coworkings/coworkings.service';
 import { CompaniesService } from '../companies/companies.service';
@@ -21,7 +21,7 @@ export class RequestsService {
     private requestsRepository: Repository<Request>,
     private readonly coworkingsService: CoworkingsService,
     private readonly companiesService: CompaniesService,
-  ) {}
+  ) { }
 
   async getRequestByEmail(email: string) {
     const existingRequest = await this.requestsRepository.findOne({
@@ -38,13 +38,6 @@ export class RequestsService {
   }
 
   async addCowork(cowork: Partial<Request>) {
-    // const existingRequest = await this.requestsRepository.findOne({
-    //   where: { email: cowork.email },
-    // });
-
-    // if (existingRequest) {
-    //   throw new ConflictException('El correo ya está en uso');
-    // }
 
     await this.getRequestByEmail(cowork.email);
 
@@ -73,7 +66,7 @@ export class RequestsService {
     };
   }
 
-  async getRequest(type: TypeCompany, status: StatusRequest) {
+  async getRequest(type: CompanyType, status: StatusRequest) {
     const where: FindOptionsWhere<Request> = {};
     if (type) where.type = type;
     if (status) where.status = status;
@@ -120,11 +113,11 @@ export class RequestsService {
 
     const firstCoworking = await this.requestsRepository.find({
       take: 1,
-      where: { type: TypeCompany.COWORKING },
+      where: { type: CompanyType.COWORKING },
     });
     const firtsCompany = await this.requestsRepository.find({
       take: 1,
-      where: { type: TypeCompany.COMPANY },
+      where: { type: CompanyType.COMPANY },
     });
 
     await this.coworkingsService.activateCoworking(

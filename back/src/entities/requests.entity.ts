@@ -2,7 +2,7 @@ import { Exclude } from 'class-transformer';
 import { CompanySize } from 'src/models/companySize.enum';
 
 import { StatusRequest } from 'src/models/statusRequest.enum';
-import { TypeCompany } from 'src/models/typeCompany.enum';
+import { CompanyType } from 'src/models/companyType.enum';
 
 import {
   Entity,
@@ -130,9 +130,9 @@ export class Request {
 
   @Column({
     type: 'enum',
-    enum: TypeCompany,
+    enum: CompanyType,
   })
-  type: TypeCompany;
+  type: CompanyType;
 
   @Exclude()
   @CreateDateColumn({

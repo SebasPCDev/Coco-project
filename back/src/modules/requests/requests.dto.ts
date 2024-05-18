@@ -10,7 +10,7 @@ import {
   IsEnum,
 } from 'class-validator';
 
-import { TypeCompany } from 'src/models/typeCompany.enum';
+import { CompanyType } from 'src/models/companyType.enum';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { IsTimeRange } from 'src/decorators/IsTimeRange.decorator';
 import { CompanySize } from 'src/models/companySize.enum';
@@ -107,6 +107,7 @@ export class CreateRequestDto {
     example: 'pending',
     description: 'El status de la request pending / close	',
   })
+  @IsOptional()
   @IsEnum(StatusRequest)
   status: StatusRequest;
 
@@ -123,7 +124,7 @@ export class CreateRequestDto {
     nullable: true,
   })
   @IsEmpty({ message: 'Debe ser nullo' })
-  type: TypeCompany;
+  type: CompanyType;
 }
 
 export class CreateRequestCoworkingDto extends CreateRequestDto {

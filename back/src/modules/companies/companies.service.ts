@@ -3,7 +3,7 @@ import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
 import { loadDataCompanies } from 'src/utils/loadData';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Companies } from 'src/entities/companies.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { Users } from 'src/entities/users.entity';
 import * as bcrypt from 'bcrypt';
@@ -15,6 +15,7 @@ import { Role } from 'src/models/roles.enum';
 import { Employees } from 'src/entities/employees.entity';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
+
 
 @Injectable()
 export class CompaniesService {
@@ -31,8 +32,20 @@ export class CompaniesService {
     private readonly nodemailerService: NodemailerService,
   ) { }
 
-  async getAllCompanies() {
-    return await this.companiesRepository.find();
+  async getAllCompanies(status: CompanyStatus, page: number, limit: number) {
+    const where: FindOptionsWhere<Companies> = {};
+
+    if (status) where.status = status;
+    const skip = (page - 1) * limit;
+
+    const conditions = {
+      skip: skip,
+      take: limit,
+      where,
+    };
+    const [companies, total] = await this.companiesRepository.findAndCount(conditions);
+
+    return { page, limit, total, companies };
   }
 
   async getCompanyById(id: UUID) {

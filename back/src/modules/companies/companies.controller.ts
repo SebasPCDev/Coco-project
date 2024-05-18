@@ -30,6 +30,13 @@ import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) { }
 
+  @Roles(Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Get()
+  getAllCompanies() {
+    return this.companiesService.getAllCompanies();
+  }
+
   @Get(':id')
   getCompanyById(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.companiesService.getCompanyById(id);
@@ -38,13 +45,6 @@ export class CompaniesController {
   @Post()
   create(@Body() createCompaniesDto: CreateCompaniesDto) {
     return this.companiesService.create(createCompaniesDto);
-  }
-
-  @Roles(Role.SUPERADMIN)
-  @UseGuards(RolesGuard)
-  @Get()
-  getAllCompanies() {
-    return this.companiesService.getAllCompanies();
   }
 
   @Roles(Role.SUPERADMIN)

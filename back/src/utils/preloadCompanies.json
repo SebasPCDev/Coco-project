@@ -5,7 +5,8 @@
     "phone": "1234567890",
     "quantityBeneficiaries": 50,
     "businessSector": "IT",
-    "size": 500
+    "size": "0 - 30",
+    "status": "active"
   },
   {
     "name": "Company 2",
@@ -13,7 +14,8 @@
     "phone": "9876543210",
     "quantityBeneficiaries": 100,
     "businessSector": "Finance",
-    "size": 1000
+    "size": "501 - en adelante",
+    "status": "active"
   },
   {
     "name": "Company 3",
@@ -21,7 +23,8 @@
     "phone": "5551234567",
     "quantityBeneficiaries": 200,
     "businessSector": "Healthcare",
-    "size": 1500
+    "size": "501 - en adelante",
+    "status": "active"
   },
   {
     "name": "Company 4",
@@ -29,7 +32,8 @@
     "phone": "9998887776",
     "quantityBeneficiaries": 75,
     "businessSector": "Manufacturing",
-    "size": 800
+    "size": "501 - en adelante",
+    "status": "active"
   },
   {
     "name": "Company 5",
@@ -37,7 +41,8 @@
     "phone": "1112223334",
     "quantityBeneficiaries": 30,
     "businessSector": "Retail",
-    "size": 300
+    "size": "501 - en adelante",
+    "status": "active"
   },
   {
     "name": "Company 6",
@@ -45,7 +50,8 @@
     "phone": "4445556667",
     "quantityBeneficiaries": 150,
     "businessSector": "Education",
-    "size": 1200
+    "size": "101 - 500",
+    "status": "active"
   },
   {
     "name": "Company 7",
@@ -53,6 +59,7 @@
     "phone": "7778889990",
     "quantityBeneficiaries": 80,
     "businessSector": "Consulting",
-    "size": 700
+    "size": "501 - en adelante",
+    "status": "active"
   }
 ]

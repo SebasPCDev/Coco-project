@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsString,
@@ -9,42 +8,14 @@ import {
   IsUrl,
   IsEmpty,
   IsEnum,
-  ValidationOptions,
-  registerDecorator,
-  ValidationArguments
 } from 'class-validator';
-import { TypeCompany } from 'src/models/typeCompany.enum';
+
+import { CompanyType } from 'src/models/companyType.enum';
 import { StatusRequest } from 'src/models/statusRequest.enum';
+import { IsTimeRange } from 'src/decorators/IsTimeRange.decorator';
+import { CompanySize } from 'src/models/companySize.enum';
 
-export function IsTimeRange(validationOptions?: ValidationOptions) {
-  return function (object: Record<string, any>, propertyName: string) {
-    registerDecorator({
-      name: 'isTimeRange',
-      target: object.constructor,
-      propertyName: propertyName,
-      constraints: [],
-      options: validationOptions,
-      validator: {
-        validate(value: any, args: ValidationArguments) {
-          const timeRegex = /^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-          if (!value.match(timeRegex)) {
-            return false;
-          }
-          const [hours, minutes] = value.split(':').map(Number);
-          if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
-            return false;
-          }
-          return true;
-        },
-        defaultMessage(args: ValidationArguments) {
-          return `El campo ${args.property} debe ser una hora válida en formato HH:mm y estar en el rango de 00:00 a 23:59`;
-        },
-      },
-    });
-  };
-}
-
-export class CreateRequestCoworkingDto {
+export class CreateRequestDto {
   @ApiProperty({
     example: 'John',
     description: 'Nombre del solicitante',
@@ -125,6 +96,39 @@ export class CreateRequestCoworkingDto {
   companyPhone: string;
 
   @ApiProperty({
+    example: 'Esto es un mensaje de prueba',
+    description: 'Mensaje de la request',
+  })
+  @IsOptional()
+  @IsString({ message: 'message debe ser un string' })
+  message: string;
+
+  @ApiProperty({
+    example: 'pending',
+    description: 'El status de la request pending / close	',
+  })
+  @IsOptional()
+  @IsEnum(StatusRequest)
+  status: StatusRequest;
+
+  @ApiProperty({
+    example: 'Esto es una observacion',
+    description: 'Observacion de la request',
+  })
+  @IsEmpty()
+  observation: string;
+
+  @ApiProperty({
+    example: '',
+    description: 'Debe estar vacio (se seta detro del endpoint), se envia null',
+    nullable: true,
+  })
+  @IsEmpty({ message: 'Debe ser nullo' })
+  type: CompanyType;
+}
+
+export class CreateRequestCoworkingDto extends CreateRequestDto {
+  @ApiProperty({
     example: '123 Main St',
     description: 'La dirección del Cowork',
   })
@@ -168,38 +172,36 @@ export class CreateRequestCoworkingDto {
   @IsOptional()
   @IsInt({ message: 'El capacity debe ser un valor tipo int' })
   capacity: number;
+}
 
+export class CreateRequestCompanyDto extends CreateRequestDto {
   @ApiProperty({
-    example: 'Esto es un mensaje de prueba',
-    description: 'Mensaje de la request',
+    example: 5,
+    description: 'Numero de beneficiarios',
   })
   @IsOptional()
-  @IsString({ message: 'message debe ser un string' })
-  message: string;
+  @IsInt({ message: 'quantityBeneficiaries debe ser un numero' })
+  quantityBeneficiaries: number;
 
   @ApiProperty({
-    example: 'pending',
-    description: 'El status de la request pending / close	',
+    example: 'Technology',
+    description: 'Sector de la compañia',
   })
-  @IsEnum(StatusRequest)
-  status: StatusRequest;
+  @IsOptional()
+  @IsString({ message: 'businessSector debe ser un string' })
+  businessSector: string;
 
   @ApiProperty({
-    example: 'Esto es una observacion',
-    description: 'Observacion de la request',
+    example: 500,
+    description: 'Cantidad de empleados, tamaño de la empresa',
   })
-  @IsString({ message: 'observation debe ser un string' })
-  observation: string;
-
-  @ApiProperty({
-    example: '',
-    description: 'Debe estar vacio (se seta detro del endpoint), se envia null',
-    nullable: true,
-  })
-  @IsEmpty({ message: 'Debe ser nullo' })
-  type: TypeCompany;
+  @IsEnum(CompanySize, { message: 'El tamaño debe ser 0-30, 31-100, 101-500, 500-en adelante' })
+  @IsNotEmpty({ message: 'El tamaño es obligatorio' })
+  size: CompanySize;
 }
 
 export class UpdateRequestCoworkingDto extends PartialType(
   CreateRequestCoworkingDto,
 ) { }
+
+export class UpdateRequestDto extends PartialType(CreateRequestDto) { }

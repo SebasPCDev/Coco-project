@@ -40,6 +40,7 @@ export class Users {
   @Column({ type: 'varchar', length: 255 })
   password: string;
 
+  @Exclude()
   @Column({
     name: 'recovery_token',
     type: 'varchar',

@@ -70,7 +70,7 @@ export class CreateUsersDto {
     description: 'Contraseña del usuario (se establece dentro del endpoint, se envía null)',
     nullable: true,
   })
-  @IsEmpty({ message: 'password debe ser nulo' })
+  @IsEmpty()
   password: string;
 
   @ApiProperty({

@@ -39,9 +39,10 @@ export class CompaniesController {
   @Get()
   getAllCompanies(
     @Query('status', new DefaultValuePipe(CompanyStatus.ACTIVE)) status: CompanyStatus,
+    @Query('name') name: string,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number) {
-    return this.companiesService.getAllCompanies(status, page, limit);
+    return this.companiesService.getAllCompanies(status, name, page, limit);
   }
 
   @Get(':id')

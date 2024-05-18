@@ -9,6 +9,9 @@ import {
   Req,
   Put,
   ParseUUIDPipe,
+  Query,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 
 import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
@@ -22,6 +25,7 @@ import { CompaniesService } from './companies.service';
 import { UUID } from 'crypto';
 import { CreateEmployeeDto } from '../users/users.dto';
 import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
+import { CompanyStatus } from 'src/models/companyStatus.enum';
 
 @ApiTags('companies')
 @ApiBearerAuth()
@@ -33,8 +37,11 @@ export class CompaniesController {
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Get()
-  getAllCompanies() {
-    return this.companiesService.getAllCompanies();
+  getAllCompanies(
+    @Query('status', new DefaultValuePipe(CompanyStatus.ACTIVE)) status: CompanyStatus,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number) {
+    return this.companiesService.getAllCompanies(status, page, limit);
   }
 
   @Get(':id')

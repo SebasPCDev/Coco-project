@@ -32,16 +32,18 @@ import { CompanyStatus } from 'src/models/companyStatus.enum';
 @UseGuards(AuthGuard)
 @Controller('companies')
 export class CompaniesController {
-  constructor(private readonly companiesService: CompaniesService) { }
+  constructor(private readonly companiesService: CompaniesService) {}
 
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Get()
   getAllCompanies(
-    @Query('status', new DefaultValuePipe(CompanyStatus.ACTIVE)) status: CompanyStatus,
+    @Query('status', new DefaultValuePipe(CompanyStatus.ACTIVE))
+    status: CompanyStatus,
     @Query('name') name: string,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number) {
+    @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number,
+  ) {
     return this.companiesService.getAllCompanies(status, name, page, limit);
   }
 
@@ -70,10 +72,13 @@ export class CompaniesController {
     return this.companiesService.createEmployee(adminCompanyId as UUID, data);
   }
 
-  @Roles(Role.ADMIN_COMPANY)
-  @UseGuards(RolesGuard, UserAuthCompanyGuard)
+  @Roles(Role.ADMIN_COMPANY, Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
   @Put(':id')
-  update(@Param('id', ParseUUIDPipe) id: UUID, @Body() changes: UpdateCompaniesDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: UUID,
+    @Body() changes: UpdateCompaniesDto,
+  ) {
     return this.companiesService.update(id, changes);
   }
 

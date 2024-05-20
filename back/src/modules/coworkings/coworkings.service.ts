@@ -6,7 +6,12 @@ import {
 import { UUID } from 'crypto';
 import { InjectRepository } from '@nestjs/typeorm';
 // FindOptionsWhere,
-import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
+import {
+  DataSource,
+  FindOptionsOrderValue,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { NodemailerService } from '../nodemailer/nodemailer.service';
@@ -35,7 +40,7 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
     @InjectRepository(CoworkingImages)
     private coworkingImagesRepository: Repository<CoworkingImages>,
-  ) { }
+  ) {}
 
   async getAllCoworkings(
     page: number,
@@ -59,6 +64,7 @@ export class CoworkingsService {
       skip: skip,
       take: limit,
       where,
+      order: { updatedAt: 'DESC' as FindOptionsOrderValue },
     };
     const [coworking, total] =
       await this.coworkingsRepository.findAndCount(conditions);
@@ -243,9 +249,8 @@ export class CoworkingsService {
       data.password = hashedPass;
 
       const user = this.usersRepository.create(data);
-      user.coworkings = [coworking]
+      user.coworkings = [coworking];
       const newUser = await queryRunner.manager.save(user);
-
 
       // console.log("coworking.user ", coworking.user, typeof coworking.user); coworking.user
 
@@ -269,9 +274,18 @@ export class CoworkingsService {
     const coworking = await this.getCoworkingById(id);
 
     if (changes.status) {
-      const geography = (coworking.country && coworking.state && coworking.city && coworking.lat && coworking.long);
+      const geography =
+        coworking.country &&
+        coworking.state &&
+        coworking.city; /* && coworking.lat && coworking.long */
 
-      if (changes.status === CoworkingStatus.ACTIVE && !geography || !coworking.thumbnail) throw new BadRequestException('The country, state, city, lat, long and thumbnail data are required to activate coworking');
+      if (
+        (changes.status === CoworkingStatus.ACTIVE && !geography) ||
+        !coworking.thumbnail
+      )
+        throw new BadRequestException(
+          'The country, state, city, lat, long and thumbnail data are required to activate coworking',
+        );
     }
 
     const updCoworking = this.coworkingsRepository.merge(coworking, changes);

@@ -5,6 +5,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { Employees } from './employees.entity';
@@ -53,10 +54,11 @@ export class Companies {
   createdAt: Date;
 
   @Exclude()
-  @CreateDateColumn({
+  @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'now()',
   })
   updatedAt: Date;
 

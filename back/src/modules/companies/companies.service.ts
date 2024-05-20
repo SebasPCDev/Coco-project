@@ -1,9 +1,18 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
 import { loadDataCompanies } from 'src/utils/loadData';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Companies } from 'src/entities/companies.entity';
-import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
+import {
+  DataSource,
+  FindOptionsOrderValue,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { Users } from 'src/entities/users.entity';
 import * as bcrypt from 'bcrypt';
@@ -15,7 +24,6 @@ import { Role } from 'src/models/roles.enum';
 import { Employees } from 'src/entities/employees.entity';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
-
 
 @Injectable()
 export class CompaniesService {
@@ -30,9 +38,14 @@ export class CompaniesService {
     private employeesRepository: Repository<Employees>,
     private dataSource: DataSource,
     private readonly nodemailerService: NodemailerService,
-  ) { }
+  ) {}
 
-  async getAllCompanies(status: CompanyStatus, name: string, page: number, limit: number) {
+  async getAllCompanies(
+    status: CompanyStatus,
+    name: string,
+    page: number,
+    limit: number,
+  ) {
     const where: FindOptionsWhere<Companies> = {};
 
     if (status) where.status = status;
@@ -44,8 +57,10 @@ export class CompaniesService {
       skip: skip,
       take: limit,
       where,
+      order: { updatedAt: 'DESC' as FindOptionsOrderValue },
     };
-    const [companies, total] = await this.companiesRepository.findAndCount(conditions);
+    const [companies, total] =
+      await this.companiesRepository.findAndCount(conditions);
 
     return { page, limit, total, companies };
   }
@@ -53,12 +68,12 @@ export class CompaniesService {
   async getCompanyById(id: UUID) {
     const company = await this.companiesRepository.findOne({
       where: { id },
-      relations: ['employees', 'employees.user']
+      relations: ['employees', 'employees.user'],
     });
 
-    if (!company) throw new BadRequestException('Company not found')
-    console.log("company", company);
-    return company
+    if (!company) throw new BadRequestException('Company not found');
+    console.log('company', company);
+    return company;
   }
 
   create(data: CreateCompaniesDto) {
@@ -156,24 +171,30 @@ export class CompaniesService {
   }
 
   async createEmployee(adminCompanyId: UUID, data: CreateEmployeeDto) {
-
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
     if (dbUser) throw new BadRequestException('User found');
 
-    const adminCompany = await this.usersRepository.findOne({ where: { id: adminCompanyId }, relations: ['employee.company'] });
+    const adminCompany = await this.usersRepository.findOne({
+      where: { id: adminCompanyId },
+      relations: ['employee.company'],
+    });
 
-    if (adminCompany.employee.company.id !== data.companyId) throw new ForbiddenException('You do not have permission and are not allowed to access this route');
+    if (adminCompany.employee.company.id !== data.companyId)
+      throw new ForbiddenException(
+        'You do not have permission and are not allowed to access this route',
+      );
 
-    const company = await this.companiesRepository.findOneBy({ id: data.companyId });
+    const company = await this.companiesRepository.findOneBy({
+      id: data.companyId,
+    });
     if (!company) throw new BadRequestException('Company not found');
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
 
     try {
-
       await queryRunner.startTransaction(); // START
 
       const password = process.env.SUPERADMIN_PASSWORD;

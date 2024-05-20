@@ -8,6 +8,7 @@ import {
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Users } from './users.entity';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
@@ -77,10 +78,11 @@ export class Coworkings {
   createdAt: Date;
 
   @Exclude()
-  @CreateDateColumn({
+  @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'now()',
   })
   updatedAt: Date;
 

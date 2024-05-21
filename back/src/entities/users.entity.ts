@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToMany,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -12,6 +13,7 @@ import { Employees } from './employees.entity';
 import { Coworkings } from './coworkings.entity';
 import { UserStatus } from 'src/models/userStatus.enum';
 import { Role } from 'src/models/roles.enum';
+import { Bookings } from './bookings.entity';
 
 @Entity({ name: 'users' })
 export class Users {
@@ -85,4 +87,7 @@ export class Users {
     nullable: true,
   })
   coworkings: Coworkings[];
+
+  @OneToMany(() => Bookings, (booking) => booking.coworking)
+  bookings: Bookings[];
 }

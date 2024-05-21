@@ -69,6 +69,13 @@ export class CoworkingsController {
     return this.coworkingsService.getCities(country, state);
   }
 
+  @Roles(Role.ADMIN_COWORKING, Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Get(':id/bookings')
+  getBookimgsByCoworking(@Param('id', ParseUUIDPipe) id: UUID) {
+    return this.coworkingsService.getBookimgsByCoworking(id);
+  }
+
   @Public()
   @Get(':id')
   getCoworkingById(@Param('id', ParseUUIDPipe) id: UUID) {

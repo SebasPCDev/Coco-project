@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private reflector: Reflector,
-  ) {}
+  ) { }
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
@@ -30,13 +30,14 @@ export class AuthGuard implements CanActivate {
     if (isPublic) return true;
 
     const request = context.switchToHttp().getRequest();
-    const token = request.headers['authorization']?.split(' ')[1] ?? '';
 
+    const token = request.headers['authorization']?.split(' ')[1] ?? '';
     if (!token) throw new UnauthorizedException('Unauthorized');
 
     try {
       const secret = process.env.JWT_SECRET;
       const payload = this.jwtService.verify(token, { secret });
+
       payload.iat = new Date(payload.iat * 1000);
       payload.exp = new Date(payload.exp * 1000);
 

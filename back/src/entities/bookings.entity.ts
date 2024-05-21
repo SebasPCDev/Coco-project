@@ -26,6 +26,9 @@ export class Bookings {
   })
   status: BookingStatus;
 
+  @Column({ type: 'varchar', nullable: true })
+  observation: string;
+
   @Exclude()
   @CreateDateColumn({
     name: 'created_at',

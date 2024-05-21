@@ -35,8 +35,8 @@ export class Companies {
   @Column({ type: 'enum', enum: CompanySize })
   size: CompanySize;
 
-  @Column({ type: 'int', nullable: true })
-  total_passes: number;
+  @Column({ type: 'int', name: "total_passes", nullable: true })
+  totalPasses: number;
 
   @Column({
     type: 'enum',

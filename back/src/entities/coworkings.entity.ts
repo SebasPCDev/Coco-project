@@ -14,6 +14,7 @@ import { Users } from './users.entity';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { Amenities } from './amenities.entity';
 import { CoworkingImages } from './coworkingImages.entity';
+import { Bookings } from './bookings.entity';
 
 @Entity('coworkings')
 export class Coworkings {
@@ -115,4 +116,8 @@ export class Coworkings {
   @OneToMany(() => CoworkingImages, (image) => image.coworking)
   // @JoinColumn()
   images: CoworkingImages[];
+
+  @OneToMany(() => Bookings, (booking) => booking.coworking)
+  bookings: Bookings[];
+
 }

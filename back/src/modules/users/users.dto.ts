@@ -9,6 +9,9 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  Matches,
+  MaxLength,
+  MinLength,
   Validate,
 } from 'class-validator';
 import { UUID } from 'crypto';
@@ -110,7 +113,10 @@ export class CreateUsersDto {
 
 export class UpdateUsersDto extends PartialType(OmitType(CreateUsersDto, ['status', 'password'])) {
 
-  @IsString()
+  @IsString({ message: 'La contraseña debe tener entre 8 y 15 caracteres, tener al menos una míscula, una mayúscula y un caracter especial (!@#$%^&*)' })
+  @MinLength(8)
+  @MaxLength(15)
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/)
   @IsOptional()
   readonly password?: string;
 

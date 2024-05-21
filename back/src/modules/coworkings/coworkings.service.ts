@@ -40,7 +40,7 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
     @InjectRepository(CoworkingImages)
     private coworkingImagesRepository: Repository<CoworkingImages>,
-  ) {}
+  ) { }
 
   async getAllCoworkings(
     page: number,
@@ -69,6 +69,19 @@ export class CoworkingsService {
     const [coworking, total] =
       await this.coworkingsRepository.findAndCount(conditions);
     return { page, limit, total, coworking };
+  }
+
+  async getBookimgsByCoworking(id: UUID) {
+    const coworking = await this.coworkingsRepository.findOne({
+      relations: ['bookings'],
+      where: { id },
+    });
+
+    if (!coworking) {
+      throw new NotFoundException(`Coworking with id ${id} not found`);
+    }
+
+    return coworking;
   }
 
   async getCoworkingById(id: UUID) {

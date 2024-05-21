@@ -3,21 +3,24 @@ import {
   Get,
   Post,
   Body,
-  //Put,
   Param,
-  Delete,
+  Req,
+  UseGuards,
+  Put,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
-import { CreateBookingDto } from './booking.dto';
+import { CreateBookingsDto, UpdateBookingsDto } from './bookings.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { UUID } from 'crypto';
 
+@ApiTags('bookings')
+@ApiBearerAuth()
+@UseGuards(AuthGuard)
 @Controller('bookings')
 export class BookingsController {
-  constructor(private readonly bookingsService: BookingsService) {}
-
-  @Post()
-  create(@Body() createBookingDto: CreateBookingDto) {
-    return this.bookingsService.create(createBookingDto);
-  }
+  constructor(private readonly bookingsService: BookingsService) { }
 
   @Get()
   findAll() {
@@ -25,17 +28,19 @@ export class BookingsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bookingsService.findOne(+id);
+  findOne(@Param('id', ParseUUIDPipe) id: UUID) {
+    return this.bookingsService.findOne(id);
   }
 
-  /*   @Put(':id')
-  update(@Param('id') id: string, @Body() updateBookingDto: UpdateBookingDto) {
-    return this.bookingsService.update(+id, updateBookingDto);
-  } */
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bookingsService.remove(+id);
+  @Post()
+  create(@Req() request, @Body() data: CreateBookingsDto) {
+    const user = request.user;
+    return this.bookingsService.create(user.id, data);
   }
+
+  @Put(':id')
+  update(@Param('id') id: UUID, @Body() updateBookingDto: UpdateBookingsDto) {
+    return this.bookingsService.update(id, updateBookingDto);
+  }
+
 }

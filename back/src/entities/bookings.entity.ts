@@ -16,7 +16,7 @@ export class Bookings {
   @Column({ type: 'time', name: 'reservation_time', nullable: true })
   reservationTime: Date;
 
-  @Column({ type: 'timestamptz', name: 'booking_date', nullable: true })
+  @Column({ type: 'timestamptz', name: 'booking_date', default: () => 'CURRENT_TIMESTAMP', })
   date: Date;
 
   @Column({

@@ -24,7 +24,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { CompaniesService } from './companies.service';
 import { UUID } from 'crypto';
 import { CreateEmployeeDto } from '../users/users.dto';
-import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
+// import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
 
 @ApiTags('companies')
@@ -32,7 +32,7 @@ import { CompanyStatus } from 'src/models/companyStatus.enum';
 @UseGuards(AuthGuard)
 @Controller('companies')
 export class CompaniesController {
-  constructor(private readonly companiesService: CompaniesService) {}
+  constructor(private readonly companiesService: CompaniesService) { }
 
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)

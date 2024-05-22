@@ -27,17 +27,17 @@ export class BookingsService {
 
   async findOne(id: UUID) {
     const booking = await this.bookingsRepository.findOne({ where: { id }, relations: ['user', 'coworking'] })
-    if (!booking) throw new BadRequestException('Booking not found');
+    if (!booking) throw new BadRequestException('Reserva no encontrada');
     return booking;
   }
 
   async create(userId: UUID, data: CreateBookingsDto) {
 
     const user = await this.usersRepository.findOneBy({ id: userId })
-    if (!user) throw new BadRequestException('User not found');
+    if (!user) throw new BadRequestException('Usuario no encontrado');
 
     const coworking = await this.coworkingsRepository.findOneBy({ id: data.coworkingId })
-    if (!coworking) throw new BadRequestException('Coworking not found');
+    if (!coworking) throw new BadRequestException('Coworking no encontrado');
 
     const openTimeMinutes = timeToMinutes(coworking.open);
     const closeTimeMinutes = timeToMinutes(coworking.close);
@@ -45,7 +45,7 @@ export class BookingsService {
 
     // Comparar las horas en minutos
     if (reservationTimeMinutes < openTimeMinutes || reservationTimeMinutes > closeTimeMinutes) {
-      throw new BadRequestException('The reservation time is before the opening or after the closing of the coworking');
+      throw new BadRequestException('La hora de reserva es antes de la apertura o después del cierre del coworking.');
     }
 
 

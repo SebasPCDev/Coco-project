@@ -78,7 +78,7 @@ export class CoworkingsService {
     });
 
     if (!coworking) {
-      throw new NotFoundException(`Coworking with id ${id} not found`);
+      throw new NotFoundException(`Coworking con id ${id} no encontrado`);
     }
 
     return coworking;
@@ -91,7 +91,7 @@ export class CoworkingsService {
     });
 
     if (!coworking) {
-      throw new NotFoundException(`Coworking with id ${id} not found`);
+      throw new NotFoundException(`Coworking con id ${id} no encontrado`);
     }
 
     return coworking;
@@ -146,7 +146,7 @@ export class CoworkingsService {
 
   async create(userId: UUID, data: CreateCoworkingsDto) {
     const user = await this.usersRepository.findOneBy({ id: userId });
-    if (!user) throw new BadRequestException('User not found');
+    if (!user) throw new BadRequestException('Usuario no encontrado');
 
     data.user = [user];
     const newUser = this.coworkingsRepository.create(data);
@@ -169,7 +169,7 @@ export class CoworkingsService {
       const password = process.env.SUPERADMIN_PASSWORD;
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)
-        throw new BadRequestException('Password could not be hashed');
+        throw new BadRequestException('Contraseña no haseada');
 
       const userData: CreateUsersDto = {
         name: requestCoworking.name,
@@ -237,12 +237,12 @@ export class CoworkingsService {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
-    if (dbUser) throw new BadRequestException('User found');
+    if (dbUser) throw new BadRequestException('Usuario no encontrado');
 
     const coworking = await this.coworkingsRepository.findOneBy({
       id: data.coworkingId,
     });
-    if (!coworking) throw new BadRequestException('Coworking not found');
+    if (!coworking) throw new BadRequestException('Coworking no encontrado');
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -257,7 +257,7 @@ export class CoworkingsService {
       const password = process.env.SUPERADMIN_PASSWORD;
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)
-        throw new BadRequestException('Password could not be hashed');
+        throw new BadRequestException('Contraseña no pudo ser haseada');
 
       data.password = hashedPass;
 
@@ -297,7 +297,7 @@ export class CoworkingsService {
         !coworking.thumbnail
       )
         throw new BadRequestException(
-          'The country, state, city, lat, long and thumbnail data are required to activate coworking',
+          'Se requieren los datos de país, estado, ciudad, latitud, longitud y miniatura para activar el coworking.',
         );
     }
 

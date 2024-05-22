@@ -78,7 +78,7 @@ export class CompaniesService {
 
   create(data: CreateCompaniesDto) {
     console.log('data', data);
-    return 'This action adds a new company';
+    return 'Esta acción añade una nueva empresa.';
   }
 
   async activateCompany(id: UUID) {
@@ -103,7 +103,7 @@ export class CompaniesService {
       const password = process.env.SUPERADMIN_PASSWORD;
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)
-        throw new BadRequestException('Password could not be hashed');
+        throw new BadRequestException('No se pudo aplicar hash a la contraseña');
 
       const userData: CreateUsersDto = {
         name: requestCoworking.name,
@@ -174,7 +174,7 @@ export class CompaniesService {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
-    if (dbUser) throw new BadRequestException('User found');
+    if (dbUser) throw new BadRequestException('Usuario no encontrado');
 
     const adminCompany = await this.usersRepository.findOne({
       where: { id: adminCompanyId },
@@ -183,13 +183,13 @@ export class CompaniesService {
 
     if (adminCompany.employee.company.id !== data.companyId)
       throw new ForbiddenException(
-        'You do not have permission and are not allowed to access this route',
+        'No tienes permiso y no puedes acceder a esta ruta',
       );
 
     const company = await this.companiesRepository.findOneBy({
       id: data.companyId,
     });
-    if (!company) throw new BadRequestException('Company not found');
+    if (!company) throw new BadRequestException('Empresa no encontrada');
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -200,7 +200,7 @@ export class CompaniesService {
       const password = process.env.SUPERADMIN_PASSWORD;
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)
-        throw new BadRequestException('Password could not be hashed');
+        throw new BadRequestException('Contraseña no haseada');
 
       data.password = hashedPass;
       data.role = Role.EMPLOYEE;
@@ -238,7 +238,7 @@ export class CompaniesService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} company`;
+    return `Esta accion borra  un #${id}  Empresa`;
   }
 
   async preloadCompanies() {

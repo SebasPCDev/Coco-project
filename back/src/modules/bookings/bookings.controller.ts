@@ -39,7 +39,7 @@ export class BookingsController {
   }
 
   @Put(':id')
-  update(@Param('id') id: UUID, @Body() updateBookingDto: UpdateBookingsDto) {
+  update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateBookingDto: UpdateBookingsDto) {
     return this.bookingsService.update(id, updateBookingDto);
   }
 

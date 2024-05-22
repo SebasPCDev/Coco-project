@@ -42,11 +42,6 @@ export class Request {
   @Column({
     type: 'varchar',
   })
-  identification: string;
-
-  @Column({
-    type: 'varchar',
-  })
   position: string;
 
   @Column({
@@ -54,30 +49,34 @@ export class Request {
   })
   companyName: string;
 
+  /////////////////
+  //   COMPANY   //
+  /////////////////
+
+  @Column({ type: 'enum', enum: CompanySize, nullable: true })
+  size: CompanySize;
+
+  ///////////////////
+  //   COWORKING   //
+  ///////////////////
+
   @Column({
     type: 'varchar',
+    nullable: true
+  })
+  identification: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true
   })
   companyEmail: string;
 
   @Column({
     type: 'varchar',
+    nullable: true
   })
   companyPhone: string;
-
-  @Column({
-    nullable: true,
-    type: 'int',
-  })
-  quantityBeneficiaries: number;
-
-  @Column({
-    nullable: true,
-    type: 'varchar',
-  })
-  businessSector: string;
-
-  @Column({ type: 'enum', enum: CompanySize, nullable: true })
-  size: CompanySize;
 
   @Column({
     nullable: true,
@@ -108,6 +107,17 @@ export class Request {
     type: 'int',
   })
   capacity: number;
+
+  /////////
+  // ALL //
+  /////////
+
+  @CreateDateColumn({
+    name: 'date_created',
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  dateCreated: Date;
 
   @Column({
     nullable: true,

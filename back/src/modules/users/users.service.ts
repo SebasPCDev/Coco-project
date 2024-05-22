@@ -40,7 +40,7 @@ export class UsersService {
       relations: ['coworkings', 'employee', 'employee.company'],
     });
 
-    if (!user) throw new BadRequestException('User not found');
+    if (!user) throw new BadRequestException('Usuario no encontrado');
     return user;
   }
 
@@ -58,7 +58,7 @@ export class UsersService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return `Esta accion borra  #${id} usuario`;
   }
 
   async preloadSuperAdminUser() {

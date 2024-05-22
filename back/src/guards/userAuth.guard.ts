@@ -23,7 +23,7 @@ export class UserAuthGuard implements CanActivate {
     const paramId = request.params.id;
     if (paramId) {
       if (paramId !== user.id && !user.roles.includes(Role.SUPERADMIN))
-        throw new ForbiddenException('You do not have permission and are not allowed to access this route');
+        throw new ForbiddenException('No tienes permiso y no puedes acceder a esta ruta');
     }
     return true;
   }

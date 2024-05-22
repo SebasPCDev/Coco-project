@@ -17,11 +17,11 @@ export class AuthService {
 
     const user = await this.usersService.getUserByEmail(email);
 
-    if (!user) throw new BadRequestException('User not found');
+    if (!user) throw new BadRequestException('Usuario no encontrado');
 
     const match = await bcrypt.compare(password, user.password);
 
-    if (!match) throw new BadRequestException('Invalid password');
+    if (!match) throw new BadRequestException('Contraseña invalida');
 
     const userPayload = {
       sub: user.id,

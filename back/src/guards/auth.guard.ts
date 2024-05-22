@@ -32,7 +32,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     const token = request.headers['authorization']?.split(' ')[1] ?? '';
-    if (!token) throw new UnauthorizedException('Unauthorized');
+    if (!token) throw new UnauthorizedException('No autorizado');
 
     try {
       const secret = process.env.JWT_SECRET;
@@ -60,7 +60,7 @@ export class AuthGuard implements CanActivate {
 
       return true;
     } catch (err) {
-      if (!token) throw new UnauthorizedException('Unauthorized');
+      if (!token) throw new UnauthorizedException('No autorizado');
     }
   }
 }

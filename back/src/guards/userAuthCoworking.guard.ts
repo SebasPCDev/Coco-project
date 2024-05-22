@@ -27,13 +27,13 @@ export class UserAuthCoworkingGuard implements CanActivate {
     const dbCoworking = await this.coworkingsService.getCoworkingById(paramId);
 
     const valUser = dbCoworking.user.findIndex((coworkingAdmin) => coworkingAdmin.id === user.id)
-    if (valUser === -1) throw new ForbiddenException('You do not have permission and are not allowed to access this route')
+    if (valUser === -1) throw new ForbiddenException('No tienes permiso y no puedes acceder a esta ruta')
 
     const valid = user && valUser !== -1;
 
     if (!valid)
       throw new ForbiddenException(
-        'You do not have permission and are not allowed to access this route'
+        'No tienes permiso y no puedes acceder a esta ruta'
       );
 
     return valid;

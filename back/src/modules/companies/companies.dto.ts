@@ -5,6 +5,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUUID,
   Matches,
@@ -47,7 +48,7 @@ export class CreateCompaniesDto {
 
   @IsNumber({}, { message: 'La cantidad de beneficiarios debe ser un número' })
   @Min(0, { message: 'La cantidad de beneficiarios no puede ser negativa' })
-  @IsNotEmpty({ message: 'La cantidad de beneficiarios no puede estar vacía' })
+  @IsOptional({ message: 'La cantidad de beneficiarios no puede estar vacía' })
   quantityBeneficiaries: number;
 
   @ApiProperty({
@@ -55,7 +56,7 @@ export class CreateCompaniesDto {
     description: 'Sector empresarial',
   })
   @IsString({ message: 'El sector empresarial debe ser una cadena de caracteres' })
-  @IsNotEmpty({ message: 'El sector empresarial no puede estar vacío' })
+  @IsOptional({ message: 'El sector empresarial no puede estar vacío' })
   businessSector: string;
 
   @IsEnum(CompanySize, { message: 'El tamaño debe ser 0-30, 31-100, 101-500, 500-en adelante' })

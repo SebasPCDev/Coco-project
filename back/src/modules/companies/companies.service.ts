@@ -38,7 +38,7 @@ export class CompaniesService {
     private employeesRepository: Repository<Employees>,
     private dataSource: DataSource,
     private readonly nodemailerService: NodemailerService,
-  ) {}
+  ) { }
 
   async getAllCompanies(
     status: CompanyStatus,
@@ -124,8 +124,10 @@ export class CompaniesService {
         name: requestCoworking.companyName,
         phone: requestCoworking.companyPhone,
         email: requestCoworking.companyEmail,
-        quantityBeneficiaries: requestCoworking.quantityBeneficiaries,
-        businessSector: requestCoworking.businessSector,
+        // quantityBeneficiaries: requestCoworking.quantityBeneficiaries,
+        // businessSector: requestCoworking.businessSector,
+        quantityBeneficiaries: 0,
+        businessSector: '',
         size: requestCoworking.size,
         status: CompanyStatus.PENDING,
         total_passes: 0,

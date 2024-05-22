@@ -33,14 +33,6 @@ export class CreateRequestDto {
   lastname: string;
 
   @ApiProperty({
-    example: 'john.doe@example.com',
-    description: 'El correo electrónico del solicitante',
-  })
-  @IsEmail({}, { message: 'Formato de correo electrónico inválido' })
-  @IsNotEmpty({ message: 'El correo electrónico es obligatorio' })
-  email: string;
-
-  @ApiProperty({
     example: '1234567890',
     description: 'El número de teléfono del solicitante',
   })
@@ -49,14 +41,12 @@ export class CreateRequestDto {
   phone: string;
 
   @ApiProperty({
-    example: '1234567890',
-    description: 'El número de identificación del solicitante',
+    example: 'john.doe@example.com',
+    description: 'El correo electrónico del solicitante',
   })
-  @IsString({
-    message: 'El número de identificación debe ser una cadena de texto',
-  })
-  @IsNotEmpty({ message: 'El número de identificación es obligatorio' })
-  identification: string;
+  @IsEmail({}, { message: 'Formato de correo electrónico inválido' })
+  @IsNotEmpty({ message: 'El correo electrónico es obligatorio' })
+  email: string;
 
   @ApiProperty({
     example: 'General manager',
@@ -73,6 +63,51 @@ export class CreateRequestDto {
   @IsString({ message: 'El nombre de la empresa debe ser una cadena de texto' })
   @IsNotEmpty({ message: 'El nombre de la empresa es obligatorio' })
   companyName: string;
+
+  @ApiProperty({
+    example: 'Esto es un mensaje de prueba',
+    description: 'Mensaje de la request',
+  })
+  @IsOptional()
+  @IsString({ message: 'message debe ser un string' })
+  message: string;
+
+  // @ApiProperty({
+  //   example: 'pending',
+  //   description: 'El status de la request pending / close	',
+  // })
+  // @IsOptional()
+  // @IsEnum(StatusRequest)
+  @IsEmpty()
+  status: StatusRequest;
+
+  @ApiProperty({
+    example: 'Esto es una observacion',
+    description: 'Observacion de la request',
+  })
+  @IsEmpty()
+  observation: string;
+
+  @ApiProperty({
+    example: '',
+    description: 'Debe estar vacio (se seta detro del endpoint), se envia null',
+    nullable: true,
+  })
+  @IsEmpty()
+  type: CompanyType;
+}
+
+export class CreateRequestCoworkingDto extends CreateRequestDto {
+
+  @ApiProperty({
+    example: '1234567890',
+    description: 'El número de identificación del solicitante',
+  })
+  @IsString({
+    message: 'El número de identificación debe ser una cadena de texto',
+  })
+  @IsNotEmpty({ message: 'El número de identificación es obligatorio' })
+  identification: string;
 
   @ApiProperty({
     example: 'ejemplo@cowork.com',
@@ -95,39 +130,6 @@ export class CreateRequestDto {
   @IsNotEmpty({ message: 'El número de teléfono de la empresa es obligatorio' })
   companyPhone: string;
 
-  @ApiProperty({
-    example: 'Esto es un mensaje de prueba',
-    description: 'Mensaje de la request',
-  })
-  @IsOptional()
-  @IsString({ message: 'message debe ser un string' })
-  message: string;
-
-  @ApiProperty({
-    example: 'pending',
-    description: 'El status de la request pending / close	',
-  })
-  @IsOptional()
-  @IsEnum(StatusRequest)
-  status: StatusRequest;
-
-  @ApiProperty({
-    example: 'Esto es una observacion',
-    description: 'Observacion de la request',
-  })
-  @IsEmpty()
-  observation: string;
-
-  @ApiProperty({
-    example: '',
-    description: 'Debe estar vacio (se seta detro del endpoint), se envia null',
-    nullable: true,
-  })
-  @IsEmpty({ message: 'Debe ser nullo' })
-  type: CompanyType;
-}
-
-export class CreateRequestCoworkingDto extends CreateRequestDto {
   @ApiProperty({
     example: '123 Main St',
     description: 'La dirección del Cowork',
@@ -176,26 +178,10 @@ export class CreateRequestCoworkingDto extends CreateRequestDto {
 
 export class CreateRequestCompanyDto extends CreateRequestDto {
   @ApiProperty({
-    example: 5,
-    description: 'Numero de beneficiarios',
-  })
-  @IsOptional()
-  @IsInt({ message: 'quantityBeneficiaries debe ser un numero' })
-  quantityBeneficiaries: number;
-
-  @ApiProperty({
-    example: 'Technology',
-    description: 'Sector de la compañia',
-  })
-  @IsOptional()
-  @IsString({ message: 'businessSector debe ser un string' })
-  businessSector: string;
-
-  @ApiProperty({
     example: 500,
     description: 'Cantidad de empleados, tamaño de la empresa',
   })
-  @IsEnum(CompanySize, { message: 'El tamaño debe ser 0-30, 31-100, 101-500, 500-en adelante' })
+  @IsEnum(CompanySize, { message: 'El tamaño debe ser 1 - 10, 10 - 50, 50 - 250, 250 - 500, o más de 500' })
   @IsNotEmpty({ message: 'El tamaño es obligatorio' })
   size: CompanySize;
 }

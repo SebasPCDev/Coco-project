@@ -18,7 +18,7 @@ export class AmenitiesService {
 
   async findOne(id: UUID): Promise<Amenities> {
     const amenity = await this.amenitiesRepository.findOneBy({ id });
-    if (!amenity) throw new BadRequestException('Amenity not found')
+    if (!amenity) throw new BadRequestException('Comodidad no encontrada')
     return amenity;
   }
 

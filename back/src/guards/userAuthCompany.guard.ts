@@ -34,7 +34,7 @@ export class UserAuthCompanyGuard implements CanActivate {
 
     if (!valid)
       throw new ForbiddenException(
-        'You do not have permission and are not allowed to access this route',
+        'No tienes permiso y no puedes acceder a esta ruta',
       );
 
     return valid;

@@ -80,7 +80,7 @@ export class RequestsService {
 
   async findById(id: UUID) {
     const request = await this.requestsRepository.findOneBy({ id });
-    if (!request) throw new BadRequestException('Request not found');
+    if (!request) throw new BadRequestException('Solicitud no encontrada');
     return request;
   }
 

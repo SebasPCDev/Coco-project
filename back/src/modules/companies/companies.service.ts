@@ -83,8 +83,8 @@ export class CompaniesService {
 
   async activateCompany(id: UUID) {
     // 1- Busco la solicitud
-    const requestCoworking = await this.requestsRepository.findOneBy({ id });
-    if (!requestCoworking || requestCoworking.status === StatusRequest.CLOSE)
+    const request = await this.requestsRepository.findOneBy({ id });
+    if (!request || request.status === StatusRequest.CLOSE)
       throw new BadRequestException('solicitud procesada o inexistente');
 
     const queryRunner = this.dataSource.createQueryRunner();
@@ -94,7 +94,7 @@ export class CompaniesService {
       await queryRunner.startTransaction(); // START
 
       const user = await this.usersRepository.findOneBy({
-        email: requestCoworking.email,
+        email: request.email,
       });
       if (user) throw new BadRequestException('Usuario existente');
 
@@ -106,13 +106,13 @@ export class CompaniesService {
         throw new BadRequestException('Password could not be hashed');
 
       const userData: CreateUsersDto = {
-        name: requestCoworking.name,
-        lastname: requestCoworking.lastname,
-        phone: requestCoworking.phone,
-        email: requestCoworking.email,
+        name: request.name,
+        lastname: request.lastname,
+        phone: request.phone,
+        email: request.email,
         password: hashedPass,
-        identification: requestCoworking.identification,
-        position: requestCoworking.position,
+        identification: "",
+        position: request.position,
         status: UserStatus.ACTIVE,
         role: Role.ADMIN_COMPANY,
       };
@@ -121,15 +121,13 @@ export class CompaniesService {
       const newUser = await queryRunner.manager.save(newUserTemp);
 
       const company: CreateCompaniesDto = {
-        name: requestCoworking.companyName,
-        phone: requestCoworking.companyPhone,
-        email: requestCoworking.companyEmail,
-        // quantityBeneficiaries: requestCoworking.quantityBeneficiaries,
-        // businessSector: requestCoworking.businessSector,
+        name: request.companyName,
+        phone: request.phone,
+        email: request.email,
         quantityBeneficiaries: 0,
         businessSector: '',
-        size: requestCoworking.size,
-        status: CompanyStatus.PENDING,
+        size: request.size,
+        status: CompanyStatus.ACEPTED,
         total_passes: 0,
       };
 
@@ -148,7 +146,7 @@ export class CompaniesService {
       await queryRunner.manager.save(newEmployee);
 
       // 3- Requests pending -> close
-      const updRequest = this.requestsRepository.merge(requestCoworking, {
+      const updRequest = this.requestsRepository.merge(request, {
         status: StatusRequest.CLOSE,
       });
 
@@ -156,8 +154,8 @@ export class CompaniesService {
 
       // 4- Enviar email
       this.nodemailerService.confirmacionMailRequest(
-        requestCoworking.email,
-        requestCoworking.companyName,
+        request.email,
+        request.companyName,
         password,
       );
 

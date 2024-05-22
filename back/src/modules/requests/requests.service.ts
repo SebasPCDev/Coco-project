@@ -13,6 +13,7 @@ import { UpdateRequestCoworkingDto, UpdateRequestDto } from './requests.dto';
 import { loadDataRequest, loadDataRequestCompany } from 'src/utils/loadData';
 import { CoworkingsService } from '../coworkings/coworkings.service';
 import { CompaniesService } from '../companies/companies.service';
+import { NodemailerService } from '../nodemailer/nodemailer.service';
 
 @Injectable()
 export class RequestsService {
@@ -21,6 +22,7 @@ export class RequestsService {
     private requestsRepository: Repository<Request>,
     private readonly coworkingsService: CoworkingsService,
     private readonly companiesService: CompaniesService,
+    private readonly nodemailerService: NodemailerService,
   ) { }
 
   async getRequestByEmail(email: string) {
@@ -43,6 +45,7 @@ export class RequestsService {
 
     const newRequest = this.requestsRepository.create(cowork);
     await this.requestsRepository.save(newRequest);
+    await this.nodemailerService.NotificationMailRequest(cowork.email,cowork.companyName)
     return {
       responseCowork: 'Registrado con éxito. Por favor, espere confirmación.',
       request: newRequest,
@@ -60,6 +63,7 @@ export class RequestsService {
 
     const newRequest = this.requestsRepository.create(company);
     await this.requestsRepository.save(newRequest);
+    await this.nodemailerService.NotificationMailRequest(company.email,company.companyName)
     return {
       responseCompany: 'Registrado con éxito. Por favor, espere confirmación.',
       request: newRequest,

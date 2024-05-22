@@ -6,7 +6,7 @@ import {
 import { transporter } from '../../config/nodemailer';
 import { config as dotenvConfig } from 'dotenv';
 import sendActivationMail from 'src/templates/activationSuccedMailTemplate';
-
+import sendNotificationEmail from 'src/templates/notificationEmailTemplate';
 dotenvConfig({
   path: '.env.development',
 });
@@ -19,20 +19,49 @@ export class NodemailerService {
     password: string,
   ) {
     if (!email) {
-      throw new BadRequestException('email is null');
+      throw new BadRequestException('email es null');
     }
 
     if (!companyName) {
-      throw new BadRequestException('companyName is null');
+      throw new BadRequestException('nombre de la empresa es null');
     }
-    if (!companyName) {
-      throw new BadRequestException('password is null');
+    if (!password) {
+      throw new BadRequestException('contraseña es null');
     }
     const emailConfig = {
       from: process.env.NODEMAILER_MAIL,
       to: email,
       subject: 'Estado aprobado',
       html: sendActivationMail(email, companyName, password),
+    };
+
+    try {
+      const info = await transporter.sendMail(emailConfig);
+      console.log('Correo electrónico enviado:', info.response);
+      return 'Correo electrónico enviado';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      throw new InternalServerErrorException(
+        `Error al enviar el correo electrónico:${error}`,
+      );
+    }
+  }
+
+  async NotificationMailRequest(
+    email: string,
+    companyName: string,
+  ) {
+  
+
+    if (!companyName) {
+      throw new BadRequestException('Nombre de la empresaes null');
+    }
+  
+    const emailConfig = {
+      from: process.env.NODEMAILER_MAIL,
+      to: email,
+      subject: 'Confirmación de Solicitud',
+      html: sendNotificationEmail(companyName),
     };
 
     try {

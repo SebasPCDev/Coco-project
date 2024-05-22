@@ -71,7 +71,7 @@ export class CompaniesService {
       relations: ['employees', 'employees.user'],
     });
 
-    if (!company) throw new BadRequestException('Company not found');
+    if (!company) throw new BadRequestException('Empresa no encontrada');
     console.log('company', company);
     return company;
   }

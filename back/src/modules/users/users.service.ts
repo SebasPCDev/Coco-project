@@ -40,7 +40,7 @@ export class UsersService {
       relations: ['coworkings', 'employee', 'employee.company'],
     });
 
-    if (!user) throw new BadRequestException('User not found');
+    if (!user) throw new BadRequestException('Usuario no encontrado');
     return user;
   }
 

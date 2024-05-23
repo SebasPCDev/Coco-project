@@ -40,7 +40,7 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
     @InjectRepository(CoworkingImages)
     private coworkingImagesRepository: Repository<CoworkingImages>,
-  ) { }
+  ) {}
 
   async getAllCoworkings(
     page: number,
@@ -73,7 +73,7 @@ export class CoworkingsService {
 
   async getBookimgsByCoworking(id: UUID) {
     const coworking = await this.coworkingsRepository.findOne({
-      relations: ['bookings'],
+      relations: ['bookings', 'bookings.user'],
       where: { id },
     });
 
@@ -168,8 +168,7 @@ export class CoworkingsService {
       // const password = Math.random().toString(36).slice(-8);
       const password = process.env.SUPERADMIN_PASSWORD;
       const hashedPass = await bcrypt.hash(password, 10);
-      if (!hashedPass)
-        throw new BadRequestException('Contraseña no haseada');
+      if (!hashedPass) throw new BadRequestException('Contraseña no haseada');
 
       const userData: CreateUsersDto = {
         name: requestCoworking.name,

@@ -52,7 +52,7 @@ export class UsersController {
     return this.userService.findOne(id);
   }
 
-  // @UseGuards(UserAuthGuard)
+  //  @UseGuards(UserAuthGuard)
   @Put(':id')
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() changes: UpdateUsersDto) {
     return this.userService.update(id, changes);

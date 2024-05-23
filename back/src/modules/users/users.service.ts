@@ -45,9 +45,9 @@ export class UsersService {
   }
 
   async update(id: UUID, changes: UpdateUsersDto) {
-    const user = await this.findOne(id);
+     const user = await this.findOne(id);
 
-    if (changes.password) {
+     if (changes.password) {
       const hashedPass = await bcrypt.hash(changes.password, 10);
       changes = { ...changes, password: hashedPass };
       if (!user.activationDate) changes = { ...changes, activationDate: new Date() };

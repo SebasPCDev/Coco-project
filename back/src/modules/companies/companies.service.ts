@@ -128,7 +128,7 @@ export class CompaniesService {
         businessSector: '',
         size: request.size,
         status: CompanyStatus.ACEPTED,
-        total_passes: 0,
+        totalPasses: 0,
       };
 
       const newCompanyTemp = this.companiesRepository.create(company);

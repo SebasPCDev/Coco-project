@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import {
   IsEmail,
   IsEmpty,
@@ -64,7 +64,7 @@ export class CreateCompaniesDto {
   size: CompanySize;
 
   @IsEmpty()
-  total_passes: number
+  totalPasses: number
 
   @ApiProperty({
     example: 'pending',
@@ -75,7 +75,11 @@ export class CreateCompaniesDto {
 
 }
 
-export class UpdateCompaniesDto extends PartialType(CreateCompaniesDto) { }
+export class UpdateCompaniesDto extends PartialType(OmitType(CreateCompaniesDto, ['totalPasses'])) {
+  @IsNumber()
+  @IsOptional()
+  totalPasses: number
+}
 
 export class ActivateCoworkingsDto {
   @ApiProperty({

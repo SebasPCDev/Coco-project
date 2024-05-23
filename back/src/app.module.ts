@@ -14,6 +14,7 @@ import { AmenitiesModule } from './modules/amenities/amenities.module';
 import { NodemailerModule } from './modules/nodemailer/nodemailer.module';
 import { CompaniesModule } from './modules/companies/companies.module';
 import { FilesModule } from './modules/files/files.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { FilesModule } from './modules/files/files.module';
     AmenitiesModule,
     NodemailerModule,
     FilesModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

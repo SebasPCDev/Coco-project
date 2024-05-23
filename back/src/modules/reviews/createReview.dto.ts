@@ -15,8 +15,8 @@ export class CreateReviewDto {
 
   @ApiProperty({ description: 'ID del usuario (UUID)', example: 'e8129079-02ae-4e76-8e80-f09c6c56472a' })
   @IsUUID('all', { message: 'El ID del usuario debe ser un UUID válido' })
-  @IsNotEmpty({ message: 'El ID del usuario es obligatorio' })
-  user_id: string;
+  @IsOptional()
+  user_id?: string;
 
   @ApiProperty({ description: 'ID del espacio de trabajo (UUID)', example: 'e6129079-02ae-4e76-8e80-f09c6c56472a' })
   @IsUUID('all', { message: 'El ID del espacio de trabajo debe ser un UUID válido' })

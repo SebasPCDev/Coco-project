@@ -41,19 +41,19 @@ export class ReviewsService {
     
         const coworking = await this.coworkingsRepository.findOneBy({ id: data.coworking_id })
         if (!coworking) throw new BadRequestException('Coworking no encontrado');
-
+       
         //! completada la reserva (estado complete)
         const booking = await this.bookingsRepository.find({
             where: { 
-                user: user,
-                coworking: coworking,
-                status:BookingStatus.COMPLETED
+              user: { id: userId },
+              coworking: { id: coworking.id },
+              status:BookingStatus.COMPLETED
              }, 
             relations: ['user', 'coworking'],
           
         })
         if(booking.length===0){
-            throw new BadRequestException('Debe tener almenos una reserva en completed poder hacer una reseña');
+            throw new BadRequestException('Debe tener almenos una reserva en completed para poder hacer una reseña');
         }
     
         const newData = { ...data, user, coworking }
@@ -76,25 +76,17 @@ export class ReviewsService {
       }
 
       //! servico que muestre 5 comentarios por id  coworking  ultimos 5  where con order  // filtrado por estrellas
-      async getFirstFiveReviews(
-        page: number,
-        limit: number,
-      ) {
-        const where: FindOptionsWhere<Reviews> = {};
+      async getFirstFiveReviews(coworkingId: string, page: number = 1, limit: number = 5): Promise<Reviews[]> {
+        const offset = (page - 1) * limit;
     
-    
-        const skip = (page - 1) * limit;
-    
-        const conditions = {
-          skip: skip,
+        const reviews = await this.reviewsRepository.find({
+          where: { coworking: { id: coworkingId } },
+          order: { date: 'DESC' },
           take: limit,
-          where,
-          order: { date: 'DESC' as FindOptionsOrderValue },
-        };
-        const [reviews, total] =
-          await this.reviewsRepository.findAndCount(conditions);
+          skip: offset,
+        });
     
-        return { page, limit, total, reviews };
+        return reviews;
       }
 
       //! servicio promedio  de estrellas por id de coworking 
@@ -102,7 +94,7 @@ export class ReviewsService {
       async calcularPromedioEstrellasPorCoworking(coworkingId: string): Promise<number> {
         const coworking = await this.coworkingsRepository.findOneBy({ id: coworkingId })
         if (!coworking) throw new BadRequestException('Coworking no encontrado');
-        const reviews = await this.reviewsRepository.find({ where: { coworking: coworking } });
+        const reviews = await this.reviewsRepository.find({ where: { coworking: { id: coworking.id } } });
     
         if (reviews.length > 0) {
           const totalEstrellas = reviews.reduce((acumulador, review) => acumulador + review.coworking_rating, 0);

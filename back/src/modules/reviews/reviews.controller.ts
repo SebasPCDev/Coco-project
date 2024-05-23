@@ -1,11 +1,14 @@
-import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, ParseUUIDPipe, Post, Put, Query, Req } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, ParseUUIDPipe, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ReviewsService } from './reviews.service';
 import { UUID } from 'crypto';
 import { CreateReviewDto } from './createReview.dto';
 import { UpdateReviewDto } from './updateReview.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiTags('reviews')
+@ApiBearerAuth()
+@UseGuards(AuthGuard)
 @Controller('reviews')
 export class ReviewsController {
     constructor(private readonly reviewsService: ReviewsService) { }
@@ -14,6 +17,15 @@ export class ReviewsController {
   @Get()
   findAll() {
     return this.reviewsService.findAll();
+  }
+  
+  @Get('firstfive/:id')
+  getFirstFiveReviews(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(5), ParseIntPipe) limit: number,
+    @Param('id', ParseUUIDPipe)id: UUID,
+  ) {
+    return this.reviewsService.getFirstFiveReviews( id,page, limit);
   }
 
   @Get(':id')
@@ -32,13 +44,7 @@ export class ReviewsController {
     return this.reviewsService.update(id, updateBookingDto);
   }
 
-  @Get('reviews/firstfive')
-  getFirstFiveReviews(
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('limit', new DefaultValuePipe(5), ParseIntPipe) limit: number,
-  ) {
-    return this.reviewsService.getFirstFiveReviews( page, limit);
-  }
+  
 
   @Get('averagestars/:id')
   averageStars( @Param('id', ParseUUIDPipe) coworkingId: UUID){

@@ -14,6 +14,7 @@ import { Coworkings } from './coworkings.entity';
 import { UserStatus } from 'src/models/userStatus.enum';
 import { Role } from 'src/models/roles.enum';
 import { Bookings } from './bookings.entity';
+import { Reviews } from './reviews.entity';
 
 @Entity({ name: 'users' })
 export class Users {
@@ -90,4 +91,7 @@ export class Users {
 
   @OneToMany(() => Bookings, (booking) => booking.coworking)
   bookings: Bookings[];
+
+  @OneToMany(() => Reviews, (reviews) => reviews.coworking)
+  reviews: Reviews[];
 }

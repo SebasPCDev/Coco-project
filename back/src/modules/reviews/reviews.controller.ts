@@ -5,7 +5,7 @@ import { UUID } from 'crypto';
 import { CreateReviewDto } from './createReview.dto';
 import { UpdateReviewDto } from './updateReview.dto';
 
-@ApiTags('bookings')
+@ApiTags('reviews')
 @Controller('reviews')
 export class ReviewsController {
     constructor(private readonly reviewsService: ReviewsService) { }

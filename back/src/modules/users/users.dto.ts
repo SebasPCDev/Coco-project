@@ -1,6 +1,6 @@
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import {
-  IsDate,
+  // IsDate,
   IsEmail,
   IsEmpty,
   IsEnum,
@@ -76,22 +76,12 @@ export class CreateUsersDto {
   @IsEmpty()
   password: string;
 
-  @ApiProperty({
-    example: 'TokenDeRecuperación123',
-    description: 'Token de recuperación del usuario (opcional)',
-    nullable: true,
-  })
-  @IsString({ message: 'recoveryToken debe ser un string' })
-  @IsOptional()
+  @IsEmpty()
+  @ApiHideProperty()
   recoveryToken?: string;
 
-  @ApiProperty({
-    example: '2024-05-15',
-    description: 'Fecha de activación del usuario (opcional)',
-    nullable: true,
-  })
-  @IsDate({ message: 'activationDate debe ser una fecha válida' })
-  @IsOptional()
+  @IsEmpty()
+  @ApiHideProperty()
   activationDate?: Date;
 
   @ApiProperty({

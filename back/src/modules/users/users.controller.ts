@@ -18,7 +18,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
-import { UserAuthGuard } from 'src/guards/userAuth.guard';
+// import { UserAuthGuard } from 'src/guards/userAuth.guard';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -52,7 +52,7 @@ export class UsersController {
     return this.userService.findOne(id);
   }
 
-  @UseGuards(UserAuthGuard)
+  // @UseGuards(UserAuthGuard)
   @Put(':id')
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() changes: UpdateUsersDto) {
     return this.userService.update(id, changes);

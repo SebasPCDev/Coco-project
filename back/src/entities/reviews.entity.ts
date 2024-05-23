@@ -28,6 +28,15 @@ export class Reviews {
   })
   comment: string;
 
+  //! falta respuesta coworking
+  //? agregado
+  @Column({
+    nullable: true,
+    type: 'text',
+  })
+  res_coworking: string;
+
+
 
  // Relacion hacia users 
  @ManyToOne(() => Users, (user) => user.bookings)

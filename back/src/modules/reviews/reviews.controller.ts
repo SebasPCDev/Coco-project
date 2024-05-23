@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, ParseUUIDPipe, Post, Put, Query, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ReviewsService } from './reviews.service';
 import { UUID } from 'crypto';
@@ -9,6 +9,7 @@ import { UpdateReviewDto } from './updateReview.dto';
 @Controller('reviews')
 export class ReviewsController {
     constructor(private readonly reviewsService: ReviewsService) { }
+    
 
   @Get()
   findAll() {
@@ -30,5 +31,19 @@ export class ReviewsController {
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateBookingDto: UpdateReviewDto) {
     return this.reviewsService.update(id, updateBookingDto);
   }
+
+  @Get('reviews/firstfive')
+  getFirstFiveReviews(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(5), ParseIntPipe) limit: number,
+  ) {
+    return this.reviewsService.getFirstFiveReviews( page, limit);
+  }
+
+  @Get('averagestars/:id')
+  averageStars( @Param('id', ParseUUIDPipe) coworkingId: UUID){
+    return this.reviewsService.calcularPromedioEstrellasPorCoworking(coworkingId)
+  }
+
 
 }

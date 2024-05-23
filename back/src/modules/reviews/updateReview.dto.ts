@@ -14,5 +14,9 @@ export class UpdateReviewDto extends PartialType(CreateReviewDto) {
   @ApiProperty({ description: 'Nuevo comentario opcional', example: 'El mejor coworking que he visitado hasta ahora' })
   @IsOptional()
   comment?: string;
+
+  @ApiProperty({ description: 'Nuevo comentario opcional de coworking', example: 'Respuesta al cliente' })
+  @IsOptional()
+  res_coworking?: string;
 }
 

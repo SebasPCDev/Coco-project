@@ -23,6 +23,8 @@ export class ReviewsService {
         @InjectRepository(Bookings)
         private bookingsRepository: Repository<Bookings>,
       ) { }
+
+      //*Retorna todos las reviews
       async findAll() {
         const review = await this.reviewsRepository.find()
         return review
@@ -68,17 +70,42 @@ export class ReviewsService {
       }
     
     
-      async update(id: UUID, changes: UpdateReviewDto) {
+      async update(id: UUID, changes: UpdateReviewDto,userId: UUID) {
+
+        const user = await this.usersRepository.findOneBy({ id: userId })
+        if (!user) throw new BadRequestException('Usuario no encontrado');
         const review = await this.findOne(id);
         //!  Respuesta solo coworking   
         if(!changes.res_coworking){
-            throw new BadRequestException("Debe tener respuesta de coworking para poder actualizar el coworking")
+            throw new BadRequestException("Debe tener respuesta de coworking(no debe estar nullo)para poder actualizar el coworking")
         }
-        const updReview = this.reviewsRepository.merge(review, changes);
-        return await this.reviewsRepository.save(updReview);
+        
+        if(!!changes.coworking_rating || !!changes.comment ){
+            throw new BadRequestException("Debe estar los campos coworking_rating y comment vacios o nulos")
+        }
+
+        if(user.role===Role.SUPERADMIN){
+          const updReview = this.reviewsRepository.merge(review, changes);
+          return await this.reviewsRepository.save(updReview);
+        }
+
+        if(user.role===Role.ADMIN_COWORKING ){
+          const updReview = this.reviewsRepository.merge(review, changes);
+          return await this.reviewsRepository.save(updReview);
+        }
+
+        if(user.role===Role.COWORKING  ){
+          const updReview = this.reviewsRepository.merge(review, changes);
+          return await this.reviewsRepository.save(updReview);
+        }
+        else{
+          throw new BadRequestException(`los usuarios ${user.role} no tienen permitido hacer cambios`)
+        }
+
+        
       }
 
-      //! servico que muestre 5 comentarios por id  coworking  ultimos 5  where con order  // filtrado por estrellas
+      //?servico que muestre 5 comentarios por id  coworking  ultimos 5  where con order  // filtrado por estrellas
       async getFirstFiveReviews(coworkingId: string, page: number = 1, limit: number = 5): Promise<Reviews[]> {
         const offset = (page - 1) * limit;
     
@@ -92,7 +119,7 @@ export class ReviewsService {
         return reviews;
       }
 
-      //! servicio promedio  de estrellas por id de coworking 
+      //? servicio promedio  de estrellas por id de coworking 
 
       async calcularPromedioEstrellasPorCoworking(coworkingId: string): Promise<number> {
         const coworking = await this.coworkingsRepository.findOneBy({ id: coworkingId })

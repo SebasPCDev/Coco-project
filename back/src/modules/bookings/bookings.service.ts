@@ -9,6 +9,7 @@ import { Coworkings } from 'src/entities/coworkings.entity';
 import { Bookings } from 'src/entities/bookings.entity';
 import { timeToMinutes } from 'src/helpers/timeToMinutes';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
+import { Role } from 'src/models/roles.enum';
 
 @Injectable()
 export class BookingsService {

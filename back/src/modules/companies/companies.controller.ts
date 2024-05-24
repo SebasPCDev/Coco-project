@@ -45,6 +45,14 @@ export class CompaniesController {
     return this.companiesService.getAllCompanies(status, name, page, limit);
   }
 
+  // Por pedido hacer nuevo endpoint son filtros ni paginacion 
+  @Roles(Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Get('all')
+  getCoworkings() {
+    return this.companiesService.getCompanies();
+  }
+
   @Get(':id')
   getCompanyById(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.companiesService.getCompanyById(id);

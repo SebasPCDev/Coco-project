@@ -77,6 +77,10 @@ export class CoworkingsService {
     return { page, limit, total, coworking };
   }
 
+  async getCoworkings() {
+    return await this.coworkingsRepository.find();
+  }
+
   async getBookingsByCoworking(id: UUID) {
     const coworking = await this.coworkingsRepository.findOne({
       relations: ['bookings', 'bookings.user'],

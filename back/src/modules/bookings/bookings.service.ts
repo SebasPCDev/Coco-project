@@ -8,6 +8,8 @@ import { Repository } from 'typeorm';
 import { Coworkings } from 'src/entities/coworkings.entity';
 import { Bookings } from 'src/entities/bookings.entity';
 import { timeToMinutes } from 'src/helpers/timeToMinutes';
+import { NodemailerService } from '../nodemailer/nodemailer.service';
+import { Role } from 'src/models/roles.enum';
 
 @Injectable()
 export class BookingsService {
@@ -18,6 +20,7 @@ export class BookingsService {
     private coworkingsRepository: Repository<Coworkings>,
     @InjectRepository(Bookings)
     private bookingsRepository: Repository<Bookings>,
+    private readonly nodemailerService: NodemailerService,
   ) { }
 
   async findAll() {
@@ -53,10 +56,31 @@ export class BookingsService {
 
     const newBooking = this.bookingsRepository.create(newData)
     const booking = await this.bookingsRepository.save(newBooking)
+    //! mail  a user  info: reserva pendieynte de confirmacion (nombre direccion dia y hora)
+    this.nodemailerService.NotificationBookingEmployee(
+      coworking.name,
+      user.name,
+      user.email,
+      booking.reservationDate,
+      booking.reservationTime,
+      coworking.address
+    )
+    //! mail a  coworking info quieren reservar dia horario (user apellido dni date hora )
+    this.nodemailerService.NotificationBookingCoworking(
+      coworking.name,
+      user.name,
+      user.lastname,
+      booking.reservationDate,
+      booking.reservationTime,
+      coworking.email
+    )
+
 
     return booking;
   }
 
+  //! crear un edpoint cambiar estado  de pendiete a activo o coworking_canceled
+  //!
 
   async update(id: UUID, changes: UpdateBookingsDto) {
     const booking = await this.findOne(id);

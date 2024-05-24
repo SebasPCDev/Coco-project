@@ -46,5 +46,6 @@ export class UpdateBookingsDto {
   @ApiProperty({ type: String, example: 'Esta es una observación.' })
   @IsString({ message: 'La observación debe ser una cadena de caracteres.' })
   @IsOptional()
-  observation: string;
+  observation?: string;
 }
+

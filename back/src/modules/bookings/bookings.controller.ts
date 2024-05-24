@@ -38,6 +38,7 @@ export class BookingsController {
     return this.bookingsService.create(user.id, data);
   }
 
+  // Role superadmin
   @Put(':id')
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateBookingDto: UpdateBookingsDto) {
     return this.bookingsService.update(id, updateBookingDto);

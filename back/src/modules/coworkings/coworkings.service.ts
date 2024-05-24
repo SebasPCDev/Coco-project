@@ -28,13 +28,15 @@ import { UserStatus } from 'src/models/userStatus.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { CoworkingImages } from 'src/entities/coworkingImages.entity';
 import { CreateUserCoworkingsDto } from '../users/coworkings.dto';
+import { UpdateBookingsDto } from '../bookings/bookings.dto';
+import { BookingsService } from '../bookings/bookings.service';
+import { BookingStatus } from 'src/models/bookingStatus';
 
 @Injectable()
 export class CoworkingsService {
   constructor(
     @InjectRepository(Coworkings)
     private coworkingsRepository: Repository<Coworkings>,
-    private readonly nodemailerService: NodemailerService,
     private dataSource: DataSource,
     @InjectRepository(Request)
     private requestsRepository: Repository<Request>,
@@ -42,6 +44,8 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
     @InjectRepository(CoworkingImages)
     private coworkingImagesRepository: Repository<CoworkingImages>,
+    private readonly bookingsService: BookingsService,
+    private readonly nodemailerService: NodemailerService,
   ) {}
 
   async getAllCoworkings(
@@ -298,6 +302,27 @@ export class CoworkingsService {
 
     const updUser = this.usersRepository.merge(dbUser, changes);
     return await this.usersRepository.save(updUser);   
+  }
+
+  async updateBooking (coworkingId: UUID, bookingId: UUID, changes: UpdateBookingsDto) {
+    console.log(coworkingId, bookingId, changes);
+    const booking = await this.bookingsService.findOne(bookingId)
+
+     if (booking.status === BookingStatus.COMPLETED || booking.status === BookingStatus.NO_SHOW || booking.status === BookingStatus.USER_CANCELED) 
+      throw new BadRequestException('El estado de la reserva no se puede modificar')
+
+    if (changes.status === BookingStatus.ACTIVE || changes.status === BookingStatus.COWORKING_CANCELED) {
+      if (booking.status !== BookingStatus.PENDING) 
+        throw new BadRequestException('El estado de la reserva debe ser Pendiente para modificarlo')
+    }
+
+    if (changes.status === BookingStatus.COMPLETED) {
+      if (booking.status !== BookingStatus.ACTIVE) 
+        throw new BadRequestException('El estado de la reserva debe ser Activo para confirmar el check-in')
+    }
+
+    const updBooking = await this.bookingsService.update(bookingId, changes)
+    return updBooking
   }
 
   async update(id: UUID, changes: UpdateCoworkingsDto) {

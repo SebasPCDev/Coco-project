@@ -6,12 +6,16 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UUID } from 'crypto';
 import { Role } from 'src/models/roles.enum';
+import { UpdateBookingsDto } from '../bookings/bookings.dto';
+import { BookingStatus } from 'src/models/bookingStatus';
+import { BookingsService } from '../bookings/bookings.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
+    private readonly bookingsService: BookingsService,
   ) { }
 
   async create(data: CreateUsersDto) {
@@ -44,6 +48,27 @@ export class UsersService {
     return user;
   }
 
+  async updateBooking (userId: UUID, bookingId: UUID, changes: UpdateBookingsDto) {
+    console.log(userId, bookingId, changes);
+    const booking = await this.bookingsService.findOne(bookingId)
+
+    if (booking.status === BookingStatus.COMPLETED || booking.status === BookingStatus.NO_SHOW || booking.status === BookingStatus.USER_CANCELED) 
+      throw new BadRequestException('El estado de la reserva no se puede modificar')
+
+    if (changes.status === BookingStatus.ACTIVE || changes.status === BookingStatus.USER_CANCELED) {
+      if (booking.status !== BookingStatus.PENDING) 
+        throw new BadRequestException('El estado de la reserva debe ser Pendiente para modificarlo')
+     }
+
+    if (changes.status === BookingStatus.COMPLETED) {
+      if (booking.status !== BookingStatus.ACTIVE) 
+        throw new BadRequestException('El estado de la reserva debe ser Activo para confirmar el check-in')
+    }
+
+    const updBooking = await this.bookingsService.update(bookingId, changes)
+    return updBooking
+  }
+
   async update(id: UUID, changes: UpdateUsersDto) {
      const user = await this.findOne(id);
 
@@ -55,10 +80,6 @@ export class UsersService {
 
     const updUser = this.usersRepository.merge(user, changes);
     return this.usersRepository.save(updUser);
-  }
-
-  remove(id: number) {
-    return `Esta accion borra  #${id} usuario`;
   }
 
   //! Actualiza el susuario sin contraseña

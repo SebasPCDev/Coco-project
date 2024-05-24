@@ -14,5 +14,6 @@ import { NodemailerModule } from '../nodemailer/nodemailer.module';
   ],
   controllers: [BookingsController],
   providers: [BookingsService],
+  exports: [BookingsService],
 })
 export class BookingsModule { }

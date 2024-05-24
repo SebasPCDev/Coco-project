@@ -3,27 +3,28 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
-import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
-import { loadDataCompanies } from 'src/utils/loadData';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Companies } from 'src/entities/companies.entity';
 import {
   DataSource,
   FindOptionsOrderValue,
   FindOptionsWhere,
   Repository,
 } from 'typeorm';
-import { NodemailerService } from '../nodemailer/nodemailer.service';
-import { Users } from 'src/entities/users.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { CreateEmployeeDto, CreateUsersDto } from '../users/users.dto';
 import { UUID } from 'crypto';
-import { Request } from 'src/entities/requests.entity';
-import { UserStatus } from 'src/models/userStatus.enum';
-import { Role } from 'src/models/roles.enum';
+
+import { CreateEmployeeDto, CreateUsersDto, UpdateUsersDto } from '../users/users.dto';
+import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
+import { NodemailerService } from '../nodemailer/nodemailer.service';
+import { Companies } from 'src/entities/companies.entity';
 import { Employees } from 'src/entities/employees.entity';
+import { Request } from 'src/entities/requests.entity';
+import { Users } from 'src/entities/users.entity';
+import { loadDataCompanies } from 'src/utils/loadData';
+import { UserStatus } from 'src/models/userStatus.enum';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
+import { Role } from 'src/models/roles.enum';
 
 @Injectable()
 export class CompaniesService {
@@ -72,7 +73,6 @@ export class CompaniesService {
     });
 
     if (!company) throw new BadRequestException('Empresa no encontrada');
-    console.log('company', company);
     return company;
   }
 
@@ -230,6 +230,25 @@ export class CompaniesService {
     }
   }
 
+  async updateUser(adminCompany: Users, companyId: UUID, userId: UUID, changes: UpdateUsersDto) {
+    const {employees} = await this.getCompanyById(companyId);
+    
+    // console.log("employees", employees);
+
+    // Validamos adminCompany
+    const foundAdminCompany = employees.findIndex((employee) => employee.user.id === adminCompany.id);
+    console.log("foundAdminCompany", foundAdminCompany, adminCompany.id);
+    if (foundAdminCompany === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+
+    const foundEmployee = employees.findIndex((employee) => employee.user.id === userId);
+    if (foundEmployee === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+
+    const dbUser = await this.usersRepository.findOneBy({id: userId});
+    const updUser = this.usersRepository.merge(dbUser, changes);
+
+    return await this.usersRepository.save(updUser);
+  }
+
   async update(id: UUID, changes: UpdateCompaniesDto) {
     const company = await this.getCompanyById(id);
 
@@ -237,11 +256,7 @@ export class CompaniesService {
     return this.companiesRepository.save(updCompany);
   }
 
-  remove(id: number) {
-    return `Esta accion borra  un #${id}  Empresa`;
-  }
-
-  async preloadCompanies() {
+ async preloadCompanies() {
     const data = loadDataCompanies();
 
     for await (const company of data) {

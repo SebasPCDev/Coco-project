@@ -4,7 +4,6 @@ import {
   Post,
   Body,
   Param,
-  // Delete,
   UseGuards,
   Req,
   Put,
@@ -14,20 +13,19 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 
-import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
-
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { UUID } from 'crypto';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { Role } from 'src/models/roles.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { CompaniesService } from './companies.service';
-import { UUID } from 'crypto';
-import { CreateEmployeeDto } from '../users/users.dto';
-// import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
+import { CreateEmployeeDto, UpdateUsersDto } from '../users/users.dto';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
+// import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
 
-@ApiTags('companies')
+@ApiTags('Companies')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller('companies')
@@ -72,6 +70,16 @@ export class CompaniesController {
     return this.companiesService.createEmployee(adminCompanyId as UUID, data);
   }
 
+  @Put(':companyId/update-user/:userId')
+  updateUser(
+    @Param('companyId', ParseUUIDPipe) companyId: UUID,
+    @Param('userId', ParseUUIDPipe) userId: UUID,
+    @Body() changes: UpdateUsersDto,
+    @Req() request){
+      const adminCompany = request.user;
+      return this.companiesService.updateUser(adminCompany, companyId, userId, changes)
+    }
+  
   @Roles(Role.ADMIN_COMPANY, Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Put(':id')
@@ -81,9 +89,4 @@ export class CompaniesController {
   ) {
     return this.companiesService.update(id, changes);
   }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.companiesService.remove(+id);
-  // }
 }

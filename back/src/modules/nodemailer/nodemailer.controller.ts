@@ -6,8 +6,8 @@ export class NodemailerController {
 
     constructor(private readonly nodemailderService: NodemailerService) {}
 
-    @Get("/confirm")
-    async confirmByEmail (){
-       return  this.nodemailderService.confirmacionMailRequest("530nicolas@gmail.com","Coworking1","contraseña")
-    }
+    // @Get("")
+    // async confirmByEmail (){
+    //    return  this.nodemailderService.NotificationBookingEmployee("v","v","530nicolas@gmail.com","Coworking1","contraseña","")
+    // }
 }

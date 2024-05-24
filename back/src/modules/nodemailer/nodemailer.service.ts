@@ -8,6 +8,8 @@ import { config as dotenvConfig } from 'dotenv';
 import sendActivationMail from 'src/templates/activationSuccedMailTemplate';
 import sendNotificationEmail from 'src/templates/notificationEmailTemplate';
 import forgotPassEmail from 'src/templates/forgotPassEmailTemplate';
+import sendBookingNotificationEmployee from 'src/templates/bookingNotificationEmployee';
+import sendBookingNotificationCoworking from 'src/templates/bookingNotificationCoworking';
 dotenvConfig({
   path: '.env.development',
 });
@@ -93,6 +95,84 @@ export class NodemailerService {
       to: email,
       subject: 'Solicitud cambio de contraseña',
       html: forgotPassEmail(name, link),
+    };
+
+    try {
+      const info = await transporter.sendMail(emailConfig);
+      console.log('Correo electrónico enviado:', info.response);
+      return 'Correo electrónico enviado';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      throw new InternalServerErrorException(
+        `Error al enviar el correo electrónico:${error}`,
+      );
+    }
+  }
+
+  async NotificationBookingEmployee(
+    companyName: string,
+    employeeName:string,
+    employeeEmail:string,
+    dia:Date,
+    hora:Date,
+    address:string
+  ) {
+  
+
+    if (!companyName) {
+      throw new BadRequestException('Nombre del coworking null');
+    }
+  
+    const emailConfig = {
+      from: process.env.NODEMAILER_MAIL,
+      to: employeeEmail,
+      subject: 'Solicitud para Espacio de Coworking',
+      html: sendBookingNotificationEmployee(
+        companyName,
+        employeeName,
+        dia,
+        hora,
+        address
+      ),
+    };
+
+    try {
+      const info = await transporter.sendMail(emailConfig);
+      console.log('Correo electrónico enviado:', info.response);
+      return 'Correo electrónico enviado';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      throw new InternalServerErrorException(
+        `Error al enviar el correo electrónico:${error}`,
+      );
+    }
+  }
+
+  async NotificationBookingCoworking(
+    companyName: string,
+    employeeName:string,
+    employeeLastname:string,
+    dia:Date,
+    hora:Date,   
+    coworkignEmail:string
+  ) {
+  
+
+    if (!companyName) {
+      throw new BadRequestException('Nombre del coworking null');
+    }
+  
+    const emailConfig = {
+      from: process.env.NODEMAILER_MAIL,
+      to: coworkignEmail,
+      subject: 'Solicitud para Espacio de Coworking',
+      html: sendBookingNotificationCoworking(
+        companyName,
+        employeeName,
+        employeeLastname,
+        dia,
+        hora,   
+      ),
     };
 
     try {

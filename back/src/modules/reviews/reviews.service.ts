@@ -9,6 +9,7 @@ import { CreateReviewDto } from './createReview.dto';
 import { UpdateReviewDto } from './updateReview.dto';
 import { Bookings } from 'src/entities/bookings.entity';
 import { BookingStatus } from 'src/models/bookingStatus';
+import { Role } from 'src/models/roles.enum';
 
 @Injectable()
 export class ReviewsService {
@@ -51,6 +52,9 @@ export class ReviewsService {
             relations: ['user', 'coworking'],
           
         })
+        if(user.role !== Role.EMPLOYEE ){
+          throw new BadRequestException(`No tienes peritido hacer reviews siendo ${user.role}`)
+        }
         if(booking.length===0){
             throw new BadRequestException('Debe tener almenos una reserva en completed para poder hacer una reseña');
         }

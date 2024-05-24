@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUsersDto, UpdateUsersDto } from './users.dto';
+import { CreateUsersDto, UpdateDto, UpdateUsersDto } from './users.dto';
 import * as bcrypt from 'bcrypt';
 import { Users } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
@@ -60,6 +60,15 @@ export class UsersService {
   remove(id: number) {
     return `Esta accion borra  #${id} usuario`;
   }
+
+  //! Actualiza el susuario sin contraseña
+  async updateUser(id: UUID, changes: UpdateDto) {
+
+  const user = await this.findOne(id);
+  const updUser = this.usersRepository.merge(user, changes);
+  return this.usersRepository.save(updUser);
+
+ }
 
   async preloadSuperAdminUser() {
     const hashedPassword = await bcrypt.hash(

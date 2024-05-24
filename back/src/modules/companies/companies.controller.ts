@@ -21,8 +21,8 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Role } from 'src/models/roles.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { CompaniesService } from './companies.service';
-import { CreateEmployeeDto, UpdateUsersDto } from '../users/users.dto';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
+import { CreateEmployeeDto, UpdateEmployeeDto } from '../users/employees.dto';
 // import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
 
 @ApiTags('Companies')
@@ -70,14 +70,14 @@ export class CompaniesController {
     return this.companiesService.createEmployee(adminCompanyId as UUID, data);
   }
 
-  @Put(':companyId/update-user/:userId')
-  updateUser(
+  @Put(':companyId/update-employee/:userId')
+  updateEmployee(
     @Param('companyId', ParseUUIDPipe) companyId: UUID,
     @Param('userId', ParseUUIDPipe) userId: UUID,
-    @Body() changes: UpdateUsersDto,
+    @Body() changes: UpdateEmployeeDto,
     @Req() request){
       const adminCompany = request.user;
-      return this.companiesService.updateUser(adminCompany, companyId, userId, changes)
+      return this.companiesService.updateEmployee(adminCompany, companyId, userId, changes)
     }
   
   @Roles(Role.ADMIN_COMPANY, Role.SUPERADMIN)

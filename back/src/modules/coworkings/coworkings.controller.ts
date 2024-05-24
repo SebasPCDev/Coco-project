@@ -117,8 +117,7 @@ export class CoworkingsController {
     return this.coworkingsService.update(id, changes);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.coworkingsService.remove(+id);
-  // }
+  // PUT /coworkings/:id/bookings/:id
+
+
 }

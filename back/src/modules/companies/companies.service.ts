@@ -13,7 +13,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { UUID } from 'crypto';
 
-import { CreateEmployeeDto, CreateUsersDto, UpdateUsersDto } from '../users/users.dto';
+import { CreateUsersDto } from '../users/users.dto';
 import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { Companies } from 'src/entities/companies.entity';
@@ -25,6 +25,7 @@ import { UserStatus } from 'src/models/userStatus.enum';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
 import { Role } from 'src/models/roles.enum';
+import { CreateEmployeeDto, UpdateEmployeeDto } from '../users/employees.dto';
 
 @Injectable()
 export class CompaniesService {
@@ -136,8 +137,8 @@ export class CompaniesService {
 
       // Create Employee
       const employee = {
-        passes: 1,
-        passesAvailable: 1,
+        passes: 0,
+        passesAvailable: 0,
         user: newUser,
         company: newCompany,
       };
@@ -174,7 +175,7 @@ export class CompaniesService {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
-    if (dbUser) throw new BadRequestException('Usuario no encontrado');
+    if (dbUser) throw new BadRequestException('El usuario ya existe');
 
     const adminCompany = await this.usersRepository.findOne({
       where: { id: adminCompanyId },
@@ -198,6 +199,7 @@ export class CompaniesService {
       await queryRunner.startTransaction(); // START
 
       const password = process.env.SUPERADMIN_PASSWORD;
+      // const password = Math.random().toString(36).slice(-8);
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)
         throw new BadRequestException('Contraseña no haseada');
@@ -230,7 +232,7 @@ export class CompaniesService {
     }
   }
 
-  async updateUser(adminCompany: Users, companyId: UUID, userId: UUID, changes: UpdateUsersDto) {
+  async updateEmployee(adminCompany: Users, companyId: UUID, userId: UUID, changes: UpdateEmployeeDto) {
     
     // Validamos que el adminCompany y el employyee pertenezcan a la misma compañía 
     const {employees} = await this.getCompanyById(companyId);
@@ -241,10 +243,18 @@ export class CompaniesService {
     const foundEmployee = employees.findIndex((employee) => employee.user.id === userId);
     if (foundEmployee === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
 
-    const dbUser = await this.usersRepository.findOneBy({id: userId});
-    const updUser = this.usersRepository.merge(dbUser, changes);
+    const dbUser = await this.usersRepository.findOne({where: {id: userId}, relations:['employee']});
+    if (!dbUser) throw new ForbiddenException('Empleado no encontrado');
 
-    return await this.usersRepository.save(updUser);
+    // Transaction ???
+    if (changes.passes || changes.passesAvailable) {
+      const dbEmployee = await this.employeesRepository.findOneBy({id: dbUser.employee.id });
+      const updEmployee = this.employeesRepository.merge(dbEmployee, {passes: changes.passes, passesAvailable: changes.passesAvailable});
+      await this.employeesRepository.save(updEmployee);
+    }
+    const updUser = this.usersRepository.merge(dbUser, changes);
+    await this.usersRepository.save(updUser);
+    return await this.usersRepository.findOne({where: {id: userId}, relations:['employee']});
   }
 
   async update(id: UUID, changes: UpdateCompaniesDto) {

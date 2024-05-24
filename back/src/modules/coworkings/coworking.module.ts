@@ -8,10 +8,12 @@ import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
 import { Request } from 'src/entities/requests.entity';
 import { CoworkingImages } from 'src/entities/coworkingImages.entity';
+import { BookingsModule } from '../bookings/bookings.module';
 
 @Module({
   imports: [
     NodemailerModule,
+    BookingsModule,
     TypeOrmModule.forFeature([Coworkings, Request, Users, CoworkingImages]),
   ],
   controllers: [CoworkingsController],

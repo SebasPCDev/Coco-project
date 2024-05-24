@@ -9,7 +9,7 @@ import { Coworkings } from 'src/entities/coworkings.entity';
 import { Bookings } from 'src/entities/bookings.entity';
 import { timeToMinutes } from 'src/helpers/timeToMinutes';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
-import { Role } from 'src/models/roles.enum';
+// import { Role } from 'src/models/roles.enum';
 
 @Injectable()
 export class BookingsService {
@@ -79,15 +79,10 @@ export class BookingsService {
     return booking;
   }
 
-  //! crear un edpoint cambiar estado  de pendiete a activo o coworking_canceled
-  //!
-
   async update(id: UUID, changes: UpdateBookingsDto) {
     const booking = await this.findOne(id);
 
     const updBooking = this.bookingsRepository.merge(booking, changes);
     return await this.bookingsRepository.save(updBooking);
   }
-
-
 }

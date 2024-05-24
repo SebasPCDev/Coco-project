@@ -3,9 +3,7 @@ import {
   Get,
   Post,
   Body,
-  //Put,
   Param,
-  //Delete,
   UseGuards,
   ParseUUIDPipe,
   Put,
@@ -31,6 +29,7 @@ import { Role } from 'src/models/roles.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import {  UpdateUsersDto } from '../users/users.dto';
 import { CreateUserCoworkingsDto } from '../users/coworkings.dto';
+import { UpdateBookingsDto } from '../bookings/bookings.dto';
 
 @ApiTags('coworkings')
 @UseGuards(AuthGuard)
@@ -115,6 +114,19 @@ export class CoworkingsController {
   @Req() request){
     const adminCoworking = request.user;
     return this.coworkingsService.updateReceptionist(adminCoworking, coworkingId, userId, changes)
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.COWORKING, Role.ADMIN_COWORKING, Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Put(':coworkingId/booking/:bookingId')
+  updateBooking(
+    @Param('coworkingId', ParseUUIDPipe) coworkingId: UUID,
+    @Param('bookingId', ParseUUIDPipe) bookingId: UUID,
+    @Body() changes: UpdateBookingsDto,
+    // @Req() request
+  ) {
+    return this.coworkingsService.updateBooking(coworkingId, bookingId, changes)
   }
 
   @ApiBearerAuth()

@@ -18,6 +18,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { UserAuthGuard } from 'src/guards/userAuth.guard';
+import { UpdateBookingsDto } from '../bookings/bookings.dto';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -55,6 +56,19 @@ export class UsersController {
   @Put('updateUser/:id')
   updateUser(@Param('id', ParseUUIDPipe) id: UUID, @Body() changes: UpdateDto) {
     return this.userService.updateUser(id, changes);
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.COWORKING, Role.ADMIN_COWORKING, Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Put('booking/:bookingId')
+  updateBooking(
+    @Param('bookingId', ParseUUIDPipe) bookingId: UUID,
+    @Body() changes: UpdateBookingsDto,
+    @Req() request
+  ) {
+    const user = request.user;
+    return this.userService.updateBooking(user.id, bookingId, changes)
   }
 
   @UseGuards(UserAuthGuard)

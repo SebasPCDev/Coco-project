@@ -44,10 +44,17 @@ export class CoworkingsController {
     @Query('state') state: string,
     @Query('city') city: string,
     @Query('name') name: string,
-    @Query('status', new DefaultValuePipe(CoworkingStatus.ACTIVE)) status: CoworkingStatus,
+    @Query('status', ) status: CoworkingStatus,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number) {
     return this.coworkingsService.getAllCoworkings(page, limit, country, state, city, name, status);
+  }
+
+  // Por pedido hacer nuevo endpoint son filtros ni paginacion 
+  @Get('all')
+  @Public()
+  getCoworkings() {
+    return this.coworkingsService.getCoworkings();
   }
 
   @Get('countries')
@@ -128,6 +135,8 @@ export class CoworkingsController {
   ) {
     return this.coworkingsService.updateBooking(coworkingId, bookingId, changes)
   }
+
+  // put check-in
 
   @ApiBearerAuth()
   @Roles(Role.ADMIN_COWORKING, Role.SUPERADMIN)

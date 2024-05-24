@@ -67,6 +67,10 @@ export class CompaniesService {
     return { page, limit, total, companies };
   }
 
+  async getCompanies () {
+    return await this.companiesRepository.find();
+  }
+
   async getCompanyById(id: UUID) {
     const company = await this.companiesRepository.findOne({
       where: { id },

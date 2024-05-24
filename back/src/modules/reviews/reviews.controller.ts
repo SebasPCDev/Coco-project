@@ -40,13 +40,14 @@ export class ReviewsController {
   }
 
   @Put(':id')
-  update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateBookingDto: UpdateReviewDto) {
-    return this.reviewsService.update(id, updateBookingDto);
+  update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateBookingDto: UpdateReviewDto,@Req() request) {
+    const user = request.user;
+    return this.reviewsService.update(id, updateBookingDto,user.id);
   }
 
   
 
-  @Get('averagestars/:id')
+  @Get('average/stars/:id')
   averageStars( @Param('id', ParseUUIDPipe) coworkingId: UUID){
     return this.reviewsService.calcularPromedioEstrellasPorCoworking(coworkingId)
   }

@@ -117,6 +117,40 @@ export class UpdateUsersDto extends PartialType(OmitType(CreateUsersDto, ['statu
 
 }
 
+export class UpdateDto {
+  @ApiProperty({
+    example: 'Juan',
+    description: 'Nombre del usuario',
+  })
+  @IsString({ message: 'name debe ser un string' })
+  @IsOptional()
+  name?: string;
+
+  @ApiProperty({
+    example: 'Perez',
+    description: 'Apellido del usuario',
+  })
+  @IsString({ message: 'lastname debe ser un string' })
+  @IsOptional()
+  lastname?: string;
+
+  @ApiProperty({
+    example: '123456789',
+    description: 'Número de teléfono del usuario',
+  })
+  @IsString({ message: 'phone debe ser un string' })
+  @IsOptional()
+  phone?: string;
+
+  @ApiProperty({
+    example: 'juan@example.com',
+    description: 'Correo electrónico del usuario',
+  })
+  @IsEmail({}, { message: 'email debe ser un correo electrónico válido' })
+  @IsOptional()
+  email?: string;
+}
+
 export class CreateEmployeeDto extends CreateUsersDto {
   @ApiProperty({
     example: '123e4567-e89b-12d3-a456-426614174000',

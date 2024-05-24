@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -21,11 +22,12 @@ import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
 import { Request } from 'src/entities/requests.entity';
 import { CreateCoworkingsDto, UpdateCoworkingsDto } from './coworkings.dto';
-import { CreateUserCoworkingsDto, CreateUsersDto } from '../users/users.dto';
+import {  CreateUsersDto, UpdateUsersDto } from '../users/users.dto';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { CoworkingImages } from 'src/entities/coworkingImages.entity';
+import { CreateUserCoworkingsDto } from '../users/coworkings.dto';
 
 @Injectable()
 export class CoworkingsService {
@@ -71,7 +73,7 @@ export class CoworkingsService {
     return { page, limit, total, coworking };
   }
 
-  async getBookimgsByCoworking(id: UUID) {
+  async getBookingsByCoworking(id: UUID) {
     const coworking = await this.coworkingsRepository.findOne({
       relations: ['bookings', 'bookings.user'],
       where: { id },
@@ -282,6 +284,22 @@ export class CoworkingsService {
     }
   }
 
+  async updateReceptionist(adminCoworking: Users, coworkingId: UUID, userId: UUID, changes: UpdateUsersDto) {
+    const coworking = await this.getCoworkingById(coworkingId);
+
+    const foundAdminCoworking = coworking.user.findIndex((employee) => employee.id === adminCoworking.id && employee.role === Role.ADMIN_COWORKING);
+    if (foundAdminCoworking === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+
+    const foundRecepcionist = coworking.user.findIndex((employee) => employee.id === userId && employee.role === Role.COWORKING);
+    if (foundRecepcionist === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+
+    const dbUser = await this.usersRepository.findOneBy({id: userId});
+    if (!dbUser) throw new ForbiddenException('Recepcionista no encontrado');
+
+    const updUser = this.usersRepository.merge(dbUser, changes);
+    return await this.usersRepository.save(updUser);   
+  }
+
   async update(id: UUID, changes: UpdateCoworkingsDto) {
     const coworking = await this.getCoworkingById(id);
 
@@ -315,10 +333,6 @@ export class CoworkingsService {
 
     return await this.getCoworkingById(id);
   }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} coworking`;
-  // }
 
   async preloadCoworkings() {
     const data = loadDataCoworkings();

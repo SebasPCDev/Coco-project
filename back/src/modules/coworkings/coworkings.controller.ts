@@ -29,7 +29,8 @@ import { Public } from 'src/decorators/public.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
-import { CreateUserCoworkingsDto } from '../users/users.dto';
+import {  UpdateUsersDto } from '../users/users.dto';
+import { CreateUserCoworkingsDto } from '../users/coworkings.dto';
 
 @ApiTags('coworkings')
 @UseGuards(AuthGuard)
@@ -73,7 +74,7 @@ export class CoworkingsController {
   @UseGuards(RolesGuard)
   @Get(':id/bookings')
   getBookimgsByCoworking(@Param('id', ParseUUIDPipe) id: UUID) {
-    return this.coworkingsService.getBookimgsByCoworking(id);
+    return this.coworkingsService.getBookingsByCoworking(id);
   }
 
   @Public()
@@ -90,7 +91,7 @@ export class CoworkingsController {
     const user = request.user;
     return this.coworkingsService.create(user.id as UUID, data);
   }
-
+  
   @Roles(Role.ADMIN_COWORKING)
   @UseGuards(RolesGuard)
   @Post('create-user-coworking')
@@ -105,6 +106,16 @@ export class CoworkingsController {
   activateCoworking(@Body() data: ActivateCoworkingsDto) {
     return this.coworkingsService.activateCoworking(data.id as UUID);
   }
+  
+  @Put(':coworkingId/update-receptionist/:userId')
+  updateReceptionist(
+  @Param('coworkingId', ParseUUIDPipe) coworkingId: UUID,
+  @Param('userId', ParseUUIDPipe) userId: UUID,
+  @Body() changes: UpdateUsersDto,
+  @Req() request){
+    const adminCoworking = request.user;
+    return this.coworkingsService.updateReceptionist(adminCoworking, coworkingId, userId, changes)
+  }
 
   @ApiBearerAuth()
   @Roles(Role.ADMIN_COWORKING, Role.SUPERADMIN)
@@ -116,8 +127,4 @@ export class CoworkingsController {
   ) {
     return this.coworkingsService.update(id, changes);
   }
-
-  // PUT /coworkings/:id/bookings/:id
-
-
 }

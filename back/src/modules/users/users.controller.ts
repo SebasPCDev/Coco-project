@@ -53,13 +53,13 @@ export class UsersController {
     return this.userService.findOne(id);
   }
 
-  @UseGuards(UserAuthGuard)
+  // @UseGuards(UserAuthGuard)
   @Put('updateUser/:id')
   updateUser(@Param('id', ParseUUIDPipe) id: UUID, @Body() changes: UpdateDto) {
     return this.userService.updateUser(id, changes);
   }
 
-  @UseGuards(UserAuthGuard)
+  // @UseGuards(UserAuthGuard)
   @Put(':id')
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() changes: UpdateUsersDto) {
     return this.userService.update(id, changes);

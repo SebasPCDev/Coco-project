@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateUsersDto, UpdateDto, UpdateUsersDto } from './users.dto';
 import * as bcrypt from 'bcrypt';
 import { Users } from 'src/entities/users.entity';
@@ -51,6 +51,8 @@ export class UsersService {
   async updateBooking (userId: UUID, bookingId: UUID, changes: UpdateBookingsDto) {
     console.log(userId, bookingId, changes);
     const booking = await this.bookingsService.findOne(bookingId)
+
+    if (booking.user.id !== userId) throw new ForbiddenException('No tienes permisos para modificar esta resevación')
 
     if (booking.status === BookingStatus.COMPLETED || booking.status === BookingStatus.NO_SHOW || booking.status === BookingStatus.USER_CANCELED) 
       throw new BadRequestException('El estado de la reserva no se puede modificar')

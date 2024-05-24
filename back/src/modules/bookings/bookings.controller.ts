@@ -14,6 +14,9 @@ import { CreateBookingsDto, UpdateBookingsDto } from './bookings.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { UUID } from 'crypto';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/models/roles.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @ApiTags('bookings')
 @ApiBearerAuth()
@@ -38,7 +41,8 @@ export class BookingsController {
     return this.bookingsService.create(user.id, data);
   }
 
-  // Role superadmin
+  @Roles(Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
   @Put(':id')
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateBookingDto: UpdateBookingsDto) {
     return this.bookingsService.update(id, updateBookingDto);

@@ -71,6 +71,8 @@ export class UsersController {
     return this.userService.updateBooking(user.id, bookingId, changes)
   }
 
+  // put check-in
+
   @UseGuards(UserAuthGuard)
   @Put(':id')
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() changes: UpdateUsersDto) {

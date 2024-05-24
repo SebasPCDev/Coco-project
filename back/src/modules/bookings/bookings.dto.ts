@@ -47,5 +47,8 @@ export class UpdateBookingsDto {
   @IsString({ message: 'La observación debe ser una cadena de caracteres.' })
   @IsOptional()
   observation?: string;
+
+  @IsEmpty()  
+  confirm_phrase?: string;
 }
 

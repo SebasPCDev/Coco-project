@@ -308,21 +308,30 @@ export class CoworkingsService {
     console.log(coworkingId, bookingId, changes);
     const booking = await this.bookingsService.findOne(bookingId)
 
-     if (booking.status === BookingStatus.COMPLETED || booking.status === BookingStatus.NO_SHOW || booking.status === BookingStatus.USER_CANCELED) 
+    if (booking.status !== BookingStatus.PENDING) 
       throw new BadRequestException('El estado de la reserva no se puede modificar')
 
-    if (changes.status === BookingStatus.ACTIVE || changes.status === BookingStatus.COWORKING_CANCELED) {
-      if (booking.status !== BookingStatus.PENDING) 
-        throw new BadRequestException('El estado de la reserva debe ser Pendiente para modificarlo')
+    if (changes.status !== BookingStatus.ACTIVE && changes.status !== BookingStatus.COWORKING_CANCELED) {
+      throw new BadRequestException('El estado de la reserva no se puede modificar')
     }
-
-    if (changes.status === BookingStatus.COMPLETED) {
-      if (booking.status !== BookingStatus.ACTIVE) 
-        throw new BadRequestException('El estado de la reserva debe ser Activo para confirmar el check-in')
+    
+    if (changes.status === BookingStatus.ACTIVE) {
+      changes.confirm_phrase = Math.random().toString(36).slice(-8);
+      // Mail a user con phrase ()
+      console.log("EMAIL", changes.confirm_phrase);
+    } else {
+      // Mail a user rechazo
+      console.log("EMIAL de RECHAZO");
     }
 
     const updBooking = await this.bookingsService.update(bookingId, changes)
     return updBooking
+  }
+
+  async chechIn() {
+    // verificar si booking "ACTIVO"
+    // coworking_confirm = true
+    // Verifica si user_confirm = true => pasa estado a Completed
   }
 
   async update(id: UUID, changes: UpdateCoworkingsDto) {

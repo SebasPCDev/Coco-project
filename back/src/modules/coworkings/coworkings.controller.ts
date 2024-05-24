@@ -129,6 +129,8 @@ export class CoworkingsController {
     return this.coworkingsService.updateBooking(coworkingId, bookingId, changes)
   }
 
+  // put check-in
+
   @ApiBearerAuth()
   @Roles(Role.ADMIN_COWORKING, Role.SUPERADMIN)
   @UseGuards(RolesGuard)

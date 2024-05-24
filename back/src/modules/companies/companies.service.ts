@@ -231,13 +231,11 @@ export class CompaniesService {
   }
 
   async updateUser(adminCompany: Users, companyId: UUID, userId: UUID, changes: UpdateUsersDto) {
-    const {employees} = await this.getCompanyById(companyId);
     
-    // console.log("employees", employees);
-
-    // Validamos adminCompany
+    // Validamos que el adminCompany y el employyee pertenezcan a la misma compañía 
+    const {employees} = await this.getCompanyById(companyId);
+        
     const foundAdminCompany = employees.findIndex((employee) => employee.user.id === adminCompany.id);
-    console.log("foundAdminCompany", foundAdminCompany, adminCompany.id);
     if (foundAdminCompany === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
 
     const foundEmployee = employees.findIndex((employee) => employee.user.id === userId);

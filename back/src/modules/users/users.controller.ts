@@ -18,7 +18,6 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
-import { UserAuthGuard } from 'src/guards/userAuth.guard';
 // import { UserAuthGuard } from 'src/guards/userAuth.guard';
 
 @ApiTags('users')
@@ -65,10 +64,4 @@ export class UsersController {
     return this.userService.update(id, changes);
   }
 
-  
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id);
-  // }
-}
+ }

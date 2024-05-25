@@ -22,10 +22,10 @@ export class Bookings {
   @Column({ type: 'varchar', nullable: true, name:"confirm_phrase" })
   confirmPhrase: string;
   
-  @Column({ type: 'boolean', nullable: true, name:"confirm_user" })
+  @Column({ type: 'boolean', default: false, name:"confirm_user" })
   confirmUser: boolean;
 
-  @Column({ type: 'boolean', nullable: true, name:"confirm_coworking" })
+  @Column({ type: 'boolean', default: false, name:"confirm_coworking" })
   confirmCoworking: boolean;
 
   @Column({

@@ -332,10 +332,24 @@ export class CoworkingsService {
     return updBooking
   }
 
-  async chechIn() {
+  async checkIn(bookingId: UUID) {
+    const booking = await this.bookingsService.findOne(bookingId)
+
+    if (booking.status !== BookingStatus.ACTIVE) 
+      throw new BadRequestException(`El estado de la reserva no se puede modificar, estado en : ${booking.status}`)
+    
+      booking.confirmUser=true
+      if(booking.confirmUser===true){
+        //* Pasa el estado a complete
+        booking.status= BookingStatus.COMPLETED
+      }
+      const updBooking = await this.bookingsService.update(bookingId, booking)
+      return updBooking
+    
     // verificar si booking "ACTIVO"
     // coworking_confirm = true
-    // Verifica si user_confirm = true => pasa estado a Completed
+    // Verifica si user_confirm = true => pasa estado a Completed
+
   }
 
   async update(id: UUID, changes: UpdateCoworkingsDto) {

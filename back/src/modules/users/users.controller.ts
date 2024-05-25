@@ -72,6 +72,18 @@ export class UsersController {
   }
 
   // put check-in
+  @ApiBearerAuth()
+  @Roles(Role.COWORKING, Role.ADMIN_COWORKING, Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Put('checkIn/:bookingId')
+  checkIn(
+    @Param('bookingId', ParseUUIDPipe) bookingId: UUID,
+    @Req() request
+  ) {
+    const user = request.user;
+    return this.userService.checkIn(user.id, bookingId)
+  }
+
 
   @UseGuards(UserAuthGuard)
   @Put(':id')

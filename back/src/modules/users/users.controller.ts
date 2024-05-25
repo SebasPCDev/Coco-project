@@ -4,7 +4,6 @@ import {
   Post,
   Body,
   Param,
-  // Delete,
   ParseUUIDPipe,
   UseGuards,
   Req,
@@ -19,7 +18,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { UserAuthGuard } from 'src/guards/userAuth.guard';
-// import { UserAuthGuard } from 'src/guards/userAuth.guard';
+import { UpdateBookingsDto } from '../bookings/bookings.dto';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -59,16 +58,24 @@ export class UsersController {
     return this.userService.updateUser(id, changes);
   }
 
-  // @UseGuards(UserAuthGuard)
+  @ApiBearerAuth()
+  @Roles(Role.COWORKING, Role.ADMIN_COWORKING, Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Put('booking/:bookingId')
+  updateBooking(
+    @Param('bookingId', ParseUUIDPipe) bookingId: UUID,
+    @Body() changes: UpdateBookingsDto,
+    @Req() request
+  ) {
+    const user = request.user;
+    return this.userService.updateBooking(user.id, bookingId, changes)
+  }
+
+  // put check-in
+
+  @UseGuards(UserAuthGuard)
   @Put(':id')
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() changes: UpdateUsersDto) {
     return this.userService.update(id, changes);
   }
-
-  
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id);
-  // }
 }

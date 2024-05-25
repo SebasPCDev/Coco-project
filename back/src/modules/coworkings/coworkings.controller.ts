@@ -3,9 +3,7 @@ import {
   Get,
   Post,
   Body,
-  //Put,
   Param,
-  //Delete,
   UseGuards,
   ParseUUIDPipe,
   Put,
@@ -29,7 +27,9 @@ import { Public } from 'src/decorators/public.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
-import { CreateUserCoworkingsDto } from '../users/users.dto';
+import {  UpdateUsersDto } from '../users/users.dto';
+import { CreateUserCoworkingsDto } from '../users/coworkings.dto';
+import { UpdateBookingsDto } from '../bookings/bookings.dto';
 
 @ApiTags('coworkings')
 @UseGuards(AuthGuard)
@@ -44,10 +44,17 @@ export class CoworkingsController {
     @Query('state') state: string,
     @Query('city') city: string,
     @Query('name') name: string,
-    @Query('status', new DefaultValuePipe(CoworkingStatus.ACTIVE)) status: CoworkingStatus,
+    @Query('status', ) status: CoworkingStatus,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number) {
     return this.coworkingsService.getAllCoworkings(page, limit, country, state, city, name, status);
+  }
+
+  // Por pedido hacer nuevo endpoint son filtros ni paginacion 
+  @Get('all')
+  @Public()
+  getCoworkings() {
+    return this.coworkingsService.getCoworkings();
   }
 
   @Get('countries')
@@ -69,11 +76,11 @@ export class CoworkingsController {
     return this.coworkingsService.getCities(country, state);
   }
 
-  @Roles(Role.ADMIN_COWORKING, Role.SUPERADMIN)
+  @Roles(Role.ADMIN_COWORKING, Role.COWORKING, Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Get(':id/bookings')
   getBookimgsByCoworking(@Param('id', ParseUUIDPipe) id: UUID) {
-    return this.coworkingsService.getBookimgsByCoworking(id);
+    return this.coworkingsService.getBookingsByCoworking(id);
   }
 
   @Public()
@@ -90,7 +97,7 @@ export class CoworkingsController {
     const user = request.user;
     return this.coworkingsService.create(user.id as UUID, data);
   }
-
+  
   @Roles(Role.ADMIN_COWORKING)
   @UseGuards(RolesGuard)
   @Post('create-user-coworking')
@@ -105,6 +112,31 @@ export class CoworkingsController {
   activateCoworking(@Body() data: ActivateCoworkingsDto) {
     return this.coworkingsService.activateCoworking(data.id as UUID);
   }
+  
+  @Put(':coworkingId/update-receptionist/:userId')
+  updateReceptionist(
+  @Param('coworkingId', ParseUUIDPipe) coworkingId: UUID,
+  @Param('userId', ParseUUIDPipe) userId: UUID,
+  @Body() changes: UpdateUsersDto,
+  @Req() request){
+    const adminCoworking = request.user;
+    return this.coworkingsService.updateReceptionist(adminCoworking, coworkingId, userId, changes)
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.COWORKING, Role.ADMIN_COWORKING, Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Put(':coworkingId/booking/:bookingId')
+  updateBooking(
+    @Param('coworkingId', ParseUUIDPipe) coworkingId: UUID,
+    @Param('bookingId', ParseUUIDPipe) bookingId: UUID,
+    @Body() changes: UpdateBookingsDto,
+    // @Req() request
+  ) {
+    return this.coworkingsService.updateBooking(coworkingId, bookingId, changes)
+  }
+
+  // put check-in
 
   @ApiBearerAuth()
   @Roles(Role.ADMIN_COWORKING, Role.SUPERADMIN)
@@ -116,9 +148,4 @@ export class CoworkingsController {
   ) {
     return this.coworkingsService.update(id, changes);
   }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.coworkingsService.remove(+id);
-  // }
 }

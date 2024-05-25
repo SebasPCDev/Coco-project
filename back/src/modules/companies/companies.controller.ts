@@ -4,7 +4,6 @@ import {
   Post,
   Body,
   Param,
-  // Delete,
   UseGuards,
   Req,
   Put,
@@ -14,20 +13,19 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 
-import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
-
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { UUID } from 'crypto';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { Role } from 'src/models/roles.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { CompaniesService } from './companies.service';
-import { UUID } from 'crypto';
-import { CreateEmployeeDto } from '../users/users.dto';
-// import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
+import { CreateEmployeeDto, UpdateEmployeeDto } from '../users/employees.dto';
+// import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
 
-@ApiTags('companies')
+@ApiTags('Companies')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller('companies')
@@ -45,6 +43,14 @@ export class CompaniesController {
     @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number,
   ) {
     return this.companiesService.getAllCompanies(status, name, page, limit);
+  }
+
+  // Por pedido hacer nuevo endpoint son filtros ni paginacion 
+  @Roles(Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Get('all')
+  getCoworkings() {
+    return this.companiesService.getCompanies();
   }
 
   @Get(':id')
@@ -72,6 +78,16 @@ export class CompaniesController {
     return this.companiesService.createEmployee(adminCompanyId as UUID, data);
   }
 
+  @Put(':companyId/update-employee/:userId')
+  updateEmployee(
+    @Param('companyId', ParseUUIDPipe) companyId: UUID,
+    @Param('userId', ParseUUIDPipe) userId: UUID,
+    @Body() changes: UpdateEmployeeDto,
+    @Req() request){
+      const adminCompany = request.user;
+      return this.companiesService.updateEmployee(adminCompany, companyId, userId, changes)
+    }
+  
   @Roles(Role.ADMIN_COMPANY, Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Put(':id')
@@ -81,9 +97,4 @@ export class CompaniesController {
   ) {
     return this.companiesService.update(id, changes);
   }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.companiesService.remove(+id);
-  // }
 }

@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -21,18 +22,21 @@ import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
 import { Request } from 'src/entities/requests.entity';
 import { CreateCoworkingsDto, UpdateCoworkingsDto } from './coworkings.dto';
-import { CreateUserCoworkingsDto, CreateUsersDto } from '../users/users.dto';
+import {  CreateUsersDto, UpdateUsersDto } from '../users/users.dto';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { CoworkingImages } from 'src/entities/coworkingImages.entity';
+import { CreateUserCoworkingsDto } from '../users/coworkings.dto';
+import { UpdateBookingsDto } from '../bookings/bookings.dto';
+import { BookingsService } from '../bookings/bookings.service';
+import { BookingStatus } from 'src/models/bookingStatus';
 
 @Injectable()
 export class CoworkingsService {
   constructor(
     @InjectRepository(Coworkings)
     private coworkingsRepository: Repository<Coworkings>,
-    private readonly nodemailerService: NodemailerService,
     private dataSource: DataSource,
     @InjectRepository(Request)
     private requestsRepository: Repository<Request>,
@@ -40,6 +44,8 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
     @InjectRepository(CoworkingImages)
     private coworkingImagesRepository: Repository<CoworkingImages>,
+    private readonly bookingsService: BookingsService,
+    private readonly nodemailerService: NodemailerService,
   ) {}
 
   async getAllCoworkings(
@@ -71,7 +77,11 @@ export class CoworkingsService {
     return { page, limit, total, coworking };
   }
 
-  async getBookimgsByCoworking(id: UUID) {
+  async getCoworkings() {
+    return await this.coworkingsRepository.find();
+  }
+
+  async getBookingsByCoworking(id: UUID) {
     const coworking = await this.coworkingsRepository.findOne({
       relations: ['bookings', 'bookings.user'],
       where: { id },
@@ -282,6 +292,52 @@ export class CoworkingsService {
     }
   }
 
+  async updateReceptionist(adminCoworking: Users, coworkingId: UUID, userId: UUID, changes: UpdateUsersDto) {
+    const coworking = await this.getCoworkingById(coworkingId);
+
+    const foundAdminCoworking = coworking.user.findIndex((employee) => employee.id === adminCoworking.id && employee.role === Role.ADMIN_COWORKING);
+    if (foundAdminCoworking === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+
+    const foundRecepcionist = coworking.user.findIndex((employee) => employee.id === userId && employee.role === Role.COWORKING);
+    if (foundRecepcionist === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+
+    const dbUser = await this.usersRepository.findOneBy({id: userId});
+    if (!dbUser) throw new ForbiddenException('Recepcionista no encontrado');
+
+    const updUser = this.usersRepository.merge(dbUser, changes);
+    return await this.usersRepository.save(updUser);   
+  }
+
+  async updateBooking (coworkingId: UUID, bookingId: UUID, changes: UpdateBookingsDto) {
+    console.log(coworkingId, bookingId, changes);
+    const booking = await this.bookingsService.findOne(bookingId)
+
+    if (booking.status !== BookingStatus.PENDING) 
+      throw new BadRequestException('El estado de la reserva no se puede modificar')
+
+    if (changes.status !== BookingStatus.ACTIVE && changes.status !== BookingStatus.COWORKING_CANCELED) {
+      throw new BadRequestException('El estado de la reserva no se puede modificar')
+    }
+    
+    if (changes.status === BookingStatus.ACTIVE) {
+      changes.confirm_phrase = Math.random().toString(36).slice(-8);
+      // Mail a user con phrase ()
+      console.log("EMAIL", changes.confirm_phrase);
+    } else {
+      // Mail a user rechazo
+      console.log("EMIAL de RECHAZO");
+    }
+
+    const updBooking = await this.bookingsService.update(bookingId, changes)
+    return updBooking
+  }
+
+  async chechIn() {
+    // verificar si booking "ACTIVO"
+    // coworking_confirm = true
+    // Verifica si user_confirm = true => pasa estado a Completed
+  }
+
   async update(id: UUID, changes: UpdateCoworkingsDto) {
     const coworking = await this.getCoworkingById(id);
 
@@ -315,10 +371,6 @@ export class CoworkingsService {
 
     return await this.getCoworkingById(id);
   }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} coworking`;
-  // }
 
   async preloadCoworkings() {
     const data = loadDataCoworkings();

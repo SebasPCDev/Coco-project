@@ -1,20 +1,16 @@
 import { ApiHideProperty, ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import {
-  // IsDate,
   IsEmail,
   IsEmpty,
   IsEnum,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
-  IsUUID,
   Matches,
   MaxLength,
   MinLength,
   Validate,
 } from 'class-validator';
-import { UUID } from 'crypto';
 import { MatchPass } from 'src/decorators/MatchPass.decorator';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
@@ -151,41 +147,8 @@ export class UpdateDto {
   email?: string;
 }
 
-export class CreateEmployeeDto extends CreateUsersDto {
-  @ApiProperty({
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    description: 'ID de la compañía',
-  })
-  @IsUUID('4', { message: 'companyId debe ser un UUID válido' })
-  @IsNotEmpty({ message: 'companyId no debe estar vacío' })
-  companyId: UUID;
 
-  @ApiProperty({
-    example: 5,
-    description: 'Número de pases',
-  })
-  @IsNumber({}, { message: 'passes debe ser un número' })
-  @IsNotEmpty({ message: 'passes no debe estar vacío' })
-  passes: number;
 
-  @ApiProperty({
-    example: 2,
-    description: 'Número de pases disponibles',
-  })
-  @IsNumber({}, { message: 'passesAvailable debe ser un número' })
-  @IsNotEmpty({ message: 'passesAvailable no debe estar vacío' })
-  passesAvailable: number;
-}
-
-export class CreateUserCoworkingsDto extends CreateUsersDto {
-  @ApiProperty({
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    description: 'ID del coworking',
-  })
-  @IsUUID('4', { message: 'coworkingId debe ser un UUID válido' })
-  @IsNotEmpty({ message: 'coworkingId no debe estar vacío' })
-  coworkingId: UUID;
-}
 
 
 

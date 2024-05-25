@@ -342,7 +342,7 @@ export class CoworkingsService {
     if (booking.status !== BookingStatus.ACTIVE) 
       throw new BadRequestException(`El estado de la reserva no se puede modificar, estado en : ${booking.status}`)
     
-      booking.confirmUser=true
+      booking.confirmCoworking=true
       if(booking.confirmUser===true){
         //* Pasa el estado a complete
         booking.status= BookingStatus.COMPLETED

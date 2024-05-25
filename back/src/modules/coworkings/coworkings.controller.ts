@@ -140,7 +140,7 @@ export class CoworkingsController {
   @ApiBearerAuth()
   @Roles(Role.COWORKING, Role.ADMIN_COWORKING, Role.SUPERADMIN)
   @UseGuards(RolesGuard)
-  @Put(':coworkingId/checkIn/:bookingId')
+  @Put('checkIn/:bookingId')
   checkIn(
     @Param('bookingId', ParseUUIDPipe) bookingId: UUID,
     // @Param('coworkingId', ParseUUIDPipe) coworkingId: UUID,

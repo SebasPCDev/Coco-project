@@ -64,11 +64,26 @@ export class UsersService {
     return updBooking
   }
 
-  async chechIn() {
-    // verificar si booking "ACTIVO"
+  async checkIn(userId: UUID, bookingId: UUID) {
+
+    const booking = await this.bookingsService.findOne(bookingId)
+    if (booking.user.id !== userId) throw new ForbiddenException('No tienes permisos para modificar esta resevación')
+
+    if (booking.status !== BookingStatus.ACTIVE) 
+      throw new BadRequestException(`El estado de la reserva esta en:${booking.status },no se puede modificar`)
+
+    booking.confirmUser=true
+    if(booking.confirmCoworking===true){
+      //* Pasa el estado a complete
+      booking.status= BookingStatus.COMPLETED
+    }
+    const updBooking = await this.bookingsService.update(bookingId, booking)
+    return updBooking
+    // verificar si bookingif "ACTIVO"
     // user_confirm = true
     // Verifica si coworking_confirm = true => pasa estado a Completed
   }
+
 
   async update(id: UUID, changes: UpdateUsersDto) {
      const user = await this.findOne(id);

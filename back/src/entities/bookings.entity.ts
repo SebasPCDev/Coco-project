@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { BookingStatus } from 'src/models/bookingStatus';
-import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Users } from './users.entity';
 import { Coworkings } from './coworkings.entity';
 
@@ -19,6 +19,15 @@ export class Bookings {
   @Column({ type: 'timestamptz', name: 'booking_date', default: () => 'CURRENT_TIMESTAMP', })
   date: Date;
 
+  @Column({ type: 'varchar', nullable: true, name:"confirm_phrase" })
+  confirmPhrase: string;
+  
+  @Column({ type: 'boolean', nullable: true, name:"confirm_user" })
+  confirmUser: boolean;
+
+  @Column({ type: 'boolean', nullable: true, name:"confirm_coworking" })
+  confirmCoworking: boolean;
+
   @Column({
     type: 'enum',
     enum: BookingStatus,
@@ -28,7 +37,7 @@ export class Bookings {
 
   @Column({ type: 'varchar', nullable: true })
   observation: string;
-
+  
   @Exclude()
   @CreateDateColumn({
     name: 'created_at',
@@ -38,10 +47,11 @@ export class Bookings {
   createdAt: Date;
 
   @Exclude()
-  @CreateDateColumn({
+  @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'now()',
   })
   updatedAt: Date;
 

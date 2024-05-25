@@ -9,9 +9,10 @@ import { Request } from 'src/entities/requests.entity';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { CompanyType } from 'src/models/companyType.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { CreateRequestDto, UpdateRequestCoworkingDto, UpdateRequestDto } from './requests.dto';
-import { loadDataRequest } from 'src/utils/loadData';
+import { UpdateRequestCoworkingDto, UpdateRequestDto } from './requests.dto';
+import { loadDataRequest, loadDataRequestCompany } from 'src/utils/loadData';
 import { CoworkingsService } from '../coworkings/coworkings.service';
+import { CompaniesService } from '../companies/companies.service';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
 
 @Injectable()
@@ -20,6 +21,7 @@ export class RequestsService {
     @InjectRepository(Request)
     private requestsRepository: Repository<Request>,
     private readonly coworkingsService: CoworkingsService,
+    private readonly companiesService: CompaniesService,
     private readonly nodemailerService: NodemailerService,
   ) { }
 
@@ -105,31 +107,41 @@ export class RequestsService {
     }
 
     const dataCoworks = loadDataRequest();
+    const dataCompanies = loadDataRequestCompany();
 
-    for await (const sol of dataCoworks) {
+    for await (const request of dataCoworks) {
       const requestExist = await this.requestsRepository.findOne({
-        where: { email: sol.email },
+        where: { email: request.email },
       });
 
-      if (requestExist) continue;
+      if (!requestExist) {
+        await this.requestsRepository.save(request);
+      }
+    }
 
-      const data = this.requestsRepository.create(sol as CreateRequestDto);
-      const requestCowork = await this.requestsRepository.save(data);
+    for await (const request of dataCompanies) {
+      const requestExist = await this.requestsRepository.findOne({
+        where: { email: request.email },
+      });
 
-      const coworking = await this.coworkingsService.activateCoworking(requestCowork.id as UUID);
-      
-
-
+      if (!requestExist) {
+        await this.requestsRepository.save(request);
+      }
     }
 
     const firstCoworking = await this.requestsRepository.find({
       take: 1,
       where: { type: CompanyType.COWORKING },
     });
+    const firtsCompany = await this.requestsRepository.find({
+      take: 1,
+      where: { type: CompanyType.COMPANY },
+    });
 
     await this.coworkingsService.activateCoworking(
       firstCoworking[0].id as UUID,
     );
+    await this.companiesService.activateCompany(firtsCompany[0].id as UUID);
 
     return true;
   }

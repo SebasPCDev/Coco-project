@@ -246,7 +246,7 @@ export class CoworkingsService {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
-    if (dbUser) throw new BadRequestException('Usuario no encontrado');
+    if (dbUser) throw new BadRequestException('El recepcionista ya existe');
 
     const coworking = await this.coworkingsRepository.findOneBy({
       id: data.coworkingId,

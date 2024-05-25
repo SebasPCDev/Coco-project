@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({
@@ -153,10 +154,11 @@ export class Request {
   createdAt: Date;
 
   @Exclude()
-  @CreateDateColumn({
+  @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'now()',
   })
   updatedAt: Date;
 }

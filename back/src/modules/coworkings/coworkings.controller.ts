@@ -137,6 +137,19 @@ export class CoworkingsController {
   }
 
   // put check-in
+  @ApiBearerAuth()
+  @Roles(Role.COWORKING, Role.ADMIN_COWORKING, Role.SUPERADMIN)
+  @UseGuards(RolesGuard)
+  @Put(':coworkingId/checkIn/:bookingId')
+  checkIn(
+    @Param('bookingId', ParseUUIDPipe) bookingId: UUID,
+    // @Param('coworkingId', ParseUUIDPipe) coworkingId: UUID,
+    // @Req() request
+  ) {
+    // const user = request.user;
+    return this.coworkingsService.checkIn( bookingId)
+  }
+
 
   @ApiBearerAuth()
   @Roles(Role.ADMIN_COWORKING, Role.SUPERADMIN)

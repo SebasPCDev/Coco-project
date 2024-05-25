@@ -9,6 +9,7 @@ import { Role } from 'src/models/roles.enum';
 import { UpdateBookingsDto } from '../bookings/bookings.dto';
 import { BookingStatus } from 'src/models/bookingStatus';
 import { BookingsService } from '../bookings/bookings.service';
+import { NodemailerService } from '../nodemailer/nodemailer.service';
 
 @Injectable()
 export class UsersService {
@@ -16,6 +17,7 @@ export class UsersService {
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
     private readonly bookingsService: BookingsService,
+    private readonly nodemailerService: NodemailerService,
   ) { }
 
   async create(data: CreateUsersDto) {
@@ -60,6 +62,9 @@ export class UsersService {
       throw new BadRequestException('El estado de la reserva no se puede modificar')
     }
 
+    //!mail a coworking y a empleado  que  se actulizo la reserva
+    //? Hacer prueba 
+    
     const updBooking = await this.bookingsService.update(bookingId, changes)
     return updBooking
   }

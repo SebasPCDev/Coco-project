@@ -10,6 +10,10 @@ import sendNotificationEmail from 'src/templates/notificationEmailTemplate';
 import forgotPassEmail from 'src/templates/forgotPassEmailTemplate';
 import sendBookingNotificationEmployee from 'src/templates/bookingNotificationEmployee';
 import sendBookingNotificationCoworking from 'src/templates/bookingNotificationCoworking';
+import sendBookingActiveNotificationEmployee from 'src/templates/notificationActiveBookingUser';
+import sendBookingActiveNotificationCoworking from 'src/templates/notificationActiveBookingCowork';
+import sendBookingRejectNotificationEmployee from 'src/templates/notificationRejectBookingUser';
+import sendBookingRejectNotificationCoworking from 'src/templates/notificationRejectBookingCowork';
 dotenvConfig({
   path: '.env.development',
 });
@@ -186,6 +190,167 @@ export class NodemailerService {
       );
     }
   }
+
+  async sendBookingActiveNotificationEmployee(
+    companyName: string,
+    employeeName:string,
+    dia:Date,
+    hora:Date,  
+    address:string, 
+    phrase: string,
+    employeeEmail:string,
+  ) {
+  
+
+    if (!companyName) {
+      throw new BadRequestException('Nombre del coworking null');
+    }
+  
+    const emailConfig = {
+      from: process.env.NODEMAILER_MAIL,
+      to: employeeEmail,
+      subject: 'Estado de reserva',
+      html: sendBookingActiveNotificationEmployee(
+        companyName,
+        employeeName,
+        dia,
+        hora,  
+        address,
+        phrase
+      ),
+    };
+
+    try {
+      const info = await transporter.sendMail(emailConfig);
+      console.log('Correo electrónico enviado:', info.response);
+      return 'Correo electrónico enviado';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      throw new InternalServerErrorException(
+        `Error al enviar el correo electrónico:${error}`,
+      );
+    }
+  }
+
+  async sendBookingActiveNotificationCoworking(
+    companyName: string,
+    employeeName:string,
+    dia:Date,
+    hora:Date,  
+    address:string, 
+    coworkignEmail:string,
+  ) {
+  
+
+    if (!companyName) {
+      throw new BadRequestException('Nombre del coworking null');
+    }
+  
+    const emailConfig = {
+      from: process.env.NODEMAILER_MAIL,
+      to: coworkignEmail,
+      subject: 'Estado de reserva',
+      html: sendBookingActiveNotificationCoworking(
+        companyName,
+        employeeName,
+        dia,
+        hora,  
+        address 
+      ),
+    };
+
+    try {
+      const info = await transporter.sendMail(emailConfig);
+      console.log('Correo electrónico enviado:', info.response);
+      return 'Correo electrónico enviado';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      throw new InternalServerErrorException(
+        `Error al enviar el correo electrónico:${error}`,
+      );
+    }
+  }
+
+  async sendBookingRejectNotificationEmployee(
+    companyName: string,
+    employeeName:string,
+    dia:Date,
+    hora:Date,  
+    address:string, 
+    employeeEmail:string,
+  ) {
+  
+
+    if (!companyName) {
+      throw new BadRequestException('Nombre del coworking null');
+    }
+  
+    const emailConfig = {
+      from: process.env.NODEMAILER_MAIL,
+      to: employeeEmail,
+      subject: 'Estado de reserva',
+      html: sendBookingRejectNotificationEmployee(
+        companyName,
+        employeeName,
+        dia,
+        hora,  
+        address,
+
+      ),
+    };
+
+    try {
+      const info = await transporter.sendMail(emailConfig);
+      console.log('Correo electrónico enviado:', info.response);
+      return 'Correo electrónico enviado';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      throw new InternalServerErrorException(
+        `Error al enviar el correo electrónico:${error}`,
+      );
+    }
+  }
+
+  async sendBookingRejectNotificationCoworking(
+    companyName: string,
+    employeeName:string,
+    dia:Date,
+    hora:Date,  
+    address:string, 
+    coworkignEmail:string,
+  ) {
+  
+
+    if (!companyName) {
+      throw new BadRequestException('Nombre del coworking null');
+    }
+  
+    const emailConfig = {
+      from: process.env.NODEMAILER_MAIL,
+      to: coworkignEmail,
+      subject: 'Estado de reserva',
+      html: sendBookingRejectNotificationCoworking(
+        companyName,
+        employeeName,
+        dia,
+        hora,  
+        address 
+      ),
+    };
+
+    try {
+      const info = await transporter.sendMail(emailConfig);
+      console.log('Correo electrónico enviado:', info.response);
+      return 'Correo electrónico enviado';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      throw new InternalServerErrorException(
+        `Error al enviar el correo electrónico:${error}`,
+      );
+    }
+  }
+
+
 
   
 }

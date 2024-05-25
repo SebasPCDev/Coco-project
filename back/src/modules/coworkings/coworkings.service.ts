@@ -11,6 +11,7 @@ import {
   DataSource,
   FindOptionsOrderValue,
   FindOptionsWhere,
+  In,
   Repository,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -31,6 +32,7 @@ import { CreateUserCoworkingsDto } from '../users/coworkings.dto';
 import { UpdateBookingsDto } from '../bookings/bookings.dto';
 import { BookingsService } from '../bookings/bookings.service';
 import { BookingStatus } from 'src/models/bookingStatus';
+import { Amenities } from 'src/entities/amenities.entity';
 
 @Injectable()
 export class CoworkingsService {
@@ -44,6 +46,8 @@ export class CoworkingsService {
     private usersRepository: Repository<Users>,
     @InjectRepository(CoworkingImages)
     private coworkingImagesRepository: Repository<CoworkingImages>,
+    @InjectRepository(Amenities)
+    private amenitiesRepository: Repository<Amenities>,
     private readonly bookingsService: BookingsService,
     private readonly nodemailerService: NodemailerService,
   ) {}
@@ -368,6 +372,13 @@ export class CoworkingsService {
         throw new BadRequestException(
           'Se requieren los datos de país, estado, ciudad, latitud, longitud y miniatura para activar el coworking.',
         );
+    }
+
+    if (changes.amenitiesIds) {
+      const amenities = await this.amenitiesRepository.find({
+        where: { id: In(changes.amenitiesIds) }
+      })
+      coworking.amenities = amenities;
     }
 
     const updCoworking = this.coworkingsRepository.merge(coworking, changes);

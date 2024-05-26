@@ -183,7 +183,7 @@ export class RequestsService {
       newReceptionist.status = UserStatus.ACTIVE;
       newReceptionist.password= process.env.SUPERADMIN_PASSWORD;
 
-      await this.coworkingsService.createUserCoworking(newReceptionist)
+      await this.coworkingsService.createUserCoworking(newReceptionist, false)
       coworkingCount++;
     }
 

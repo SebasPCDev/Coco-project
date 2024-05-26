@@ -247,7 +247,7 @@ export class CoworkingsService {
     }
   }
 
-  async createUserCoworking(data: CreateUserCoworkingsDto) {
+  async createUserCoworking(data: CreateUserCoworkingsDto, email=true) {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
@@ -289,11 +289,12 @@ export class CoworkingsService {
 
       await queryRunner.release(); // RELEASE
       //!Email a al usuario newUser password 
-      this.nodemailerService.sendActivationMailCoworkEmployee(
-        newUser.name,
-        newUser.email,
-        newUser.password,
-      )
+      if (email)
+        this.nodemailerService.sendActivationMailCoworkEmployee(
+          newUser.name,
+          newUser.email,
+          newUser.password,
+        )
 
       return newUser;
     } catch (err) {

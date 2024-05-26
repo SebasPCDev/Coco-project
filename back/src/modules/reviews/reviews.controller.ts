@@ -5,10 +5,12 @@ import { UUID } from 'crypto';
 import { CreateReviewDto } from './createReview.dto';
 import { UpdateReviewDto } from './updateReview.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/models/roles.enum';
 
 @ApiTags('reviews')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
 @Controller('reviews')
 export class ReviewsController {
     constructor(private readonly reviewsService: ReviewsService) { }
@@ -32,14 +34,18 @@ export class ReviewsController {
   findOne(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.reviewsService.findOne(id);
   }
-
+ 
   @Post()
+  @Roles(Role.EMPLOYEE,Role.SUPERADMIN)
+  @UseGuards(AuthGuard,RolesGuard)
   create(@Req() request, @Body() data: CreateReviewDto) {
     const user = request.user;
     return this.reviewsService.create(user.id, data);
   }
 
   @Put(':id')
+  @Roles(Role.ADMIN_COWORKING,Role.COWORKING,Role.SUPERADMIN)
+  @UseGuards(AuthGuard,RolesGuard)
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateBookingDto: UpdateReviewDto,@Req() request) {
     const user = request.user;
     return this.reviewsService.update(id, updateBookingDto,user.id);

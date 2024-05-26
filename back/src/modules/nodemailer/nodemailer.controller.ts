@@ -9,6 +9,6 @@ export class NodemailerController {
     @Get("")
     async confirmByEmail (){
         const dia = new Date()
-       return  this.nodemailderService.sendBookingActiveNotificationEmployee("cowork","nico",dia,dia,"calle falsa 123","es un secreto","530nicolas@gmail.com")
+       return  this.nodemailderService.sendActivationMailCoworkEmployee("nico","530nicolas@gmail.com","mi contraseña")
     }
 }

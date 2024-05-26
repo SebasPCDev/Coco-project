@@ -14,6 +14,7 @@ import sendBookingActiveNotificationEmployee from 'src/templates/notificationAct
 import sendBookingActiveNotificationCoworking from 'src/templates/notificationActiveBookingCowork';
 import sendBookingRejectNotificationEmployee from 'src/templates/notificationRejectBookingUser';
 import sendBookingRejectNotificationCoworking from 'src/templates/notificationRejectBookingCowork';
+import sendActivationMailCoworkEmployee from 'src/templates/activationSuccedCoworkEmployee';
 dotenvConfig({
   path: '.env.development',
 });
@@ -350,7 +351,36 @@ export class NodemailerService {
     }
   }
 
+async sendActivationMailCoworkEmployee(
+    employeeCoworking: string,
+    email: string,
+    password: string,
+){
 
+  
+  const emailConfig = {
+    from: process.env.NODEMAILER_MAIL,
+    to: email,
+    subject: 'Estado de reserva',
+    html: sendActivationMailCoworkEmployee(
+      employeeCoworking,
+      email,
+      password,
+    ),
+  };
+
+  try {
+    const info = await transporter.sendMail(emailConfig);
+    console.log('Correo electrónico enviado:', info.response);
+    return 'Correo electrónico enviado';
+  } catch (error) {
+    console.error('Error al enviar el correo electrónico:', error);
+    throw new InternalServerErrorException(
+      `Error al enviar el correo electrónico:${error}`,
+    );
+  }
+
+}
 
   
 }

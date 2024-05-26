@@ -288,6 +288,12 @@ export class CoworkingsService {
 
       await queryRunner.release(); // RELEASE
       //!Email a al usuario newUser password 
+      this.nodemailerService.sendActivationMailCoworkEmployee(
+        newUser.name,
+        newUser.email,
+        newUser.password,
+      )
+
       return newUser;
     } catch (err) {
       await queryRunner.rollbackTransaction(); // ROLLBACK

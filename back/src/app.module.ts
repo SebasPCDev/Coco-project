@@ -15,6 +15,7 @@ import { NodemailerModule } from './modules/nodemailer/nodemailer.module';
 import { CompaniesModule } from './modules/companies/companies.module';
 import { FilesModule } from './modules/files/files.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
+import { GeographyModule } from './modules/geography/geography.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ReviewsModule } from './modules/reviews/reviews.module';
     NodemailerModule,
     FilesModule,
     ReviewsModule,
+    GeographyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

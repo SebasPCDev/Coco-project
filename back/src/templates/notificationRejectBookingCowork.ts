@@ -127,7 +127,7 @@ a[x-apple-data-detectors] {
                       <br>
                       Día solicitado: ${dia.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                       <br>
-                      Hora solicitada: ${hora.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                      Hora solicitada: ${hora}
                       <br>
                       Dirección: ${address}
 

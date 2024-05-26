@@ -10,7 +10,7 @@ import { StatusRequest } from 'src/models/statusRequest.enum';
 import { CompanyType } from 'src/models/companyType.enum';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateRequestDto, UpdateRequestCoworkingDto, UpdateRequestDto } from './requests.dto';
-import { loadRequestCoworkings, loadImagesCoworkings, loadReceptionists } from 'src/utils/loadData';
+import { loadRequestCoworkings, loadImagesCoworkings, loadReceptionists, loadDataRequestCompany } from 'src/utils/loadData';
 import { CoworkingsService } from '../coworkings/coworkings.service';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { UpdateCoworkingsDto } from '../coworkings/coworkings.dto';
@@ -18,6 +18,7 @@ import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
 import { AmenitiesService } from '../amenities/amenities.service';
+import { CompaniesService } from '../companies/companies.service';
 
 @Injectable()
 export class RequestsService {
@@ -27,6 +28,7 @@ export class RequestsService {
     private readonly amenitiesService: AmenitiesService,
     private readonly coworkingsService: CoworkingsService,
     private readonly nodemailerService: NodemailerService,
+    private readonly companiesService: CompaniesService,
   ) { }
 
   async getRequestByEmail(email: string) {
@@ -112,6 +114,7 @@ export class RequestsService {
     const dataCoworks = loadRequestCoworkings();
     const images = loadImagesCoworkings();
     const recepciontists = loadReceptionists();
+    const dataCompanies = loadDataRequestCompany();
 
     let coworkingCount = 0;
     const amenities = await this.amenitiesService.findAll();
@@ -183,6 +186,24 @@ export class RequestsService {
       await this.coworkingsService.createUserCoworking(newReceptionist)
       coworkingCount++;
     }
+
+      for await (const request of dataCompanies) {
+      const requestExist = await this.requestsRepository.findOne({
+        where: { email: request.email },
+      });
+
+      if (!requestExist) {
+        await this.requestsRepository.save(request);
+      }
+    }
+    
+       const firtsCompany = await this.requestsRepository.find({
+      take: 1,
+      where: { type: CompanyType.COMPANY },
+    });
+
+    await this.companiesService.activateCompany(firtsCompany[0].id as UUID);
+
     return true;
   }
 }

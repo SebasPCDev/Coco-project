@@ -8,6 +8,9 @@ import {
   UseGuards,
   Req,
   Put,
+  Query,
+  ParseIntPipe,
+  ParseEnumPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUsersDto, UpdateDto, UpdateUsersDto } from './users.dto';
@@ -19,6 +22,7 @@ import { Role } from 'src/models/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { UserAuthGuard } from 'src/guards/userAuth.guard';
 import { UpdateBookingsDto } from '../bookings/bookings.dto';
+import { UserStatus } from 'src/models/userStatus.enum';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -30,8 +34,13 @@ export class UsersController {
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findAll(
+    @Query('status', new ParseEnumPipe(UserStatus, { optional: true })) status?: UserStatus,
+    @Query('name') name?: string,
+    @Query('role', new ParseEnumPipe(Role, { optional: true })) role?: Role,
+    @Query('page', new ParseIntPipe({ optional: true })) page?: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit?: number,) {
+       return this.userService.findAll(status, name, role, page, limit);
   }
 
   @Post()
@@ -91,3 +100,4 @@ export class UsersController {
     return this.userService.update(id, changes);
   }
 }
+

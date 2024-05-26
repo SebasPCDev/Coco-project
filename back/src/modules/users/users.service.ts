@@ -2,7 +2,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { CreateUsersDto, UpdateDto, UpdateUsersDto } from './users.dto';
 import * as bcrypt from 'bcrypt';
 import { Users } from 'src/entities/users.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsOrderValue, FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UUID } from 'crypto';
 import { Role } from 'src/models/roles.enum';
@@ -10,6 +10,7 @@ import { UpdateBookingsDto } from '../bookings/bookings.dto';
 import { BookingStatus } from 'src/models/bookingStatus';
 import { BookingsService } from '../bookings/bookings.service';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
+import { UserStatus } from 'src/models/userStatus.enum';
 
 @Injectable()
 export class UsersService {
@@ -30,8 +31,32 @@ export class UsersService {
     return newUser;
   }
 
-  async findAll() {
-    const user = await this.usersRepository.find();
+  async findAll(
+    status: UserStatus,
+    name: string,
+    role: Role,
+    page: number,
+    limit: number,
+  ) {
+
+     const where: FindOptionsWhere<Users> = {};
+
+    if (status) where.status = status;
+    if (name) where.name = name;
+    if (role) where.role = role;
+
+    const conditions: any = {
+      where,
+      order: { updatedAt: 'DESC' as FindOptionsOrderValue },
+    };
+
+    if (page && limit) {
+      const skip = (page - 1) * limit;
+      conditions.skip = skip;
+      conditions.take = limit;
+    }
+
+    const user = await this.usersRepository.find(conditions);
     return user;
   }
 

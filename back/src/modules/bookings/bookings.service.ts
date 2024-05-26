@@ -10,6 +10,7 @@ import { Bookings } from 'src/entities/bookings.entity';
 import { timeToMinutes } from 'src/helpers/timeToMinutes';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { Employees } from 'src/entities/employees.entity';
+import { Role } from 'src/models/roles.enum';
 // import { Role } from 'src/models/roles.enum';
 
 @Injectable()
@@ -115,5 +116,25 @@ export class BookingsService {
 
     const updBooking = this.bookingsRepository.merge(booking, changes);
     return await this.bookingsRepository.save(updBooking);
+  }
+//! Servicio para canclar booking ->  envia mensaje y cancela el bookign(segun  el tipo de rol)
+  async CancelBooking (
+    id:UUID, 
+    updateBooking:UpdateBookingsDto,
+    userId:UUID
+  ){
+    const booking = await this.findOne(id);
+    if (!booking) throw new BadRequestException('Reserva no encontrada');    
+
+    const user = await this.usersRepository.findOne({where:{ id: userId }})
+    if (!user) throw new BadRequestException('Usuario no encontrado'); 
+    
+    const updBooking = this.bookingsRepository.merge(booking, updateBooking);
+    return await this.bookingsRepository.save(updBooking);
+
+    if(user.role===Role.EMPLOYEE){
+      
+    }
+    
   }
 }

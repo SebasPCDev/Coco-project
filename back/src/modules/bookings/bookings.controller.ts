@@ -17,6 +17,7 @@ import { UUID } from 'crypto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { Users } from 'src/entities/users.entity';
 
 @ApiTags('bookings')
 @ApiBearerAuth()
@@ -47,5 +48,16 @@ export class BookingsController {
   update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateBookingDto: UpdateBookingsDto) {
     return this.bookingsService.update(id, updateBookingDto);
   }
+
+  //!Endpoint para cancelar-> recibe como parametro id de booking ->body recibe el estado
+  @Roles(Role.SUPERADMIN,Role.EMPLOYEE,Role.COWORKING,Role.ADMIN_COWORKING)
+  @UseGuards(RolesGuard)
+  @Put('cancel/:id')
+  CancelBooking(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateBooking: UpdateBookingsDto,@Req() request) {
+
+    const user = request.user;
+    return this.bookingsService.CancelBooking(id, updateBooking,user.id);
+  }
+  
 
 }

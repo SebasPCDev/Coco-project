@@ -167,7 +167,7 @@ export class CoworkingsService {
     return await this.coworkingsRepository.save(newUser);
   }
 
-  async activateCoworking(id: UUID) {
+  async activateCoworking(id: UUID, email=true) {
     // 1- Busco la solicitud
     const requestCoworking = await this.requestsRepository.findOneBy({ id });
     if (!requestCoworking || requestCoworking.status === StatusRequest.CLOSE)
@@ -229,11 +229,12 @@ export class CoworkingsService {
       await queryRunner.manager.save(updRequest);
 
       // 4- Enviar email
-      this.nodemailerService.confirmacionMailRequest(
-        requestCoworking.email,
-        requestCoworking.companyName,
-        password,
-      );
+      if (email)
+        this.nodemailerService.confirmacionMailRequest(
+          requestCoworking.email,
+          requestCoworking.companyName,
+          password,
+        );
 
       await queryRunner.commitTransaction(); //COMMIT
       await queryRunner.release(); // RELEASE

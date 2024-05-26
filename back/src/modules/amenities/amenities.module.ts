@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Amenities } from 'src/entities/amenities.entity';
 
 @Module({
-  providers: [AmenitiesService],
+  imports: [TypeOrmModule.forFeature([Amenities])],
   controllers: [AmenitiesController],
-  imports: [TypeOrmModule.forFeature([Amenities])]
+  providers: [AmenitiesService],
+  exports:[AmenitiesService]
 })
 export class AmenitiesModule {
   constructor(private readonly amenitiesService:AmenitiesService ) {}

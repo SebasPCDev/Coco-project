@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import { UUID } from 'crypto';
 import { CreateBookingsDto, UpdateBookingsDto } from './bookings.dto';
@@ -11,6 +11,7 @@ import { timeToMinutes } from 'src/helpers/timeToMinutes';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { Employees } from 'src/entities/employees.entity';
 import { Role } from 'src/models/roles.enum';
+import { BookingStatus } from 'src/models/bookingStatus';
 // import { Role } from 'src/models/roles.enum';
 
 @Injectable()
@@ -120,21 +121,84 @@ export class BookingsService {
 //! Servicio para canclar booking ->  envia mensaje y cancela el bookign(segun  el tipo de rol)
   async CancelBooking (
     id:UUID, 
-    updateBooking:UpdateBookingsDto,
     userId:UUID
   ){
-    const booking = await this.findOne(id);
+    const booking = await this.bookingsRepository.findOne({where:{ id: id },relations:["user","coworking"]});
     if (!booking) throw new BadRequestException('Reserva no encontrada');    
 
-    const user = await this.usersRepository.findOne({where:{ id: userId }})
+    const user = await this.usersRepository.findOne({where:{ id: userId },relations:["bookings"]})
     if (!user) throw new BadRequestException('Usuario no encontrado'); 
-    
-    const updBooking = this.bookingsRepository.merge(booking, updateBooking);
-    return await this.bookingsRepository.save(updBooking);
 
+        
     if(user.role===Role.EMPLOYEE){
+      console.log("El usuario cancelo")
       
+      console.log(booking.user.id )
+      //!Con esto se asegura que el usuario que genero la reserva sea el que la cancela
+      if(booking.user.id !== userId){
+        throw new BadRequestException(`Booking con id ${booking.id} no pertenece al usuario con id ${userId} `)
+      }
+      if(booking.status=== BookingStatus.USER_CANCELED || booking.status=== BookingStatus.COWORKING_CANCELED ||  booking.status=== BookingStatus.COMPLETED){
+        throw new BadRequestException(`Tu reserva debe estar en cancleada pero su estadio es: ${booking.status}`)
+      }
+      
+      booking.status = BookingStatus.USER_CANCELED
+      await this.bookingsRepository.update(booking.id, {status:booking.status});
+      this.nodemailerService.sendCancelBooking(
+        booking.coworking.name,
+        user.name,
+        user.name,
+        booking.reservationDate,
+        booking.reservationTime,
+        booking.coworking.address,
+        user.email,
+      )
+      return {mesage:`se cancelo la reserva id ${booking.id}`};
     }
+
+    if(user.role===Role.COWORKING){
+      console.log("El coworking cancelo")
+      //!Con esto se asegura que el coworking que tiene la reserva sea el que la cancela
+      if(booking.coworking.id !== userId){
+        throw new BadRequestException(`Booking con id ${booking.id} no pertenece al usuario con id ${userId} `)
+      }
+      if(booking.status=== BookingStatus.USER_CANCELED || booking.status=== BookingStatus.COWORKING_CANCELED ||  booking.status=== BookingStatus.COMPLETED){
+        throw new BadRequestException(`Tu reserva debe ser diferente a cancelada o completa pero su estadio es: ${booking.status}`)
+      }
+      booking.status = BookingStatus.COWORKING_CANCELED
+      await this.bookingsRepository.update(booking.id, {status:booking.status});
+      this.nodemailerService.sendCancelBooking(
+        booking.coworking.name,
+        user.name,
+        booking.coworking.name,
+        booking.reservationDate,
+        booking.reservationTime,
+        booking.coworking.address,
+        user.email,
+      )
+      return {mesage:`se cancelo la reserva id ${booking.id}`};
+    }
+
+    if(user.role===Role.SUPERADMIN){
+      console.log("El SuperAdmin cancelo")
+      if(booking.status=== BookingStatus.USER_CANCELED || booking.status=== BookingStatus.COWORKING_CANCELED ||  booking.status=== BookingStatus.COMPLETED){
+        throw new BadRequestException(`Tu reserva debe ser diferente a cancelada o completa pero su estadio es: ${booking.status}`)
+      }
+      booking.status = BookingStatus.COWORKING_CANCELED      
+      await this.bookingsRepository.update(booking.id, {status:booking.status});
+      this.nodemailerService.sendCancelBooking(
+        booking.coworking.name,
+        user.name,
+        booking.coworking.name,
+        booking.reservationDate,
+        booking.reservationTime,
+        booking.coworking.address,
+        user.email,
+      )
+      return {mesage:`se cancelo la reserva id ${booking.id}`};
+    }
+
+    throw new InternalServerErrorException(`NO se puedo cancelar reserva porfavor verifica tu rol(${user.role}) o booking`)
     
   }
 }

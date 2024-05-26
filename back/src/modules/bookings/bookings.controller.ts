@@ -49,14 +49,14 @@ export class BookingsController {
     return this.bookingsService.update(id, updateBookingDto);
   }
 
-  //!Endpoint para cancelar-> recibe como parametro id de booking ->body recibe el estado
-  @Roles(Role.SUPERADMIN,Role.EMPLOYEE,Role.COWORKING,Role.ADMIN_COWORKING)
+  //!Endpoint para cancelar-> recibe como parametro id de booking 
+  @Roles(Role.SUPERADMIN,Role.EMPLOYEE,Role.COWORKING)
   @UseGuards(RolesGuard)
   @Put('cancel/:id')
-  CancelBooking(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateBooking: UpdateBookingsDto,@Req() request) {
+  CancelBooking(@Param('id', ParseUUIDPipe) id: UUID,@Req() request) {
 
     const user = request.user;
-    return this.bookingsService.CancelBooking(id, updateBooking,user.id);
+    return this.bookingsService.CancelBooking(id,user.id);
   }
   
 

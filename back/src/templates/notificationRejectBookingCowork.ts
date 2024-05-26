@@ -1,9 +1,10 @@
-function sendBookingNotificationCoworking(
+function sendBookingRejectNotificationCoworking(
     companyName: string,
     employeeName:string,
-    employeeLastname:string,
     dia:Date,
-    hora:Date,   
+    hora:Date,
+    address:string
+
   ) {
     const html =`
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -14,7 +15,7 @@ function sendBookingNotificationCoworking(
   <meta name="x-apple-disable-message-reformatting">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="telephone=no" name="format-detection">
-  <title>sendBookingNotificationCoworking</title><!--[if (mso 16)]>
+  <title>sendBookingNotificationEmployee</title><!--[if (mso 16)]>
     <style type="text/css">
     a {text-decoration: none;}
     </style>
@@ -95,7 +96,7 @@ a[x-apple-data-detectors] {
                   <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Solicitud de Reserva de Espacio de Coworking</h1></td>
+                      <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Reserva rechazada</h1></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -109,15 +110,27 @@ a[x-apple-data-detectors] {
                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:5px" role="presentation">
                      <tr>
                       <td align="center" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:25px;padding-bottom:25px"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#333333">
-                      Estimado equipo de ${companyName},
+                      Estimados ${companyName},
                       <br>
                       <br>
-                      Me dirijo a ustedes para solicitar la reserva de un espacio de coworking en sus instalaciones. A continuación, les proporciono los detalles necesarios para la reserva:
+
+                      Nos ponemos en contacto para informarles que, se rechazo con exito la solicitud de reserva realizada por el cliente ${employeeName} para ${dia.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}. 
+                     
+
                       <br>
-                      <br>                      
-                      Usuario: ${employeeName} ${employeeLastname}
+                      <br>
+                                            
+                      Detalles de Reserva:
+                      <br>
+                      <br>
+                      Empleado: ${employeeName}
+                      <br>
                       Día solicitado: ${dia.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                      <br>
                       Hora solicitada: ${hora.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                      <br>
+                      Dirección: ${address}
+
                       </h3></td>
                      </tr>
                      <tr>
@@ -179,4 +192,4 @@ a[x-apple-data-detectors] {
     `
     return html;
 }
-export default sendBookingNotificationCoworking;
+export default sendBookingRejectNotificationCoworking;

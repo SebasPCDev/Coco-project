@@ -73,7 +73,7 @@ export class UsersController {
 
   // put check-in
   @ApiBearerAuth()
-  @Roles(Role.COWORKING, Role.ADMIN_COWORKING, Role.SUPERADMIN)
+  @Roles(Role.EMPLOYEE, Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Put('checkIn/:bookingId')
   checkIn(

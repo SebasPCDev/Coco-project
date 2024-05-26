@@ -1,9 +1,10 @@
-function sendBookingNotificationCoworking(
+function sendBookingActiveNotificationEmployee(
     companyName: string,
     employeeName:string,
-    employeeLastname:string,
     dia:Date,
-    hora:Date,   
+    hora:Date,
+    address:string,
+    phrase:string,
   ) {
     const html =`
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -14,7 +15,7 @@ function sendBookingNotificationCoworking(
   <meta name="x-apple-disable-message-reformatting">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="telephone=no" name="format-detection">
-  <title>sendBookingNotificationCoworking</title><!--[if (mso 16)]>
+  <title>sendBookingNotificationEmployee</title><!--[if (mso 16)]>
     <style type="text/css">
     a {text-decoration: none;}
     </style>
@@ -95,7 +96,7 @@ a[x-apple-data-detectors] {
                   <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Solicitud de Reserva de Espacio de Coworking</h1></td>
+                      <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Reserva aprovada</h1></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -109,17 +110,41 @@ a[x-apple-data-detectors] {
                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:5px" role="presentation">
                      <tr>
                       <td align="center" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:25px;padding-bottom:25px"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#333333">
-                      Estimado equipo de ${companyName},
+                      Estimado/a ${employeeName},
                       <br>
                       <br>
-                      Me dirijo a ustedes para solicitar la reserva de un espacio de coworking en sus instalaciones. A continuación, les proporciono los detalles necesarios para la reserva:
+
+                      Nos complace informarle que su solicitud para realizar una reserva ha sido aprobada,para utilizar nuestro espacio en ${address}.
+
                       <br>
-                      <br>                      
-                      Usuario: ${employeeName} ${employeeLastname}
+                      <br>
+                                          
+                      Detalles de su Reserva:
+                      <br>
+                      <br>
+                      Empresa: ${companyName}
+                      <br>
+                      Empleado: ${employeeName}
+                      <br>
                       Día solicitado: ${dia.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                      <br>
                       Hora solicitada: ${hora.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                      <br>
+                      Dirección: ${address}
+
                       </h3></td>
                      </tr>
+
+                     <tr>
+                    <tr>
+                    <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
+                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                        <tr>
+                        <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Codigo de reserva: ${phrase}</h1></td>
+                        </tr>
+                    </table></td>
+                    </tr>
+              
                      <tr>
                       <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">¿Tienes alguna pregunta? <a href="mailto:cocoplus2024@gmail.com" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">cocoplus2024@gmail.com</a></p></td>
                      </tr>
@@ -179,4 +204,4 @@ a[x-apple-data-detectors] {
     `
     return html;
 }
-export default sendBookingNotificationCoworking;
+export default sendBookingActiveNotificationEmployee;

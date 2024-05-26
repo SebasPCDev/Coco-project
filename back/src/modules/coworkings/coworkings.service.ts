@@ -288,6 +288,12 @@ export class CoworkingsService {
       await queryRunner.commitTransaction(); //COMMIT
 
       await queryRunner.release(); // RELEASE
+      //!Email a al usuario newUser password 
+      this.nodemailerService.sendActivationMailCoworkEmployee(
+        newUser.name,
+        newUser.email,
+        newUser.password,
+      )
 
       return newUser;
     } catch (err) {
@@ -326,10 +332,47 @@ export class CoworkingsService {
     
     if (changes.status === BookingStatus.ACTIVE) {
       changes.confirm_phrase = Math.random().toString(36).slice(-8);
-      // Mail a user con phrase ()
+      // !Mail a user con phrase ()
+      //!mail a coworking y a empleado  que  se actulizo la reserva
+    //* Envia a empleado
+    this.nodemailerService.sendBookingActiveNotificationEmployee(
+      booking.coworking.name,
+      booking.user.name,
+      booking.reservationDate, 
+      booking.reservationTime,   
+      booking.coworking.address, 
+      changes.confirm_phrase,
+      booking.user.email,
+    )
+    //*Envia a coworking
+    this.nodemailerService.sendBookingActiveNotificationCoworking(
+      booking.coworking.name,
+      booking.user.name,
+      booking.reservationDate, 
+      booking.reservationTime,   
+      booking.coworking.address, 
+      booking.coworking.email,)
+
       console.log("EMAIL", changes.confirm_phrase);
     } else {
-      // Mail a user rechazo
+      //! Mail a user rechazo
+      //* Envia a user
+      this.nodemailerService.sendBookingRejectNotificationEmployee(
+        booking.coworking.name,
+        booking.user.name,
+        booking.reservationDate, 
+        booking.reservationTime,   
+        booking.coworking.address, 
+        booking.user.email,
+      )
+      //*Envia a coworking
+      this.nodemailerService.sendBookingRejectNotificationCoworking(
+        booking.coworking.name,
+        booking.user.name,
+        booking.reservationDate, 
+        booking.reservationTime,   
+        booking.coworking.address, 
+        booking.coworking.email,)
       console.log("EMIAL de RECHAZO");
     }
 
@@ -343,7 +386,7 @@ export class CoworkingsService {
     if (booking.status !== BookingStatus.ACTIVE) 
       throw new BadRequestException(`El estado de la reserva no se puede modificar, estado en : ${booking.status}`)
     
-      booking.confirmUser=true
+      booking.confirmCoworking=true
       if(booking.confirmUser===true){
         //* Pasa el estado a complete
         booking.status= BookingStatus.COMPLETED

@@ -22,9 +22,9 @@ import { Amenities } from 'src/entities/amenities.entity';
   exports: [CoworkingsService]
 })
 export class CoworkingModule {
-  constructor(private readonly coworkingsService: CoworkingsService) { }
+  // constructor(private readonly coworkingsService: CoworkingsService) { }
 
-  async onModuleInit() {
-    await this.coworkingsService.preloadCoworkings();
-  }
+  // async onModuleInit() {
+  //   await this.coworkingsService.preloadCoworkings();
+  // }
 }

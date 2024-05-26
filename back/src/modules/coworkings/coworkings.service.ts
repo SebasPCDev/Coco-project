@@ -167,7 +167,7 @@ export class CoworkingsService {
     return await this.coworkingsRepository.save(newUser);
   }
 
-  async activateCoworking(id: UUID) {
+  async activateCoworking(id: UUID, email=true) {
     // 1- Busco la solicitud
     const requestCoworking = await this.requestsRepository.findOneBy({ id });
     if (!requestCoworking || requestCoworking.status === StatusRequest.CLOSE)
@@ -229,11 +229,12 @@ export class CoworkingsService {
       await queryRunner.manager.save(updRequest);
 
       // 4- Enviar email
-      this.nodemailerService.confirmacionMailRequest(
-        requestCoworking.email,
-        requestCoworking.companyName,
-        password,
-      );
+      if (email)
+        this.nodemailerService.confirmacionMailRequest(
+          requestCoworking.email,
+          requestCoworking.companyName,
+          password,
+        );
 
       await queryRunner.commitTransaction(); //COMMIT
       await queryRunner.release(); // RELEASE
@@ -246,11 +247,11 @@ export class CoworkingsService {
     }
   }
 
-  async createUserCoworking(data: CreateUserCoworkingsDto) {
+  async createUserCoworking(data: CreateUserCoworkingsDto, email=true) {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
-    if (dbUser) throw new BadRequestException('Usuario no encontrado');
+    if (dbUser) throw new BadRequestException('El recepcionista ya existe');
 
     const coworking = await this.coworkingsRepository.findOneBy({
       id: data.coworkingId,
@@ -288,11 +289,12 @@ export class CoworkingsService {
 
       await queryRunner.release(); // RELEASE
       //!Email a al usuario newUser password 
-      this.nodemailerService.sendActivationMailCoworkEmployee(
-        newUser.name,
-        newUser.email,
-        newUser.password,
-      )
+      if (email)
+        this.nodemailerService.sendActivationMailCoworkEmployee(
+          newUser.name,
+          newUser.email,
+          newUser.password,
+        )
 
       return newUser;
     } catch (err) {

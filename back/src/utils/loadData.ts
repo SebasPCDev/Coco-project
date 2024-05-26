@@ -1,5 +1,22 @@
 import { readFileSync } from 'fs';
 
+export const loadRequestCoworkings = () => {
+  const data = readFileSync('src/utils/loadRequestCoworkings.json', 'utf8');
+  const parseData = JSON.parse(data);
+  return parseData;
+};
+
+export const loadImagesCoworkings = () => {
+  const data = readFileSync('src/utils/loadImagesCoworkings.json', 'utf8');
+  const parseData = JSON.parse(data);
+  return parseData;
+};
+export const loadReceptionists = () => {
+  const data = readFileSync('src/utils/loadReceptionists.json', 'utf8');
+  const parseData = JSON.parse(data);
+  return parseData;
+};
+
 export const loadDataCoworkings = () => {
   const data = readFileSync('src/utils/preloadCoworkings.json', 'utf8');
   const parseData = JSON.parse(data);
@@ -8,12 +25,6 @@ export const loadDataCoworkings = () => {
 
 export const loadDataCompanies = () => {
   const data = readFileSync('src/utils/preloadCompanies.json', 'utf8');
-  const parseData = JSON.parse(data);
-  return parseData;
-};
-
-export const loadDataRequest = () => {
-  const data = readFileSync('src/utils/preloadRequests.json', 'utf8');
   const parseData = JSON.parse(data);
   return parseData;
 };

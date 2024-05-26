@@ -6,6 +6,7 @@ import { Request } from 'src/entities/requests.entity';
 import { CoworkingModule } from '../coworkings/coworking.module';
 import { CompaniesModule } from '../companies/companies.module';
 import { NodemailerModule } from '../nodemailer/nodemailer.module';
+import { AmenitiesModule } from '../amenities/amenities.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { NodemailerModule } from '../nodemailer/nodemailer.module';
     CoworkingModule,
     CompaniesModule,
     NodemailerModule,
+    AmenitiesModule
   ],
   providers: [RequestsService],
   controllers: [RequestsController],

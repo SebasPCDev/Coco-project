@@ -56,8 +56,8 @@ export class UsersService {
       conditions.take = limit;
     }
 
-    const user = await this.usersRepository.find(conditions);
-    return user;
+    const [users, total] = await this.usersRepository.findAndCount(conditions);
+    return { page, limit, total, users };
   }
 
   async getUserByEmail(email: string): Promise<Users> {

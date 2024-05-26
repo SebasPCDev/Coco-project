@@ -1,10 +1,11 @@
-function sendBookingNotificationEmployee(
+function SendNotificationPasesEmployee(
     companyName: string,
     employeeName:string,
-    dia:Date,
+    numeroPasesDis:number,
+    pasesMensuales:number,
+    dia: Date,
     hora:Date,
-    address:string
-
+    address:string,
   ) {
     const html =`
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -96,7 +97,7 @@ a[x-apple-data-detectors] {
                   <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Solicitud para Espacio de Coworking</h1></td>
+                      <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Disponibilidad de Pases</h1></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -113,14 +114,27 @@ a[x-apple-data-detectors] {
                       Estimado/a ${employeeName},
                       <br>
                       <br>
+                      Le agradecemos por elegir ${companyName} para sus necesidades de coworking
+                      Nos complace informarle que hemos recibido su solicitud para utilizar nuestro espacio en ${address}. 
+                      Estamos revisando su solicitud y le pedimos un poco de paciencia mientras procesamos su reserva.
+                      <br>
+                      <br> 
+                      Nos complace informarle que actualmente tiene ${numeroPasesDis} pases disponibles en su cuenta. 
 
-                      Le agradecemos por elegir ${companyName} para sus necesidades de coworking.
-                      
-                      Nos complace informarle que hemos recibido su solicitud para utilizar nuestro espacio en ${address}. Estamos revisando su solicitud y le pedimos un poco de paciencia mientras procesamos su reserva.
                       <br>
                       <br>
-                      
-                      Detalles de su solicitud:
+
+                      Detalles de su Cuenta:
+                      <br>
+                      <br>
+                      Pases Disponibles: ${numeroPasesDis}
+                      <br>
+                       Pases mensuales: ${pasesMensuales}
+                      <br>
+                                           
+                      <br>
+                      <br>                                          
+                      Detalles de su Reserva:
                       <br>
                       <br>
                       Empresa: ${companyName}
@@ -135,6 +149,8 @@ a[x-apple-data-detectors] {
 
                       </h3></td>
                      </tr>
+
+                     <tr>            
                      <tr>
                       <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">¿Tienes alguna pregunta? <a href="mailto:cocoplus2024@gmail.com" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">cocoplus2024@gmail.com</a></p></td>
                      </tr>
@@ -194,4 +210,4 @@ a[x-apple-data-detectors] {
     `
     return html;
 }
-export default sendBookingNotificationEmployee;
+export default SendNotificationPasesEmployee;

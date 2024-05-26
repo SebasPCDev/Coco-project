@@ -6,10 +6,11 @@ import { Users } from 'src/entities/users.entity';
 import { Coworkings } from 'src/entities/coworkings.entity';
 import { Bookings } from 'src/entities/bookings.entity';
 import { NodemailerModule } from '../nodemailer/nodemailer.module';
+import { Employees } from 'src/entities/employees.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Users, Coworkings, Bookings]),
+    TypeOrmModule.forFeature([Users, Coworkings, Bookings,Employees]),
     NodemailerModule,
   ],
   controllers: [BookingsController],

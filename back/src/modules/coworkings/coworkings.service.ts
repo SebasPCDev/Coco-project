@@ -390,6 +390,13 @@ export class CoworkingsService {
       booking.confirmCoworking=true
       if(booking.confirmUser===true){
         //* Pasa el estado a complete
+
+        // //!Descuenta los pases una vez  completo
+        // if(booking.user.employee.passesAvailable<=0){
+        //   throw new BadRequestException("El cliente no tiene pases disponibles")
+        // }
+        // booking.user.employee.passesAvailable  =  booking.user.employee.passesAvailable-1
+        // //! Envio de email con saldo de pases disponibles
         booking.status= BookingStatus.COMPLETED
       }
       const updBooking = await this.bookingsService.update(bookingId, booking)

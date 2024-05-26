@@ -11,11 +11,28 @@ export const loadImagesCoworkings = () => {
   const parseData = JSON.parse(data);
   return parseData;
 };
+
 export const loadReceptionists = () => {
   const data = readFileSync('src/utils/loadReceptionists.json', 'utf8');
   const parseData = JSON.parse(data);
   return parseData;
 };
+
+export const loadCountries = () => {
+  const countries = readFileSync('src/utils/countries.json', 'utf8');
+  return JSON.parse(countries)
+};
+
+export const loadStates = () => {
+  const states = readFileSync('src/utils/states.json', 'utf8');
+  return JSON.parse(states);
+};
+
+export const loadCities = () => {
+  const cities = readFileSync('src/utils/cities.json', 'utf8');
+  return JSON.parse(cities);
+};
+
 
 export const loadDataCoworkings = () => {
   const data = readFileSync('src/utils/preloadCoworkings.json', 'utf8');

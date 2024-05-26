@@ -29,4 +29,8 @@ export class StateService {
     const newState = this.stateRepository.create({...data, country});
     return this.stateRepository.save(newState)
   }
+
+  async preloadStates() {
+    
+  }
 }

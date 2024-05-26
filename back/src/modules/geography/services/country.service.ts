@@ -3,12 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Country } from 'src/entities/country.entity';
 import { Repository } from 'typeorm';
 import { CreateGeographyDto } from '../geography.dto';
+import { loadCountries } from 'src/utils/loadData';
 
 @Injectable()
 export class CountryService {
   constructor(
     @InjectRepository(Country)
-    private countryRepository: Repository<Country>,
+    private countryRepository: Repository<Country>
   ) {}
 
   async getAllCountries() {
@@ -26,5 +27,22 @@ export class CountryService {
   async create(data: CreateGeographyDto) {
     const newCountry = this.countryRepository.create(data)
     return this.countryRepository.save(newCountry)
+  }
+  
+  async preloadCountries() {
+    const countries = await this.countryRepository.find()
+    if (countries.length > 0) {
+      console.log("Existen Países");
+      return
+    }
+    
+    const countriesData = loadCountries();
+  
+    for await (const countryData of countriesData) {
+      const newCountry = this.countryRepository.create(countryData)
+      await this.countryRepository.save(newCountry);
+    }
+    console.log("Load Countries");
+    return true
   }
 }

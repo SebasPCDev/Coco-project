@@ -442,27 +442,4 @@ export class CoworkingsService {
 
     return await this.getCoworkingById(id);
   }
-
-  // async preloadCoworkings() {
-
-  //   const data = loadDataCoworkings();
-  //   //precarga de coworkings
-  //   for await (const coworking of data) {
-  //     const coworkingExists = await this.coworkingsRepository.findOne({
-  //       where: { email: coworking.email },
-  //     });
-
-  //     if (!coworkingExists) {
-  //       await this.coworkingsRepository.save(coworking);
-  //     }
-  //   }
-
-  //   console.log(`
-  //   ###############################################
-  //   ##### Coworkings data loaded successfully #####
-  //   ###############################################
-
-  //   `);
-  //   return true;
-  // }
 }

@@ -32,18 +32,4 @@ export class CountryService {
     const newCountry = this.countryRepository.create(data)
     return this.countryRepository.save(newCountry)
   }
-  
-  // async preloadCountries() {
-    
-  //   const countriesData = loadCountries();
-  
-  //   for await (const countryData of countriesData) {
-  //     const newCountry = this.countryRepository.create(countryData)
-  //     await this.countryRepository.save(newCountry);
-  //   }
-  //   console.log("####################");
-  //   console.log("## Load Countries ##");
-  
-  //   return true
-  // }
 }

@@ -10,10 +10,4 @@ import { Amenities } from 'src/entities/amenities.entity';
   providers: [AmenitiesService],
   exports:[AmenitiesService]
 })
-export class AmenitiesModule {
-  // constructor(private readonly amenitiesService:AmenitiesService ) {}
-
-  // async onModuleInit() {
-  //   await this.amenitiesService.preloadAmenities();
-  // }
-}
+export class AmenitiesModule { }

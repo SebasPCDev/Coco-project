@@ -36,22 +36,4 @@ export class StateService {
     const newState = this.stateRepository.create({...data, country});
     return await this.stateRepository.save(newState)
   }
-
-  // async preloadStates() {
-    
-  //   const statesData = loadStates();
-  //   const countries = await this.countryService.getAllCountries()
-
-  //   for await (const country of countries) {
-  //     const states = statesData[country.name];
-  //     if (states && states.length > 0) {
-  //       for await (const stateData of states) {
-  //         const newState = this.stateRepository.create({...stateData, country})
-  //         await this.stateRepository.save(newState)
-  //       }
-  //     }
-  //   }
-  //   console.log("## Load States    ##");
-  //   return true   
-  // }
 }

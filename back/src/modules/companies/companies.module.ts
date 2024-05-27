@@ -22,7 +22,5 @@ import { UsersModule } from '../users/users.module';
 export class CompaniesModule {
   constructor(private readonly companiesService: CompaniesService) { }
 
-  async onModuleInit() {
-    // await this.companiesService.preloadCompanies();
-  }
+  async onModuleInit() { }
 }

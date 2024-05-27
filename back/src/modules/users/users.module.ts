@@ -12,10 +12,4 @@ import { NodemailerModule } from '../nodemailer/nodemailer.module';
   providers: [UsersService],
   exports: [UsersService],
 })
-export class UsersModule {
-  // constructor(private readonly usersService: UsersService) { }
-
-  // async onModuleInit() {
-  //   await this.usersService.preloadSuperAdminUser();
-  // }
-}
+export class UsersModule { }

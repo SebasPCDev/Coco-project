@@ -268,25 +268,4 @@ export class CompaniesService {
     const updCompany = this.companiesRepository.merge(company, changes);
     return this.companiesRepository.save(updCompany);
   }
-
-//  async preloadCompanies() {
-//     const data = loadDataCompanies();
-
-//     for await (const company of data) {
-//       const companyExists = await this.companiesRepository.findOne({
-//         where: { email: company.email },
-//       });
-
-//       if (!companyExists) {
-//         await this.companiesRepository.save(company);
-//       }
-//     }
-//     console.log(`
-//     ###############################################
-//     ##### Companies data loaded successfully #####
-//     ###############################################
-
-//     `);
-//     return true;
-//   }
 }

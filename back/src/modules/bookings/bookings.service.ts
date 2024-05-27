@@ -81,7 +81,8 @@ export class BookingsService {
     
   })
     if(bookings.length>0){
-    throw new BadRequestException(`Tiene una o mas reservas en pendiente o activo en el mismo dia ${bookings}`);
+      
+    throw new BadRequestException(`Tiene una o mas reservas en pendiente o activo en el mismo dia `);
     }
      const pasesUp = user.employee.passesAvailable -1
      console.log(pasesUp)

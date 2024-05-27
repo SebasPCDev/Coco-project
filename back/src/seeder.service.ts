@@ -183,8 +183,6 @@ export class SeederService {
       await this.coworkingsService.createUserCoworking(newReceptionist, false)
       coworkingCount++;
     }
-
-
   }
 
   async preloadCompanies() {

@@ -7,6 +7,7 @@ import {
   DataSource,
   FindOptionsOrderValue,
   FindOptionsWhere,
+  In,
   Repository,
 } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -255,6 +256,30 @@ export class CompaniesService {
 
     // Transaction ???
     if (changes.passes || changes.passesAvailable) {
+      
+      //! Busca la compañia dado el user id (empleado?)
+      const companydb = await this.companiesRepository.findOne({
+        where: { 
+          employees: { id: userId },
+          id: companyId,
+          status:In([CompanyStatus.COMPLETED]),
+         }, 
+        relations: ['employees'],
+      })  
+      if(!companydb){
+        throw new BadRequestException(`No se encontro compañia con id : ${companyId}`)
+      }
+      const employeesArray = companydb.employees 
+      const totalPassesEmployee = employeesArray.reduce((accumulator, employee) => {
+        return accumulator + employee.passes;
+      }, 0);
+      console.log("total pases empados",totalPassesEmployee);  
+      console.log("pases que tiene la empresa",companydb.totalPasses)
+      const pasesUpSum = totalPassesEmployee + changes.passes
+      if(pasesUpSum>companydb.totalPasses){
+        throw new BadRequestException(`los pases que dispone la compañia son: ${companydb.totalPasses}, se exede en ${pasesUpSum-companydb.totalPasses} pases `)
+      }
+
       const dbEmployee = await this.employeesRepository.findOneBy({id: dbUser.employee.id });
       const updEmployee = this.employeesRepository.merge(dbEmployee, {passes: changes.passes, passesAvailable: changes.passesAvailable});
       await this.employeesRepository.save(updEmployee);

@@ -22,16 +22,18 @@ import { Country } from 'src/entities/country.entity';
 })
 export class GeographyModule {
   constructor(private readonly countryService: CountryService,
-    private readonly stateService: StateService) { }
+    private readonly stateService: StateService,
+    private readonly cityService: CityService) { }
 
   async onModuleInit() {
     const countries = await this.countryService.getAllCountries()
     if (countries.length > 0) {
-      console.log("Existen Países");
+      console.log("Geografía configurada");
       return
     }
     await this.countryService.preloadCountries();
     await this.stateService.preloadStates();
+    await this.cityService.preloadCities();
   }
 }
 

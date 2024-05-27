@@ -30,11 +30,6 @@ export class CountryService {
   }
   
   async preloadCountries() {
-    const countries = await this.countryRepository.find()
-    if (countries.length > 0) {
-      console.log("Existen Países");
-      return
-    }
     
     const countriesData = loadCountries();
   
@@ -42,7 +37,9 @@ export class CountryService {
       const newCountry = this.countryRepository.create(countryData)
       await this.countryRepository.save(newCountry);
     }
-    console.log("Load Countries");
+    console.log("####################");
+    console.log("## Load Countries ##");
+  
     return true
   }
 }

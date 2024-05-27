@@ -1,0 +1,119 @@
+{
+  "Buenos Aires": [
+    {
+      "name": "La Plata",
+      "lat": "-34.9214",
+      "long": "-57.9544"
+    },
+    {
+      "name": "Ciudad Autonoma de Buenos Aires",
+      "lat": "-34.6037",
+      "long": "-58.3816"
+    }
+  ],
+  "Tucuman": [
+    {
+      "name": "San Miguel de Tucuman",
+      "lat": "-26.8324",
+      "long": "-65.2066"
+    }
+  ],
+  "Cordoba": [
+    {
+      "name": "Cordoba",
+      "lat": "-31.4201",
+      "long": "-64.1888"
+    }
+  ],
+  "Antioquia": [
+    {
+      "name": "Medellín",
+      "lat": "6.2442",
+      "long": "-75.5812"
+    }
+  ],
+  "Cundinamarca": [
+    {
+      "name": "Bogotá",
+      "lat": "4.7110",
+      "long": "-74.0721"
+    }
+  ],
+  "Bolivar": [
+    {
+      "name": "Cartagena",
+      "lat": "10.3910",
+      "long": "-75.4794"
+    }
+  ],
+  "Guayas": [
+    {
+      "name": "Guayaquil",
+      "lat": "-2.1700",
+      "long": "-79.9223"
+    }
+  ],
+  "Pichincha": [
+    {
+      "name": "Quito",
+      "lat": "-0.1807",
+      "long": "-78.4678"
+    }
+  ],
+  "Montevideo": [
+    {
+      "name": "Montevideo",
+      "lat": "-34.9011",
+      "long": "-56.1645"
+    }
+  ],
+  "Colonia": [
+    {
+      "name": "Colonia del Sacramento",
+      "lat": "-34.4721",
+      "long": "-57.8430"
+    }
+  ],
+  "Maldonado": [
+    {
+      "name": "Punta del Este",
+      "lat": "-34.9674",
+      "long": "-54.9476"
+    }
+  ],
+  "Santiago Metropolitan": [
+    {
+      "name": "Santiago",
+      "lat": "-33.4569",
+      "long": "-70.6483"
+    }
+  ],
+  "Valparaiso": [
+    {
+      "name": "Viña del Mar",
+      "lat": "-33.0153",
+      "long": "-71.5509"
+    }
+  ],
+  "Lima": [
+    {
+      "name": "Lima",
+      "lat": "-12.0464",
+      "long": "-77.0428"
+    }
+  ],
+  "Arequipa": [
+    {
+      "name": "Arequipa",
+      "lat": "-16.4090",
+      "long": "-71.5375"
+    }
+  ],
+  "La Libertad": [
+    {
+      "name": "Trujillo",
+      "lat": "-8.1150",
+      "long": "-79.0297"
+    }
+  ]
+}

@@ -20,4 +20,20 @@ import { Country } from 'src/entities/country.entity';
   providers: [CityService, CountryService, StateService],
   exports: [CityService, CountryService, StateService],
 })
-export class GeographyModule {}
+export class GeographyModule {
+  constructor(private readonly countryService: CountryService,
+    private readonly stateService: StateService,
+    private readonly cityService: CityService) { }
+
+  async onModuleInit() {
+    const countries = await this.countryService.getAllCountries()
+    if (countries.length > 0) {
+      console.log("Geografía configurada");
+      return
+    }
+    await this.countryService.preloadCountries();
+    await this.stateService.preloadStates();
+    await this.cityService.preloadCities();
+  }
+}
+

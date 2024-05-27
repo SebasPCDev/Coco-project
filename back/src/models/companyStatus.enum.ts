@@ -1,6 +1,6 @@
 export enum CompanyStatus {
   PENDING = 'pending',
-  ACEPTED = 'acepted',
+  ACCEPTED = 'accepted',
   COMPLETED = 'completed',
   ACTIVE = 'active',
   INACTIVE = 'inactive',

@@ -132,7 +132,7 @@ export class CompaniesService {
         quantityBeneficiaries: 0,
         businessSector: '',
         size: request.size,
-        status: CompanyStatus.ACEPTED,
+        status: CompanyStatus.ACCEPTED,
         totalPasses: 0,
       };
 

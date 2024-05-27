@@ -49,6 +49,6 @@ export class UpdateBookingsDto {
   observation?: string;
 
   @IsEmpty()  
-  confirm_phrase?: string;
+  confirmPhrase?: string;
 }
 

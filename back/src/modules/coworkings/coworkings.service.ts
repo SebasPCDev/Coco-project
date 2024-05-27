@@ -332,7 +332,7 @@ export class CoworkingsService {
     }
     
     if (changes.status === BookingStatus.ACTIVE) {
-      changes.confirm_phrase = Math.random().toString(36).slice(-8);
+      changes.confirmPhrase = Math.random().toString(36).slice(-8);
       // !Mail a user con phrase ()
       //!mail a coworking y a empleado  que  se actulizo la reserva
     //* Envia a empleado
@@ -342,7 +342,7 @@ export class CoworkingsService {
       booking.reservationDate, 
       booking.reservationTime,   
       booking.coworking.address, 
-      changes.confirm_phrase,
+      changes.confirmPhrase,
       booking.user.email,
     )
     //*Envia a coworking
@@ -354,7 +354,7 @@ export class CoworkingsService {
       booking.coworking.address, 
       booking.coworking.email,)
 
-      console.log("EMAIL", changes.confirm_phrase);
+      console.log("EMAIL", changes.confirmPhrase);
     } else {
       //! Mail a user rechazo
       //* Envia a user
@@ -390,6 +390,13 @@ export class CoworkingsService {
       booking.confirmCoworking=true
       if(booking.confirmUser===true){
         //* Pasa el estado a complete
+
+        // //!Descuenta los pases una vez  completo
+        // if(booking.user.employee.passesAvailable<=0){
+        //   throw new BadRequestException("El cliente no tiene pases disponibles")
+        // }
+        // booking.user.employee.passesAvailable  =  booking.user.employee.passesAvailable-1
+        // //! Envio de email con saldo de pases disponibles
         booking.status= BookingStatus.COMPLETED
       }
       const updBooking = await this.bookingsService.update(bookingId, booking)

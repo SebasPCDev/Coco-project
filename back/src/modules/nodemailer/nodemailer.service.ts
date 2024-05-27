@@ -15,6 +15,8 @@ import sendBookingActiveNotificationCoworking from 'src/templates/notificationAc
 import sendBookingRejectNotificationEmployee from 'src/templates/notificationRejectBookingUser';
 import sendBookingRejectNotificationCoworking from 'src/templates/notificationRejectBookingCowork';
 import sendActivationMailCoworkEmployee from 'src/templates/activationSuccedCoworkEmployee';
+import SendNotificationPasesEmployee from 'src/templates/notificationPasesEmployee';
+import sendCancelBooking from 'src/templates/cancelBooking';
 dotenvConfig({
   path: '.env.development',
 });
@@ -382,5 +384,80 @@ async sendActivationMailCoworkEmployee(
 
 }
 
+async SendNotificationPasesEmployee (
+  companyName: string,
+  employeeName:string,
+  numeroPasesDis:number,
+  pasesMensuales:number,
+  dia: Date,
+  hora:Date,
+  address:string,
+  employeeEmail:string,
+){
+
+  const emailConfig = {
+    from: process.env.NODEMAILER_MAIL,
+    to: employeeEmail,
+    subject: 'Disponibilidad de Pases',
+    html: SendNotificationPasesEmployee(
+      companyName,
+      employeeName,
+      numeroPasesDis,
+      pasesMensuales,
+      dia,
+      hora,  
+      address,
+
+    ),
+  };
+
+  try {
+    const info = await transporter.sendMail(emailConfig);
+    console.log('Correo electrónico enviado:', info.response);
+    return 'Correo electrónico enviado';
+  } catch (error) {
+    console.error('Error al enviar el correo electrónico:', error);
+    throw new InternalServerErrorException(
+      `Error al enviar el correo electrónico:${error}`,
+    );
+  }
+}
+async sendCancelBooking (
+  companyName: string,
+  employeeName:string,
+  dirigidoA:string,
+  dia: Date,
+  hora:Date,
+  address:string,
+  email:string,
+
+){
+
+  const emailConfig = {
+    from: process.env.NODEMAILER_MAIL,
+    to: email,
+    subject: 'Disponibilidad de Pases',
+    html: sendCancelBooking(
+      companyName,
+      employeeName,
+      dirigidoA,
+      dia,
+      hora,
+      address,
+    ),
+  };
+
+  try {
+    const info = await transporter.sendMail(emailConfig);
+    console.log('Correo electrónico enviado:', info.response);
+    return 'Correo electrónico enviado';
+  } catch (error) {
+    console.error('Error al enviar el correo electrónico:', error);
+    throw new InternalServerErrorException(
+      `Error al enviar el correo electrónico:${error}`,
+    );
+  }
+
+}
   
 }

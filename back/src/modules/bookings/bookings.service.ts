@@ -12,6 +12,7 @@ import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { Employees } from 'src/entities/employees.entity';
 import { Role } from 'src/models/roles.enum';
 import { BookingStatus } from 'src/models/bookingStatus';
+import { Console } from 'console';
 // import { Role } from 'src/models/roles.enum';
 
 @Injectable()
@@ -43,7 +44,7 @@ export class BookingsService {
 
     const user = await this.usersRepository.findOne({where:{ id: userId },relations:["employee"]})
     if (!user) throw new BadRequestException('Usuario no encontrado');    
-    const coworking = await this.coworkingsRepository.findOneBy({ id: data.coworkingId })
+    const coworking = await this.coworkingsRepository.findOne({where:{ id: data.coworkingId },relations:["user"]})
     if (!coworking) throw new BadRequestException('Coworking no encontrado');
 
     const openTimeMinutes = timeToMinutes(coworking.open);
@@ -56,16 +57,19 @@ export class BookingsService {
     }
      //! Descontar pases
      console.log("entra a descontar pases")
-     console.log(user.employee.passesAvailable)
+     console.log(coworking)
     
      const employee = await this.employeesRepository.findOneBy({id: user.employee.id})
      if(!employee){
-       new BadRequestException(`No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`)
+       throw new BadRequestException(`No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`)
      }
      if(user.employee.passesAvailable<=0){
-       new BadRequestException(`cliente con pases 0`)
+      throw new BadRequestException(`cliente con pases 0`)
      }
      const pasesUp = user.employee.passesAvailable -1
+     if(pasesUp<0){
+      throw new BadRequestException(`cliente con pases 0`)
+     }
      await this.employeesRepository.update(user.employee.id,{passesAvailable:pasesUp})
  
      
@@ -126,7 +130,7 @@ export class BookingsService {
     const booking = await this.bookingsRepository.findOne({where:{ id: id },relations:["user","coworking"]});
     if (!booking) throw new BadRequestException('Reserva no encontrada');    
 
-    const user = await this.usersRepository.findOne({where:{ id: userId },relations:["bookings"]})
+    const user = await this.usersRepository.findOne({where:{ id: userId },relations:["bookings","coworkings"]})
     if (!user) throw new BadRequestException('Usuario no encontrado'); 
 
         
@@ -159,9 +163,11 @@ export class BookingsService {
     if(user.role===Role.COWORKING){
       console.log("El coworking cancelo")
       //!Con esto se asegura que el coworking que tiene la reserva sea el que la cancela
-      if(booking.coworking.id !== userId){
-        throw new BadRequestException(`Booking con id ${booking.id} no pertenece al usuario con id ${userId} `)
-      }
+      console.log(user)
+      console.log(user.coworkings)
+      // if(booking.coworking.user.includes(userId as UUID)){
+      //   throw new BadRequestException(`Booking con id ${booking.id} no pertenece al usuario con id ${userId} `)
+      // }
       if(booking.status=== BookingStatus.USER_CANCELED || booking.status=== BookingStatus.COWORKING_CANCELED ||  booking.status=== BookingStatus.COMPLETED){
         throw new BadRequestException(`Tu reserva debe ser diferente a cancelada o completa pero su estadio es: ${booking.status}`)
       }

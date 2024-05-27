@@ -17,7 +17,7 @@ import {
 import * as bcrypt from 'bcrypt';
 
 import { NodemailerService } from '../nodemailer/nodemailer.service';
-import { loadDataCoworkings } from 'src/utils/loadData';
+//import { loadDataCoworkings } from 'src/utils/loadData';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
@@ -279,12 +279,6 @@ export class CoworkingsService {
       user.coworkings = [coworking];
       const newUser = await queryRunner.manager.save(user);
 
-      // console.log("coworking.user ", coworking.user, typeof coworking.user); coworking.user
-
-      // coworking.user = [...coworking.user, newUser];
-
-      // const updCoworking = await queryRunner.manager.save(coworking);
-
       await queryRunner.commitTransaction(); //COMMIT
 
       await queryRunner.release(); // RELEASE
@@ -449,26 +443,26 @@ export class CoworkingsService {
     return await this.getCoworkingById(id);
   }
 
-  async preloadCoworkings() {
+  // async preloadCoworkings() {
 
-    const data = loadDataCoworkings();
-    //precarga de coworkings
-    for await (const coworking of data) {
-      const coworkingExists = await this.coworkingsRepository.findOne({
-        where: { email: coworking.email },
-      });
+  //   const data = loadDataCoworkings();
+  //   //precarga de coworkings
+  //   for await (const coworking of data) {
+  //     const coworkingExists = await this.coworkingsRepository.findOne({
+  //       where: { email: coworking.email },
+  //     });
 
-      if (!coworkingExists) {
-        await this.coworkingsRepository.save(coworking);
-      }
-    }
+  //     if (!coworkingExists) {
+  //       await this.coworkingsRepository.save(coworking);
+  //     }
+  //   }
 
-    console.log(`
-    ###############################################
-    ##### Coworkings data loaded successfully #####
-    ###############################################
+  //   console.log(`
+  //   ###############################################
+  //   ##### Coworkings data loaded successfully #####
+  //   ###############################################
 
-    `);
-    return true;
-  }
+  //   `);
+  //   return true;
+  // }
 }

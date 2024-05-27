@@ -11,9 +11,9 @@ import { Amenities } from 'src/entities/amenities.entity';
   exports:[AmenitiesService]
 })
 export class AmenitiesModule {
-  constructor(private readonly amenitiesService:AmenitiesService ) {}
+  // constructor(private readonly amenitiesService:AmenitiesService ) {}
 
-  async onModuleInit() {
-    await this.amenitiesService.preloadAmenities();
-  }
+  // async onModuleInit() {
+  //   await this.amenitiesService.preloadAmenities();
+  // }
 }

@@ -32,11 +32,11 @@ export class UsersService {
   }
 
   async findAll(
-    status: UserStatus,
-    name: string,
-    role: Role,
-    page: number,
-    limit: number,
+    status?: UserStatus,
+    name?: string,
+    role?: Role,
+    page?: number,
+    limit?: number,
   ) {
 
      const where: FindOptionsWhere<Users> = {};
@@ -143,31 +143,31 @@ export class UsersService {
 
  }
 
-  async preloadSuperAdminUser() {
-    const hashedPassword = await bcrypt.hash(
-      process.env.SUPERADMIN_PASSWORD,
-      10,
-    );
+  // async preloadSuperAdminUser() {
+  //   const hashedPassword = await bcrypt.hash(
+  //     process.env.SUPERADMIN_PASSWORD,
+  //     10,
+  //   );
 
-    const adminUser = {
-      name: process.env.SUPERADMIN_NAME,
-      lastname: process.env.SUPERADMIN_LASTNAME,
-      phone: process.env.SUPERADMIN_PHONE,
-      email: process.env.SUPERADMIN_EMAIL,
-      identification: process.env.SUPERADMIN_IDENTIFICATION,
-      position: process.env.SUPERADMIN_POSITION,
-      password: hashedPassword,
-      role: Role.SUPERADMIN,
-    };
+  //   const adminUser = {
+  //     name: process.env.SUPERADMIN_NAME,
+  //     lastname: process.env.SUPERADMIN_LASTNAME,
+  //     phone: process.env.SUPERADMIN_PHONE,
+  //     email: process.env.SUPERADMIN_EMAIL,
+  //     identification: process.env.SUPERADMIN_IDENTIFICATION,
+  //     position: process.env.SUPERADMIN_POSITION,
+  //     password: hashedPassword,
+  //     role: Role.SUPERADMIN,
+  //   };
 
-    const userTemp = await this.usersRepository.findOne({
-      where: { email: adminUser.email },
-    });
+  //   const userTemp = await this.usersRepository.findOne({
+  //     where: { email: adminUser.email },
+  //   });
 
-    if (!userTemp) {
-      console.log('Admin user has been created...');
-      return await this.usersRepository.save(adminUser);
-    }
-    console.log('Admin user already exists...');
-  }
+  //   if (!userTemp) {
+  //     console.log('Admin user has been created...');
+  //     return await this.usersRepository.save(adminUser);
+  //   }
+  //   console.log('Admin user already exists...');
+  // }
 }

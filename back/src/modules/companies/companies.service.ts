@@ -86,7 +86,7 @@ export class CompaniesService {
     return 'Esta acción añade una nueva empresa.';
   }
 
-  async activateCompany(id: UUID) {
+  async activateCompany(id: UUID, email=true) {
     // 1- Busco la solicitud
     const request = await this.requestsRepository.findOneBy({ id });
     if (!request || request.status === StatusRequest.CLOSE)
@@ -158,11 +158,12 @@ export class CompaniesService {
       await queryRunner.manager.save(updRequest);
 
       // 4- Enviar email
-      this.nodemailerService.confirmacionMailRequest(
-        request.email,
-        request.companyName,
-        password,
-      );
+      if (email)
+        this.nodemailerService.confirmacionMailRequest(
+          request.email,
+          request.companyName,
+          password,
+        );
 
       await queryRunner.commitTransaction(); //COMMIT
       await queryRunner.release(); // RELEASE

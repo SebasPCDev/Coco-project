@@ -16,6 +16,9 @@ import { CompaniesModule } from './modules/companies/companies.module';
 import { FilesModule } from './modules/files/files.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { GeographyModule } from './modules/geography/geography.module';
+import { SeederService } from './seeder.service';
+import { Users } from './entities/users.entity';
+import { UsersService } from './modules/users/users.service';
 
 @Module({
   imports: [
@@ -28,6 +31,7 @@ import { GeographyModule } from './modules/geography/geography.module';
       useFactory: (configService: ConfigService) =>
         configService.get('typeorm'),
     }),
+    TypeOrmModule.forFeature([Users]),
     RequestsModule,
     UsersModule,
     CompaniesModule,
@@ -46,6 +50,14 @@ import { GeographyModule } from './modules/geography/geography.module';
     GeographyModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SeederService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly seederService: SeederService,
+    private readonly usersService: UsersService
+  ) {
+
+    this.seederService.seed(); 
+
+  }
+}

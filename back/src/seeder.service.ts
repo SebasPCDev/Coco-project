@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { loadCities, loadCountries, loadDataAmenities, loadDataRequestCompany, loadImagesCoworkings, loadReceptionists, loadRequestCoworkings, loadStates } from './utils/loadData';
+import { loadCities, loadCountries, loadDataAmenities, loadImagesCoworkings, loadReceptionists, loadRequestCompanies, loadRequestCoworkings, loadStates, loadEmployees } from './utils/loadData';
 import { AmenitiesService } from './modules/amenities/amenities.service';
 import { Role } from './models/roles.enum';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,8 +18,8 @@ import { UpdateCoworkingsDto } from './modules/coworkings/coworkings.dto';
 import { CoworkingStatus } from './models/coworkingStatus.enum';
 import { UserStatus } from './models/userStatus.enum';
 import { CompaniesService } from './modules/companies/companies.service';
-
-
+import { CompanySize } from './models/companySize.enum';
+import { CompanyStatus } from './models/companyStatus.enum';
 
 @Injectable()
 export class SeederService {
@@ -44,10 +44,10 @@ export class SeederService {
       return
     }
 
-    this.preloadSuperAdminUser();
+    await this.preloadSuperAdminUser();
     await this.preloadAmenities();
-    this.preloadGeography();
-    this.preloadCoworkings();
+    await this.preloadGeography();
+    await this.preloadCoworkings();
     this.preloadCompanies();
   }
 
@@ -123,7 +123,7 @@ export class SeederService {
     let coworkingCount = 0;
     const amenities = await this.amenitiesService.findAll();
     for await (const sol of dataCoworks) {
-      // console.log("coworkingCount", coworkingCount);
+      console.log("Create Coworking", sol.companyName);
       const dominio = `${sol.companyName.replaceAll(' ', '').toLowerCase()}.com`
       sol.email = `${sol.lastname.toLowerCase()}${sol.name.toLowerCase()}@${dominio}`;
 
@@ -186,14 +186,42 @@ export class SeederService {
   }
 
   async preloadCompanies() {
-    const dataCompanies = loadDataRequestCompany();
+    const dataCompanies = loadRequestCompanies();
+
     const requestsCompanies = [];
-    for await (const request of dataCompanies) {
-      const requestCompany = await this.requestsService.addCompany(request, false);
+    for await (const sol of dataCompanies) {
+      console.log("Create Company ", sol.companyName);
+      const dominio = `${sol.companyName.replaceAll(' ', '').toLowerCase()}.com`
+      sol.email = `${sol.lastname.toLowerCase()}${sol.name.toLowerCase()}@${dominio}`;
+      sol.companyEmail = `info@${dominio}`;
+      const sizes = Object.values(CompanySize);
+      const randomIndex = Math.floor(Math.random() * sizes.length);
+      sol.size = sizes[randomIndex];
+      sol.type = "company";
+      const requestCompany = await this.requestsService.addCompany(sol, false);
       requestsCompanies.push(requestCompany.request)
     }
- 
+
     const firtsCompany = requestsCompanies[0];
-    await this.companiesService.activateCompany(firtsCompany.id as UUID, false);
+    const company = await this.companiesService.activateCompany(firtsCompany.id as UUID, false);
+
+    const dataEmployees = loadEmployees();
+    
+    await this.companiesService.update(company.id as UUID, {totalPasses: 500, status: CompanyStatus.ACTIVE, businessSector: 'Tecnología', quantityBeneficiaries: dataEmployees.length});
+  
+    const adminCompany = await this.companiesService.getCompanyById(company.id as UUID)
+
+    for await (const employee of dataEmployees) {
+      const dominio = `${company.name.replaceAll(' ', '').toLowerCase()}.com`
+      employee.email = `${employee.lastname.toLowerCase()}${employee.name.toLowerCase()}@${dominio}`;
+
+      employee.role = "employee";
+      employee.status = "active";
+      employee.passes = 50;
+      employee.passesAvailable = 50;
+      employee.companyId = company.id
+
+      await this.companiesService.createEmployee(adminCompany.employees[0].user.id as UUID, employee)
+    }
   }
 }

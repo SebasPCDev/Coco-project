@@ -23,6 +23,6 @@ export class CompaniesModule {
   constructor(private readonly companiesService: CompaniesService) { }
 
   async onModuleInit() {
-    await this.companiesService.preloadCompanies();
+    // await this.companiesService.preloadCompanies();
   }
 }

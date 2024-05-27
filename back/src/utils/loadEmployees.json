@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Adrian",
+    "lastname": "Lopez",
+    "identification": "24167171",
+    "phone": "+541145586525",
+    "position": "Developer"
+  },
+  {
+    "name": "Camila",
+    "lastname": "Gonzalez",
+    "identification": "32165487",
+    "phone": "+541145584321",
+    "position": "Developer"
+  },
+  {
+    "name": "Juan",
+    "lastname": "Perez",
+    "identification": "12457896",
+    "phone": "+541145587654",
+    "position": "Developer"
+  },
+  {
+    "name": "Lucia",
+    "lastname": "Martinez",
+    "identification": "25896314",
+    "phone": "+541145583210",
+    "position": "Developer"
+  },
+  {
+    "name": "Diego",
+    "lastname": "Ramirez",
+    "identification": "31456987",
+    "phone": "+541145586432",
+    "position": "Developer"
+  },
+  {
+    "name": "Sofia",
+    "lastname": "Fernandez",
+    "identification": "47586921",
+    "phone": "+541145585678",
+    "position": "Developer"
+  },
+  {
+    "name": "Mateo",
+    "lastname": "Gomez",
+    "identification": "36985214",
+    "phone": "+541145584567",
+    "position": "Developer"
+  },
+  {
+    "name": "Valentina",
+    "lastname": "Diaz",
+    "identification": "98765432",
+    "phone": "+541145586789",
+    "position": "Developer"
+  },
+  {
+    "name": "Nicolas",
+    "lastname": "Sanchez",
+    "identification": "21456378",
+    "phone": "+541145582345",
+    "position": "Developer"
+  },
+  {
+    "name": "Julieta",
+    "lastname": "Mendez",
+    "identification": "12345678",
+    "phone": "+541145589012",
+    "position": "Developer"
+  }
+]

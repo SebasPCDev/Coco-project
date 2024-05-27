@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Juan",
+    "lastname": "Martinez",
+    "phone": "+54456667777",
+    "identification": "555666777",
+    "position": "Customer Service",
+    "companyName": "QuickFix Solutions",
+    "companyPhone": "555666777",
+    "businessSector": "Servicios"
+  },
+  {
+    "name": "Ana",
+    "lastname": "Gonzalez",
+    "phone": "+5442312345",
+    "identification": "555111222",
+    "position": "Sales Manager",
+    "companyName": "Market Innovators",
+    "companyPhone": "555111222",
+    "businessSector": "Ventas"
+  },
+  {
+    "name": "Luis",
+    "lastname": "Fernandez",
+    "phone": "+5444312357",
+    "identification": "555333444",
+    "position": "Software Engineer",
+    "companyName": "Tech Solutions",
+    "companyPhone": "555333444",
+    "businessSector": "Tecnología"
+  },
+  {
+    "name": "Maria",
+    "lastname": "Lopez",
+    "phone": "+5444312258",
+    "identification": "555777888",
+    "position": "Marketing Specialist",
+    "companyName": "Creative Agency",
+    "companyPhone": "555777888",
+    "businessSector": "Marketing"
+  },
+  {
+    "name": "Pedro",
+    "lastname": "Garcia",
+    "phone": "+5444312587",
+    "identification": "555222333",
+    "position": "Project Manager",
+    "companyName": "Build It Up",
+    "companyPhone": "555222333",
+    "businessSector": "Construcción"
+  },
+  {
+    "name": "Elena",
+    "lastname": "Martinez",
+    "phone": "+5444318754",
+    "identification": "555444555",
+    "position": "HR Specialist",
+    "companyName": "People First",
+    "companyPhone": "555444555",
+    "businessSector": "Recursos Humanos"
+  },
+  {
+    "name": "Carlos",
+    "lastname": "Ramirez",
+    "phone": "+5444318965",
+    "identification": "555888999",
+    "position": "Financial Analyst",
+    "companyName": "Finance Pros",
+    "companyPhone": "555888999",
+    "businessSector": "Finanzas"
+  },
+  {
+    "name": "Laura",
+    "lastname": "Torres",
+    "phone": "+5458056525",
+    "identification": "555666111",
+    "position": "Graphic Designer",
+    "companyName": "Design Hub",
+    "companyPhone": "555666111",
+    "businessSector": "Diseño"
+  },
+  {
+    "name": "Javier",
+    "lastname": "Hernandez",
+    "phone": "+5456565258",
+    "identification": "555555666",
+    "position": "Operations Manager",
+    "companyName": "Logistics Co",
+    "companyPhone": "555555666",
+    "businessSector": "Logística"
+  },
+  {
+    "name": "Sara",
+    "lastname": "Perez",
+    "phone": "+5456565258",
+    "identification": "555999000",
+    "position": "Quality Assurance",
+    "companyName": "Best Products",
+    "companyPhone": "555999000",
+    "businessSector": "Manufactura"
+  }
+]

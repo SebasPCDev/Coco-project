@@ -20,7 +20,7 @@ import { Companies } from 'src/entities/companies.entity';
 import { Employees } from 'src/entities/employees.entity';
 import { Request } from 'src/entities/requests.entity';
 import { Users } from 'src/entities/users.entity';
-import { loadDataCompanies } from 'src/utils/loadData';
+// import { loadDataCompanies } from 'src/utils/loadData';
 import { UserStatus } from 'src/models/userStatus.enum';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
@@ -269,24 +269,24 @@ export class CompaniesService {
     return this.companiesRepository.save(updCompany);
   }
 
- async preloadCompanies() {
-    const data = loadDataCompanies();
+//  async preloadCompanies() {
+//     const data = loadDataCompanies();
 
-    for await (const company of data) {
-      const companyExists = await this.companiesRepository.findOne({
-        where: { email: company.email },
-      });
+//     for await (const company of data) {
+//       const companyExists = await this.companiesRepository.findOne({
+//         where: { email: company.email },
+//       });
 
-      if (!companyExists) {
-        await this.companiesRepository.save(company);
-      }
-    }
-    console.log(`
-    ###############################################
-    ##### Companies data loaded successfully #####
-    ###############################################
+//       if (!companyExists) {
+//         await this.companiesRepository.save(company);
+//       }
+//     }
+//     console.log(`
+//     ###############################################
+//     ##### Companies data loaded successfully #####
+//     ###############################################
 
-    `);
-    return true;
-  }
+//     `);
+//     return true;
+//   }
 }

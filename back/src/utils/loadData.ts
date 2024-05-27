@@ -6,6 +6,18 @@ export const loadRequestCoworkings = () => {
   return parseData;
 };
 
+export const loadRequestCompanies = () => {
+  const data = readFileSync('src/utils/loadRequestCompanies.json', 'utf8');
+  const parseData = JSON.parse(data);
+  return parseData;
+};
+
+export const loadEmployees = () => {
+  const data = readFileSync('src/utils/loadEmployees.json', 'utf8');
+  const parseData = JSON.parse(data);
+  return parseData;
+};
+
 export const loadImagesCoworkings = () => {
   const data = readFileSync('src/utils/loadImagesCoworkings.json', 'utf8');
   const parseData = JSON.parse(data);
@@ -32,7 +44,6 @@ export const loadCities = () => {
   const cities = readFileSync('src/utils/cities.json', 'utf8');
   return JSON.parse(cities);
 };
-
 
 export const loadDataCoworkings = () => {
   const data = readFileSync('src/utils/preloadCoworkings.json', 'utf8');

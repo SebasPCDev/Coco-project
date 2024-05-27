@@ -1,0 +1,94 @@
+{
+  "Argentina": [
+    {
+      "name": "Buenos Aires",
+      "lat": "-36.6769",
+      "long": "-60.5588"
+    },
+    {
+      "name": "Tucuman",
+      "lat": "-26.9478",
+      "long": "-65.3651"
+    },
+    {
+      "name": "Cordoba",
+      "lat": "-31.4201",
+      "long": "-64.1888"
+    }
+  ],
+  "Colombia": [
+    {
+      "name": "Antioquia",
+      "lat": "6.2518",
+      "long": "-75.5636"
+    },
+    {
+      "name": "Bogota",
+      "lat": "4.7110",
+      "long": "-74.0721"
+    },
+    {
+      "name": "Bolivar",
+      "lat": "10.3910",
+      "long": "-75.4794"
+    }
+  ],
+  "Ecuador": [
+    {
+      "name": "Guayas",
+      "lat": "-1.8312",
+      "long": "-79.9224"
+    },
+    {
+      "name": "Pichincha",
+      "lat": "-0.2186",
+      "long": "-78.2542"
+    }
+  ],
+  "Uruguay": [
+    {
+      "name": "Montevideo",
+      "lat": "-34.9011",
+      "long": "-56.1645"
+    },
+    {
+      "name": "Colonia",
+      "lat": "-34.4558",
+      "long": "-57.8414"
+    },
+    {
+      "name": "Maldonado",
+      "lat": "-34.9000",
+      "long": "-54.9500"
+    }
+  ],
+  "Chile": [
+    {
+      "name": "Santiago Metropolitan",
+      "lat": "-33.4489",
+      "long": "-70.6693"
+    },
+    {
+      "name": "Valparaiso",
+      "lat": "-33.0472",
+      "long": "-71.6127"
+    }
+  ],
+  "Peru": [
+    {
+      "name": "Lima",
+      "lat": "-12.0464",
+      "long": "-77.0428"
+    },
+    {
+      "name": "Arequipa",
+      "lat": "-16.4090",
+      "long": "-71.5375"
+    },
+    {
+      "name": "La Libertad",
+      "lat": "-7.9659",
+      "long": "-78.5157"
+    }
+  ]
+}

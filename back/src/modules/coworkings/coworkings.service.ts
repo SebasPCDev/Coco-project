@@ -450,8 +450,8 @@ export class CoworkingsService {
   }
 
   async preloadCoworkings() {
-    const data = loadDataCoworkings();
 
+    const data = loadDataCoworkings();
     //precarga de coworkings
     for await (const coworking of data) {
       const coworkingExists = await this.coworkingsRepository.findOne({

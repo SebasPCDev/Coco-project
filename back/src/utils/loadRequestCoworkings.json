@@ -6,8 +6,8 @@
     "identification": "20168587",
     "companyName": "Espacio Creativo",
     "country": "Argentina",
-    "state": "Tucuman",
-    "city": "San Miguel de Tucuman",
+    "state": "Tucumán",
+    "city": "San Miguel de Tucumán",
     "address": "Calle Mendoza 654",
     "lat": "-26.832397",
     "long": "-65.202586"
@@ -19,8 +19,8 @@
     "identification": "20168588",
     "companyName": "Innovacion Colectiva",
     "country": "Argentina",
-    "state": "Tucuman",
-    "city": "San Miguel de Tucuman",
+    "state": "Tucumán",
+    "city": "San Miguel de Tucumán",
     "address": "Calle Crisostomo alvarez 535",
     "lat": "-26.836054",
     "long": "-65.209778"
@@ -32,8 +32,8 @@
     "identification": "20168589",
     "companyName": "ColaboraLab",
     "country": "Argentina",
-    "state": "Tucuman",
-    "city": "San Miguel de Tucuman",
+    "state": "Tucumán",
+    "city": "San Miguel de Tucumán",
     "address": "Calle 25 de Mayo 330",
     "lat": "-26.825423",
     "long": "-65.211100"
@@ -84,8 +84,8 @@
     "identification": "20168593",
     "companyName": "Espacio Colaborativo",
     "country": "Argentina",
-    "state": "Cordoba",
-    "city": "Cordoba",
+    "state": "Córdoba",
+    "city": "Córdoba",
     "address": "Calle Belgrano 110",
     "lat": "-31.416483",
     "long": "-64.183528"
@@ -97,8 +97,8 @@
     "identification": "20168594",
     "companyName": "Zona Creativa",
     "country": "Argentina",
-    "state": "Cordoba",
-    "city": "Cordoba",
+    "state": "Córdoba",
+    "city": "Córdoba",
     "address": "Calle Rivadavia 230",
     "lat": "-31.416903",
     "long": "-64.186261"
@@ -110,8 +110,8 @@
     "identification": "20168595",
     "companyName": "Conexion Laboral",
     "country": "Argentina",
-    "state": "Cordoba",
-    "city": "Cordoba",
+    "state": "Córdoba",
+    "city": "Córdoba",
     "address": "Calle Caseros 240",
     "lat": "-31.417967",
     "long": "-64.184203"
@@ -124,7 +124,7 @@
     "companyName": "CoLab",
     "country": "Argentina",
     "state": "Buenos Aires",
-    "city": "Buenos Aires",
+    "city": "Ciudad Autonoma de Buenos Aires",
     "address": "Avenida Corrientes 1352",
     "lat": "-34.605507",
     "long": "-58.384526"
@@ -137,7 +137,7 @@
     "companyName": "Red de Trabajo",
     "country": "Argentina",
     "state": "Buenos Aires",
-    "city": "Buenos Aires",
+    "city": "Ciudad Autonoma de Buenos Aires",
     "address": "Calle Florida 537",
     "lat": "-34.601852",
     "long": "-58.376054"
@@ -150,7 +150,7 @@
     "companyName": "Sinergia Espacios",
     "country": "Argentina",
     "state": "Buenos Aires",
-    "city": "Buenos Aires",
+    "city": "Ciudad Autonoma de Buenos Aires",
     "address": "Calle Sarmiento 600",
     "lat": "-34.604422",
     "long": "-58.377975"

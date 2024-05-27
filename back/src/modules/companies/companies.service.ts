@@ -180,6 +180,8 @@ export class CompaniesService {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
+    
+    //!Enviar email
     if (dbUser) throw new BadRequestException('El usuario ya existe');
 
     const adminCompany = await this.usersRepository.findOne({

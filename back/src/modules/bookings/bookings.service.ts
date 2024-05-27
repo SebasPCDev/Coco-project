@@ -12,6 +12,7 @@ import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { Employees } from 'src/entities/employees.entity';
 import { Role } from 'src/models/roles.enum';
 import { BookingStatus } from 'src/models/bookingStatus';
+import { In } from 'typeorm';
 
 // import { Role } from 'src/models/roles.enum';
 
@@ -69,13 +70,18 @@ export class BookingsService {
       where: { 
         user: { id: userId },
         coworking: { id: coworking.id },
-        status:BookingStatus.PENDING
+        //activo
+        status:In([BookingStatus.PENDING,BookingStatus.ACTIVE]),
+        //el dia
+        reservationDate:data.reservationDate
+
+
        }, 
       relations: ['user', 'coworking'],
     
   })
     if(bookings.length>0){
-    throw new BadRequestException('Tiene una o mas reservas en pendiente');
+    throw new BadRequestException(`Tiene una o mas reservas en pendiente o activo en el mismo dia ${bookings}`);
     }
      const pasesUp = user.employee.passesAvailable -1
      console.log(pasesUp)

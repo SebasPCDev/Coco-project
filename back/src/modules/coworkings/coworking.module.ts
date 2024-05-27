@@ -21,10 +21,4 @@ import { Amenities } from 'src/entities/amenities.entity';
   providers: [CoworkingsService],
   exports: [CoworkingsService]
 })
-export class CoworkingModule {
-  // constructor(private readonly coworkingsService: CoworkingsService) { }
-
-  // async onModuleInit() {
-  //   await this.coworkingsService.preloadCoworkings();
-  // }
-}
+export class CoworkingModule { }

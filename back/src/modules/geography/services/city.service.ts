@@ -32,23 +32,4 @@ export class CityService {
     const newCity = this.cityRepository.create({...data, state});
     return this.cityRepository.save(newCity)
   }
-
-  // async preloadCities() {
-    
-  //   const citiesData = loadCities();
-  //   const states = await this.stateService.getAllStates()
-
-  //   for await (const state of states) {
-  //     const cities = citiesData[state.name];
-  //     if (cities && cities.length > 0) {
-  //       for await (const cityData of cities) {
-  //         const newState = this.cityRepository.create({...cityData, state})
-  //         await this.cityRepository.save(newState)
-  //       }
-  //     }
-  //   }
-  //   console.log("## Load Cities    ##");
-  //   console.log("####################");
-  //   return true
-  // }
 }

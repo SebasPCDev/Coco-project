@@ -25,15 +25,6 @@ export class GeographyModule {
     private readonly stateService: StateService,
     private readonly cityService: CityService) { }
 
-  async onModuleInit() {
-    // const countries = await this.countryService.getAllCountries()
-    // if (countries.length > 0) {
-    //   console.log("Geografía configurada");
-    //   return
-    // }
-    // await this.countryService.preloadCountries();
-    // await this.stateService.preloadStates();
-    // await this.cityService.preloadCities();
-  }
+  async onModuleInit() { }
 }
 

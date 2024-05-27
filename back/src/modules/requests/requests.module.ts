@@ -20,10 +20,4 @@ import { AmenitiesModule } from '../amenities/amenities.module';
   controllers: [RequestsController],
   exports: [RequestsService],
 })
-export class RequestsModule {
-  // constructor(private readonly requestService: RequestsService) {}
-
-  // async onModuleInit() {
-  //   await this.requestService.preloadRequest();
-  // }
-}
+export class RequestsModule { }

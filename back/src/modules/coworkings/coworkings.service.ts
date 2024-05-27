@@ -332,7 +332,7 @@ export class CoworkingsService {
     }
     
     if (changes.status === BookingStatus.ACTIVE) {
-      changes.confirm_phrase = Math.random().toString(36).slice(-8);
+      changes.confirmPhrase = Math.random().toString(36).slice(-8);
       // !Mail a user con phrase ()
       //!mail a coworking y a empleado  que  se actulizo la reserva
     //* Envia a empleado
@@ -342,7 +342,7 @@ export class CoworkingsService {
       booking.reservationDate, 
       booking.reservationTime,   
       booking.coworking.address, 
-      changes.confirm_phrase,
+      changes.confirmPhrase,
       booking.user.email,
     )
     //*Envia a coworking
@@ -354,7 +354,7 @@ export class CoworkingsService {
       booking.coworking.address, 
       booking.coworking.email,)
 
-      console.log("EMAIL", changes.confirm_phrase);
+      console.log("EMAIL", changes.confirmPhrase);
     } else {
       //! Mail a user rechazo
       //* Envia a user

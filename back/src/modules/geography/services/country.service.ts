@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Country } from 'src/entities/country.entity';
 import { Repository } from 'typeorm';
 import { CreateGeographyDto } from '../geography.dto';
-import { loadCountries } from 'src/utils/loadData';
+// import { loadCountries } from 'src/utils/loadData';
 
 @Injectable()
 export class CountryService {
@@ -15,6 +15,10 @@ export class CountryService {
   async getAllCountries() {
     const countries = await this.countryRepository.find()
     return countries;
+  }
+
+  async getCountryByName(name: string) {
+    return await this.countryRepository.findOne({where: {name}, relations: ['states']})
   }
 
   async getCountry(id: number) {
@@ -29,17 +33,17 @@ export class CountryService {
     return this.countryRepository.save(newCountry)
   }
   
-  async preloadCountries() {
+  // async preloadCountries() {
     
-    const countriesData = loadCountries();
+  //   const countriesData = loadCountries();
   
-    for await (const countryData of countriesData) {
-      const newCountry = this.countryRepository.create(countryData)
-      await this.countryRepository.save(newCountry);
-    }
-    console.log("####################");
-    console.log("## Load Countries ##");
+  //   for await (const countryData of countriesData) {
+  //     const newCountry = this.countryRepository.create(countryData)
+  //     await this.countryRepository.save(newCountry);
+  //   }
+  //   console.log("####################");
+  //   console.log("## Load Countries ##");
   
-    return true
-  }
+  //   return true
+  // }
 }

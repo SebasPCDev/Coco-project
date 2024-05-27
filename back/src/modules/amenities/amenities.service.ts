@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UUID } from 'crypto';
 import { Amenities } from 'src/entities/amenities.entity';
-import { loadDataAmenities } from 'src/utils/loadData';
+// import { loadDataAmenities } from 'src/utils/loadData';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -37,27 +37,27 @@ export class AmenitiesService {
   async delete(id: number): Promise<void> {
     await this.amenitiesRepository.delete(id);
   }
-  async preloadAmenities() {
+  // async preloadAmenities() {
 
-    const dataAmenities = loadDataAmenities();
+  //   const dataAmenities = loadDataAmenities();
         
-    for await (const amenities of dataAmenities) {
-      const amenitiesExist = await this.amenitiesRepository.findOne({
-        where: { name: amenities.name },
-      });
+  //   for await (const amenities of dataAmenities) {
+  //     const amenitiesExist = await this.amenitiesRepository.findOne({
+  //       where: { name: amenities.name },
+  //     });
 
-      if (!amenitiesExist) {
-        await this.amenitiesRepository.save(amenities);
-      }
-    }
+  //     if (!amenitiesExist) {
+  //       await this.amenitiesRepository.save(amenities);
+  //     }
+  //   }
 
 
-    console.log(`
-    ###############################################
-    ##### Amenities data loaded successfully #####
-    ###############################################
+  //   console.log(`
+  //   ###############################################
+  //   ##### Amenities data loaded successfully #####
+  //   ###############################################
 
-    `);
-    return true;
-  }
+  //   `);
+  //   return true;
+  // }
 }

@@ -21,9 +21,9 @@ import { AmenitiesModule } from '../amenities/amenities.module';
   exports: [RequestsService],
 })
 export class RequestsModule {
-  constructor(private readonly requestService: RequestsService) {}
+  // constructor(private readonly requestService: RequestsService) {}
 
-  async onModuleInit() {
-    await this.requestService.preloadRequest();
-  }
+  // async onModuleInit() {
+  //   await this.requestService.preloadRequest();
+  // }
 }

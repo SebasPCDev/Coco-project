@@ -44,7 +44,7 @@ export class BookingsService {
 
     const user = await this.usersRepository.findOne({where:{ id: userId },relations:["employee"]})
     if (!user) throw new BadRequestException('Usuario no encontrado');    
-    const coworking = await this.coworkingsRepository.findOneBy({ id: data.coworkingId })
+    const coworking = await this.coworkingsRepository.findOne({where:{ id: data.coworkingId },relations:["user"]})
     if (!coworking) throw new BadRequestException('Coworking no encontrado');
 
     const openTimeMinutes = timeToMinutes(coworking.open);
@@ -57,16 +57,19 @@ export class BookingsService {
     }
      //! Descontar pases
      console.log("entra a descontar pases")
-     console.log(user.employee.passesAvailable)
+     console.log(coworking)
     
      const employee = await this.employeesRepository.findOneBy({id: user.employee.id})
      if(!employee){
-       new BadRequestException(`No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`)
+       throw new BadRequestException(`No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`)
      }
      if(user.employee.passesAvailable<=0){
-       new BadRequestException(`cliente con pases 0`)
+      throw new BadRequestException(`cliente con pases 0`)
      }
      const pasesUp = user.employee.passesAvailable -1
+     if(pasesUp<0){
+      throw new BadRequestException(`cliente con pases 0`)
+     }
      await this.employeesRepository.update(user.employee.id,{passesAvailable:pasesUp})
  
      
@@ -161,7 +164,7 @@ export class BookingsService {
       console.log("El coworking cancelo")
       //!Con esto se asegura que el coworking que tiene la reserva sea el que la cancela
       console.log(user)
-      console.log(user.coworkings.filter(cowork=>cowork.id===booking.id))
+      console.log(user.coworkings)
       // if(booking.coworking.user.includes(userId as UUID)){
       //   throw new BadRequestException(`Booking con id ${booking.id} no pertenece al usuario con id ${userId} `)
       // }

@@ -13,9 +13,9 @@ import { NodemailerModule } from '../nodemailer/nodemailer.module';
   exports: [UsersService],
 })
 export class UsersModule {
-  constructor(private readonly usersService: UsersService) { }
+  // constructor(private readonly usersService: UsersService) { }
 
-  async onModuleInit() {
-    await this.usersService.preloadSuperAdminUser();
-  }
+  // async onModuleInit() {
+  //   await this.usersService.preloadSuperAdminUser();
+  // }
 }

@@ -4,7 +4,7 @@ import { City } from 'src/entities/city.entity';
 import { Repository } from 'typeorm';
 import { CreateCityDto } from '../geography.dto';
 import { StateService } from './state.service';
-import { loadCities } from 'src/utils/loadData';
+// import { loadCities } from 'src/utils/loadData';
 
 @Injectable()
 export class CityService {
@@ -33,22 +33,22 @@ export class CityService {
     return this.cityRepository.save(newCity)
   }
 
-  async preloadCities() {
+  // async preloadCities() {
     
-    const citiesData = loadCities();
-    const states = await this.stateService.getAllStates()
+  //   const citiesData = loadCities();
+  //   const states = await this.stateService.getAllStates()
 
-    for await (const state of states) {
-      const cities = citiesData[state.name];
-      if (cities && cities.length > 0) {
-        for await (const cityData of cities) {
-          const newState = this.cityRepository.create({...cityData, state})
-          await this.cityRepository.save(newState)
-        }
-      }
-    }
-    console.log("## Load Cities    ##");
-    console.log("####################");
-    return true
-  }
+  //   for await (const state of states) {
+  //     const cities = citiesData[state.name];
+  //     if (cities && cities.length > 0) {
+  //       for await (const cityData of cities) {
+  //         const newState = this.cityRepository.create({...cityData, state})
+  //         await this.cityRepository.save(newState)
+  //       }
+  //     }
+  //   }
+  //   console.log("## Load Cities    ##");
+  //   console.log("####################");
+  //   return true
+  // }
 }

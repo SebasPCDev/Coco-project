@@ -12,7 +12,7 @@ import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { Employees } from 'src/entities/employees.entity';
 import { Role } from 'src/models/roles.enum';
 import { BookingStatus } from 'src/models/bookingStatus';
-import { Console } from 'console';
+
 // import { Role } from 'src/models/roles.enum';
 
 @Injectable()
@@ -57,8 +57,7 @@ export class BookingsService {
     }
      //! Descontar pases
      console.log("entra a descontar pases")
-     console.log(coworking)
-    
+   
      const employee = await this.employeesRepository.findOneBy({id: user.employee.id})
      if(!employee){
        throw new BadRequestException(`No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`)
@@ -66,7 +65,21 @@ export class BookingsService {
      if(user.employee.passesAvailable<=0){
       throw new BadRequestException(`cliente con pases 0`)
      }
+     const bookings = await this.bookingsRepository.find({
+      where: { 
+        user: { id: userId },
+        coworking: { id: coworking.id },
+        status:BookingStatus.PENDING
+       }, 
+      relations: ['user', 'coworking'],
+    
+  })
+    if(bookings.length>0){
+    throw new BadRequestException('Tiene una o mas reservas en pendiente');
+    }
      const pasesUp = user.employee.passesAvailable -1
+     console.log(pasesUp)
+
      if(pasesUp<0){
       throw new BadRequestException(`cliente con pases 0`)
      }
@@ -85,7 +98,7 @@ export class BookingsService {
     this.nodemailerService.SendNotificationPasesEmployee(
       coworking.name,
       user.name,
-      user.employee.passesAvailable,
+      pasesUp,
       user.employee.passes,
       booking.reservationDate,
       booking.reservationTime,
@@ -143,7 +156,7 @@ export class BookingsService {
         throw new BadRequestException(`Booking con id ${booking.id} no pertenece al usuario con id ${userId} `)
       }
       if(booking.status=== BookingStatus.USER_CANCELED || booking.status=== BookingStatus.COWORKING_CANCELED ||  booking.status=== BookingStatus.COMPLETED){
-        throw new BadRequestException(`Tu reserva debe estar en cancleada pero su estadio es: ${booking.status}`)
+        throw new BadRequestException(`Tu reserva ya esta en un estado de : ${booking.status}`)
       }
       
       booking.status = BookingStatus.USER_CANCELED

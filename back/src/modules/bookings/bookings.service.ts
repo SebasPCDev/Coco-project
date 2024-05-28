@@ -17,6 +17,7 @@ import { Employees } from 'src/entities/employees.entity';
 import { Role } from 'src/models/roles.enum';
 import { BookingStatus } from 'src/models/bookingStatus';
 import { In } from 'typeorm';
+import { UserStatus } from 'src/models/userStatus.enum';
 
 // import { Role } from 'src/models/roles.enum';
 
@@ -32,7 +33,7 @@ export class BookingsService {
     @InjectRepository(Employees)
     private employeesRepository: Repository<Employees>,
     private readonly nodemailerService: NodemailerService,
-  ) {}
+  ) { }
 
   async findAll() {
     const bookings = await this.bookingsRepository.find();
@@ -53,7 +54,11 @@ export class BookingsService {
       where: { id: userId },
       relations: ['employee'],
     });
-    if (!user) throw new BadRequestException('Usuario no encontrado');
+    if (!user)
+      throw new BadRequestException('Usuario no encontrado');
+    if (user.status !== UserStatus.ACTIVE)
+      throw new BadRequestException('Usuario no habilitado')
+
     const coworking = await this.coworkingsRepository.findOne({
       where: { id: data.coworkingId },
       relations: ['user'],
@@ -200,8 +205,8 @@ export class BookingsService {
           `No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`,
         );
       }
-      await this.employeesRepository.update(employee.id,{passesAvailable:employee.passesAvailable+1})
-      await this.bookingsRepository.update(booking.id, {status:BookingStatus.USER_CANCELED});
+      await this.employeesRepository.update(employee.id, { passesAvailable: employee.passesAvailable + 1 })
+      await this.bookingsRepository.update(booking.id, { status: BookingStatus.USER_CANCELED });
       this.nodemailerService.sendCancelBooking(
         booking.coworking.name,
         user.name,
@@ -239,9 +244,9 @@ export class BookingsService {
           `No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`,
         );
       }
-      await this.employeesRepository.update(employee.id,{passesAvailable:employee.passesAvailable+1})
+      await this.employeesRepository.update(employee.id, { passesAvailable: employee.passesAvailable + 1 })
       booking.status = BookingStatus.COWORKING_CANCELED
-      await this.bookingsRepository.update(booking.id, {status:BookingStatus.COWORKING_CANCELED});
+      await this.bookingsRepository.update(booking.id, { status: BookingStatus.COWORKING_CANCELED });
       this.nodemailerService.sendCancelBooking(
         booking.coworking.name,
         user.name,
@@ -273,9 +278,9 @@ export class BookingsService {
           `No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`,
         );
       }
-      await this.employeesRepository.update(employee.id,{passesAvailable:employee.passesAvailable+1})
-      booking.status = BookingStatus.COWORKING_CANCELED      
-      await this.bookingsRepository.update(booking.id, {status:BookingStatus.COWORKING_CANCELED});
+      await this.employeesRepository.update(employee.id, { passesAvailable: employee.passesAvailable + 1 })
+      booking.status = BookingStatus.COWORKING_CANCELED
+      await this.bookingsRepository.update(booking.id, { status: BookingStatus.COWORKING_CANCELED });
       this.nodemailerService.sendCancelBooking(
         booking.coworking.name,
         user.name,

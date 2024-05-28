@@ -50,16 +50,16 @@ export class CoworkingsService {
     private amenitiesRepository: Repository<Amenities>,
     private readonly bookingsService: BookingsService,
     private readonly nodemailerService: NodemailerService,
-  ) {}
+  ) { }
 
   async getAllCoworkings(
     page: number,
     limit: number,
-    country: string,
-    state: string,
-    city: string,
-    name: string,
-    status: CoworkingStatus,
+    country?: string,
+    state?: string,
+    city?: string,
+    name?: string,
+    status?: CoworkingStatus,
   ) {
     const where: FindOptionsWhere<Coworkings> = {};
     if (country) where.country = country;

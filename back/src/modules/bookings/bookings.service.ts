@@ -170,7 +170,7 @@ export class BookingsService {
         throw new BadRequestException(`No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`)
       }
       await this.employeesRepository.update(employee.id,{passesAvailable:employee.passesAvailable+1})
-      await this.bookingsRepository.update(booking.id, {status:booking.status});
+      await this.bookingsRepository.update(booking.id, {status:BookingStatus.USER_CANCELED});
       this.nodemailerService.sendCancelBooking(
         booking.coworking.name,
         user.name,
@@ -200,7 +200,7 @@ export class BookingsService {
       }
       await this.employeesRepository.update(employee.id,{passesAvailable:employee.passesAvailable+1})
       booking.status = BookingStatus.COWORKING_CANCELED
-      await this.bookingsRepository.update(booking.id, {status:booking.status});
+      await this.bookingsRepository.update(booking.id, {status:BookingStatus.COWORKING_CANCELED});
       this.nodemailerService.sendCancelBooking(
         booking.coworking.name,
         user.name,
@@ -224,7 +224,7 @@ export class BookingsService {
       }
       await this.employeesRepository.update(employee.id,{passesAvailable:employee.passesAvailable+1})
       booking.status = BookingStatus.COWORKING_CANCELED      
-      await this.bookingsRepository.update(booking.id, {status:booking.status});
+      await this.bookingsRepository.update(booking.id, {status:BookingStatus.COWORKING_CANCELED});
       this.nodemailerService.sendCancelBooking(
         booking.coworking.name,
         user.name,

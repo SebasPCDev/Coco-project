@@ -183,7 +183,7 @@ export class CompaniesService {
       email: data.email,
     });
 
-  
+
     if (dbUser) throw new BadRequestException('El usuario ya existe');
 
     const adminCompany = await this.usersRepository.findOne({
@@ -247,6 +247,26 @@ export class CompaniesService {
       await queryRunner.release(); // RELEASE
       throw err;
     }
+  }
+
+  async billing(companyId: UUID) {
+    const company = await this.getCompanyById(companyId);
+
+    for await (const employee of company.employees) {
+      if (employee.user.status === UserStatus.ACTIVE) {
+        const dbEmployee = await this.employeesRepository.findOneBy({
+          id: employee.id,
+        });
+        if (dbEmployee) {
+          const updEmployee = this.employeesRepository.merge(dbEmployee, {
+            passesAvailable: dbEmployee.passes,
+          });
+          await this.employeesRepository.save(updEmployee);
+        }
+      }
+    }
+
+    return await this.getCompanyById(companyId);
   }
 
   async updateEmployee(

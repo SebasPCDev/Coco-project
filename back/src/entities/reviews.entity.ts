@@ -64,12 +64,12 @@ export class Reviews {
   updatedAt: Date;
 
   // Relacion hacia users
-  @ManyToOne(() => Users, (user) => user.bookings)
+  @ManyToOne(() => Users, (user) => user.reviews)
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
   // Relacion hacia Coworkings
-  @ManyToOne(() => Coworkings, (coworking) => coworking.bookings)
+  @ManyToOne(() => Coworkings, (coworking) => coworking.reviews)
   @JoinColumn({ name: 'coworking_id' })
   coworking: Coworkings;
 }

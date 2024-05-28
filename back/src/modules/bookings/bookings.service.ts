@@ -51,7 +51,7 @@ export class BookingsService {
   async create(userId: UUID, data: CreateBookingsDto) {
     const user = await this.usersRepository.findOne({
       where: { id: userId },
-      relations: ['employee'],
+      relations: ['employee','bookings'],
     });
     if (!user) throw new BadRequestException('Usuario no encontrado');
     const coworking = await this.coworkingsRepository.findOne({
@@ -112,11 +112,12 @@ export class BookingsService {
     await this.employeesRepository.update(user.employee.id, {
       passesAvailable: pasesUp,
     });
-
+   
+    
     const newData = { ...data, user, coworking };
-
     const newBooking = this.bookingsRepository.create(newData);
     const booking = await this.bookingsRepository.save(newBooking);
+   
 
     //!Enviar mensaje de descuento de pases
 
@@ -149,7 +150,7 @@ export class BookingsService {
       booking.reservationTime,
       coworking.email,
     );
-
+    console.log(user.bookings)
     return booking;
   }
 

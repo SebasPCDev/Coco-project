@@ -96,9 +96,9 @@ export class Users {
   })
   coworkings: Coworkings[];
 
-  @OneToMany(() => Bookings, (booking) => booking.coworking)
+  @OneToMany(() => Bookings, (booking) => booking.user)
   bookings: Bookings[];
 
-  @OneToMany(() => Reviews, (reviews) => reviews.coworking)
+  @OneToMany(() => Reviews, (reviews) => reviews.user)
   reviews: Reviews[];
 }

@@ -82,6 +82,11 @@ export class CompaniesController {
     return this.companiesService.createEmployee(adminCompanyId as UUID, data);
   }
 
+  @Put('billing/:companyId')
+  billing(@Param('companyId', ParseUUIDPipe) companyId: UUID) {
+    return this.companiesService.billing(companyId)
+  }
+
   @Put(':companyId/update-employee/:userId')
   updateEmployee(
     @Param('companyId', ParseUUIDPipe) companyId: UUID,

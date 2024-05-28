@@ -12,6 +12,7 @@ import { Exclude } from 'class-transformer';
 
 import { Users } from './users.entity';
 import { Companies } from './companies.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity('employees')
 export class Employees {
@@ -25,6 +26,7 @@ export class Employees {
   passesAvailable: number;
 
   @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -33,6 +35,7 @@ export class Employees {
   createdAt: Date;
 
   @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
@@ -40,7 +43,6 @@ export class Employees {
     onUpdate: 'now()',
   })
   updatedAt: Date;
-
 
   @ManyToOne(() => Companies, (company) => company.employees, {
     nullable: true,

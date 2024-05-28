@@ -1,4 +1,9 @@
-import { ApiHideProperty, ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import {
+  ApiHideProperty,
+  ApiProperty,
+  OmitType,
+  PartialType,
+} from '@nestjs/swagger';
 import {
   IsEmail,
   IsEmpty,
@@ -66,7 +71,8 @@ export class CreateUsersDto {
 
   @ApiProperty({
     example: '',
-    description: 'Contraseña del usuario (se establece dentro del endpoint, se envía null)',
+    description:
+      'Contraseña del usuario (se establece dentro del endpoint, se envía null)',
     nullable: true,
   })
   @IsEmpty()
@@ -93,13 +99,19 @@ export class CreateUsersDto {
     description: 'Estado del usuario',
     enum: UserStatus,
   })
-  @IsEnum(UserStatus, { message: 'status debe ser un valor válido de UserStatus' })
+  @IsEnum(UserStatus, {
+    message: 'status debe ser un valor válido de UserStatus',
+  })
   status: UserStatus;
 }
 
-export class UpdateUsersDto extends PartialType(OmitType(CreateUsersDto, ['status', 'password'])) {
-
-  @IsString({ message: 'La contraseña debe tener entre 8 y 15 caracteres, tener al menos una míscula, una mayúscula y un caracter especial (!@#$%^&*)' })
+export class UpdateUsersDto extends PartialType(
+  OmitType(CreateUsersDto, ['status', 'password']),
+) {
+  @IsString({
+    message:
+      'La contraseña debe tener entre 8 y 15 caracteres, tener al menos una míscula, una mayúscula y un caracter especial (!@#$%^&*)',
+  })
   @MinLength(8)
   @MaxLength(15)
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/)
@@ -110,7 +122,6 @@ export class UpdateUsersDto extends PartialType(OmitType(CreateUsersDto, ['statu
   @IsOptional()
   @Validate(MatchPass, ['password'])
   readonly confPassword?: string;
-
 }
 
 export class UpdateDto {
@@ -146,9 +157,3 @@ export class UpdateDto {
   @IsOptional()
   email?: string;
 }
-
-
-
-
-
-

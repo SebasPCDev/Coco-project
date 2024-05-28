@@ -1,4 +1,4 @@
 export enum StatusRequest {
-    PENDING = 'pending',
-    CLOSE = 'close'
-  }
+  PENDING = 'pending',
+  CLOSE = 'close',
+}

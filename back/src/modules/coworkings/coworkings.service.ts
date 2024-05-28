@@ -23,7 +23,7 @@ import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
 import { Request } from 'src/entities/requests.entity';
 import { CreateCoworkingsDto, UpdateCoworkingsDto } from './coworkings.dto';
-import {  CreateUsersDto, UpdateUsersDto } from '../users/users.dto';
+import { CreateUsersDto, UpdateUsersDto } from '../users/users.dto';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
@@ -167,7 +167,7 @@ export class CoworkingsService {
     return await this.coworkingsRepository.save(newUser);
   }
 
-  async activateCoworking(id: UUID, email=true) {
+  async activateCoworking(id: UUID, email = true) {
     // 1- Busco la solicitud
     const requestCoworking = await this.requestsRepository.findOneBy({ id });
     if (!requestCoworking || requestCoworking.status === StatusRequest.CLOSE)
@@ -247,7 +247,7 @@ export class CoworkingsService {
     }
   }
 
-  async createUserCoworking(data: CreateUserCoworkingsDto, email=true) {
+  async createUserCoworking(data: CreateUserCoworkingsDto, email = true) {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
@@ -282,13 +282,13 @@ export class CoworkingsService {
       await queryRunner.commitTransaction(); //COMMIT
 
       await queryRunner.release(); // RELEASE
-      //!Email a al usuario newUser password 
+      //!Email a al usuario newUser password
       if (email)
         this.nodemailerService.sendActivationMailCoworkEmployee(
           newUser.name,
           newUser.email,
           newUser.password,
-        )
+        );
 
       return newUser;
     } catch (err) {
@@ -298,108 +298,139 @@ export class CoworkingsService {
     }
   }
 
-  async updateReceptionist(adminCoworking: Users, coworkingId: UUID, userId: UUID, changes: UpdateUsersDto) {
+  async updateReceptionist(
+    adminCoworking: Users,
+    coworkingId: UUID,
+    userId: UUID,
+    changes: UpdateUsersDto,
+  ) {
     const coworking = await this.getCoworkingById(coworkingId);
 
-    const foundAdminCoworking = coworking.user.findIndex((employee) => employee.id === adminCoworking.id && employee.role === Role.ADMIN_COWORKING);
-    if (foundAdminCoworking === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+    const foundAdminCoworking = coworking.user.findIndex(
+      (employee) =>
+        employee.id === adminCoworking.id &&
+        employee.role === Role.ADMIN_COWORKING,
+    );
+    if (foundAdminCoworking === -1)
+      throw new ForbiddenException(
+        'No tienes permiso para acceder a esta ruta',
+      );
 
-    const foundRecepcionist = coworking.user.findIndex((employee) => employee.id === userId && employee.role === Role.COWORKING);
-    if (foundRecepcionist === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+    const foundRecepcionist = coworking.user.findIndex(
+      (employee) => employee.id === userId && employee.role === Role.COWORKING,
+    );
+    if (foundRecepcionist === -1)
+      throw new ForbiddenException(
+        'No tienes permiso para acceder a esta ruta',
+      );
 
-    const dbUser = await this.usersRepository.findOneBy({id: userId});
+    const dbUser = await this.usersRepository.findOneBy({ id: userId });
     if (!dbUser) throw new ForbiddenException('Recepcionista no encontrado');
 
     const updUser = this.usersRepository.merge(dbUser, changes);
-    return await this.usersRepository.save(updUser);   
+    return await this.usersRepository.save(updUser);
   }
 
-  async updateBooking (coworkingId: UUID, bookingId: UUID, changes: UpdateBookingsDto) {
+  async updateBooking(
+    coworkingId: UUID,
+    bookingId: UUID,
+    changes: UpdateBookingsDto,
+  ) {
     console.log(coworkingId, bookingId, changes);
-    const booking = await this.bookingsService.findOne(bookingId)
+    const booking = await this.bookingsService.findOne(bookingId);
 
-    if (booking.status !== BookingStatus.PENDING) 
-      throw new BadRequestException('El estado de la reserva no se puede modificar')
+    if (booking.status !== BookingStatus.PENDING)
+      throw new BadRequestException(
+        'El estado de la reserva no se puede modificar',
+      );
 
-    if (changes.status !== BookingStatus.ACTIVE && changes.status !== BookingStatus.COWORKING_CANCELED) {
-      throw new BadRequestException('El estado de la reserva no se puede modificar')
+    if (
+      changes.status !== BookingStatus.ACTIVE &&
+      changes.status !== BookingStatus.COWORKING_CANCELED
+    ) {
+      throw new BadRequestException(
+        'El estado de la reserva no se puede modificar',
+      );
     }
-    
+
     if (changes.status === BookingStatus.ACTIVE) {
       changes.confirmPhrase = Math.random().toString(36).slice(-8);
       // !Mail a user con phrase ()
       //!mail a coworking y a empleado  que  se actulizo la reserva
-    //* Envia a empleado
-    this.nodemailerService.sendBookingActiveNotificationEmployee(
-      booking.coworking.name,
-      booking.user.name,
-      booking.reservationDate, 
-      booking.reservationTime,   
-      booking.coworking.address, 
-      changes.confirmPhrase,
-      booking.user.email,
-    )
-    //*Envia a coworking
-    this.nodemailerService.sendBookingActiveNotificationCoworking(
-      booking.coworking.name,
-      booking.user.name,
-      booking.reservationDate, 
-      booking.reservationTime,   
-      booking.coworking.address, 
-      booking.coworking.email,)
+      //* Envia a empleado
+      this.nodemailerService.sendBookingActiveNotificationEmployee(
+        booking.coworking.name,
+        booking.user.name,
+        booking.reservationDate,
+        booking.reservationTime,
+        booking.coworking.address,
+        changes.confirmPhrase,
+        booking.user.email,
+      );
+      //*Envia a coworking
+      this.nodemailerService.sendBookingActiveNotificationCoworking(
+        booking.coworking.name,
+        booking.user.name,
+        booking.reservationDate,
+        booking.reservationTime,
+        booking.coworking.address,
+        booking.coworking.email,
+      );
 
-      console.log("EMAIL", changes.confirmPhrase);
+      console.log('EMAIL', changes.confirmPhrase);
     } else {
       //! Mail a user rechazo
       //* Envia a user
       this.nodemailerService.sendBookingRejectNotificationEmployee(
         booking.coworking.name,
         booking.user.name,
-        booking.reservationDate, 
-        booking.reservationTime,   
-        booking.coworking.address, 
+        booking.reservationDate,
+        booking.reservationTime,
+        booking.coworking.address,
         booking.user.email,
-      )
+      );
       //*Envia a coworking
       this.nodemailerService.sendBookingRejectNotificationCoworking(
         booking.coworking.name,
         booking.user.name,
-        booking.reservationDate, 
-        booking.reservationTime,   
-        booking.coworking.address, 
-        booking.coworking.email,)
-      console.log("EMIAL de RECHAZO");
+        booking.reservationDate,
+        booking.reservationTime,
+        booking.coworking.address,
+        booking.coworking.email,
+      );
+      console.log('EMIAL de RECHAZO');
     }
 
-    const updBooking = await this.bookingsService.update(bookingId, changes)
-    return updBooking
+    const updBooking = await this.bookingsService.update(bookingId, changes);
+    return updBooking;
   }
 
   async checkIn(bookingId: UUID) {
-    const booking = await this.bookingsService.findOne(bookingId)
+    const booking = await this.bookingsService.findOne(bookingId);
 
-    if (booking.status !== BookingStatus.ACTIVE) 
-      throw new BadRequestException(`El estado de la reserva no se puede modificar, estado en : ${booking.status}`)
-    
-      booking.confirmCoworking=true
-      if(booking.confirmUser===true){
-        //* Pasa el estado a complete
+    if (booking.status !== BookingStatus.ACTIVE)
+      throw new BadRequestException(
+        `El estado de la reserva no se puede modificar, estado en : ${booking.status}`,
+      );
 
-        // //!Descuenta los pases una vez  completo
-        // if(booking.user.employee.passesAvailable<=0){
-        //   throw new BadRequestException("El cliente no tiene pases disponibles")
-        // }
-        // booking.user.employee.passesAvailable  =  booking.user.employee.passesAvailable-1
-        // //! Envio de email con saldo de pases disponibles
-        booking.status= BookingStatus.COMPLETED
-      }
-      const updBooking = await this.bookingsService.update(bookingId, booking)
-      return updBooking
-    
+    booking.confirmCoworking = true;
+    if (booking.confirmUser === true) {
+      //* Pasa el estado a complete
+
+      // //!Descuenta los pases una vez  completo
+      // if(booking.user.employee.passesAvailable<=0){
+      //   throw new BadRequestException("El cliente no tiene pases disponibles")
+      // }
+      // booking.user.employee.passesAvailable  =  booking.user.employee.passesAvailable-1
+      // //! Envio de email con saldo de pases disponibles
+      booking.status = BookingStatus.COMPLETED;
+    }
+    const updBooking = await this.bookingsService.update(bookingId, booking);
+    return updBooking;
+
     // verificar si booking "ACTIVO"
     // coworking_confirm = true
     // Verifica si user_confirm = true => pasa estado a Completed
-
   }
 
   async update(id: UUID, changes: UpdateCoworkingsDto) {
@@ -422,8 +453,8 @@ export class CoworkingsService {
 
     if (changes.amenitiesIds) {
       const amenities = await this.amenitiesRepository.find({
-        where: { id: In(changes.amenitiesIds) }
-      })
+        where: { id: In(changes.amenitiesIds) },
+      });
       coworking.amenities = amenities;
     }
 

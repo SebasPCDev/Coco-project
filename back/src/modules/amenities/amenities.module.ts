@@ -8,6 +8,6 @@ import { Amenities } from 'src/entities/amenities.entity';
   imports: [TypeOrmModule.forFeature([Amenities])],
   controllers: [AmenitiesController],
   providers: [AmenitiesService],
-  exports:[AmenitiesService]
+  exports: [AmenitiesService],
 })
-export class AmenitiesModule { }
+export class AmenitiesModule {}

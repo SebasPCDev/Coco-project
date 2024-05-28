@@ -21,11 +21,10 @@ export class CreateStateDto extends CreateGeographyDto {
   @IsNumber()
   @IsNotEmpty()
   countryId: number;
-} 
+}
 
 export class CreateCityDto extends CreateGeographyDto {
   @IsNumber()
   @IsNotEmpty()
   stateId: number;
-} 
-
+}

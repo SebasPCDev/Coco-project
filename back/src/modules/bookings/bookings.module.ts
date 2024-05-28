@@ -10,11 +10,11 @@ import { Employees } from 'src/entities/employees.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Users, Coworkings, Bookings,Employees]),
+    TypeOrmModule.forFeature([Users, Coworkings, Bookings, Employees]),
     NodemailerModule,
   ],
   controllers: [BookingsController],
   providers: [BookingsService],
   exports: [BookingsService],
 })
-export class BookingsModule { }
+export class BookingsModule {}

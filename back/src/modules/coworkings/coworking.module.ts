@@ -15,10 +15,16 @@ import { Amenities } from 'src/entities/amenities.entity';
   imports: [
     NodemailerModule,
     BookingsModule,
-    TypeOrmModule.forFeature([Coworkings, Amenities, Request, Users, CoworkingImages]),
+    TypeOrmModule.forFeature([
+      Coworkings,
+      Amenities,
+      Request,
+      Users,
+      CoworkingImages,
+    ]),
   ],
   controllers: [CoworkingsController],
   providers: [CoworkingsService],
-  exports: [CoworkingsService]
+  exports: [CoworkingsService],
 })
-export class CoworkingModule { }
+export class CoworkingModule {}

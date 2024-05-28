@@ -10,8 +10,6 @@ import { Bookings } from 'src/entities/bookings.entity';
 @Module({
   controllers: [ReviewsController],
   providers: [ReviewsService],
-  imports:[
-    TypeOrmModule.forFeature([Users, Coworkings, Reviews,Bookings]),
-  ]
+  imports: [TypeOrmModule.forFeature([Users, Coworkings, Reviews, Bookings])],
 })
 export class ReviewsModule {}

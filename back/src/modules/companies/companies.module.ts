@@ -17,10 +17,10 @@ import { UsersModule } from '../users/users.module';
   ],
   controllers: [CompaniesController],
   providers: [CompaniesService],
-  exports: [CompaniesService]
+  exports: [CompaniesService],
 })
 export class CompaniesModule {
-  constructor(private readonly companiesService: CompaniesService) { }
+  constructor(private readonly companiesService: CompaniesService) {}
 
-  async onModuleInit() { }
+  async onModuleInit() {}
 }

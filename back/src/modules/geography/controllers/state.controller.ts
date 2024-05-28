@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { StateService } from '../services/state.service';
 import { CreateStateDto } from '../geography.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Geography')
 @Controller('states')
 export class StateController {
   constructor(private readonly stateService: StateService) {}
@@ -21,4 +30,3 @@ export class StateController {
     return this.stateService.create(data);
   }
 }
-

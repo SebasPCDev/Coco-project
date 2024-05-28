@@ -53,11 +53,10 @@ import { UsersService } from './modules/users/users.service';
   providers: [AppService, SeederService],
 })
 export class AppModule {
-  constructor(private readonly seederService: SeederService,
-    private readonly usersService: UsersService
+  constructor(
+    private readonly seederService: SeederService,
+    private readonly usersService: UsersService,
   ) {
-
-    this.seederService.seed(); 
-
+    this.seederService.seed();
   }
 }

@@ -9,6 +9,7 @@ import {
 import { Exclude } from 'class-transformer';
 
 import { Coworkings } from './coworkings.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'amenities' })
 export class Amenities {
@@ -22,6 +23,7 @@ export class Amenities {
   description: string;
 
   @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -30,6 +32,7 @@ export class Amenities {
   createdAt: Date;
 
   @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
@@ -38,8 +41,7 @@ export class Amenities {
   })
   updatedAt: Date;
 
-  @ManyToMany(() => Coworkings, (coworking) => coworking.user, {
-    nullable: true,
-  })
+  @ManyToMany(() => Coworkings, (coworking) => coworking.user)
+  @ApiHideProperty()
   coworkings: Coworkings[];
 }

@@ -17,9 +17,8 @@ import { UUID } from 'crypto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
-import { Users } from 'src/entities/users.entity';
 
-@ApiTags('bookings')
+@ApiTags('Bookings')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller('bookings')
@@ -45,19 +44,19 @@ export class BookingsController {
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Put(':id')
-  update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateBookingDto: UpdateBookingsDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: UUID,
+    @Body() updateBookingDto: UpdateBookingsDto,
+  ) {
     return this.bookingsService.update(id, updateBookingDto);
   }
 
-  //!Endpoint para cancelar-> recibe como parametro id de booking 
-  @Roles(Role.SUPERADMIN,Role.EMPLOYEE,Role.COWORKING)
+  //!Endpoint para cancelar-> recibe como parametro id de booking
+  @Roles(Role.SUPERADMIN, Role.EMPLOYEE, Role.COWORKING)
   @UseGuards(RolesGuard)
   @Put('cancel/:id')
-  CancelBooking(@Param('id', ParseUUIDPipe) id: UUID,@Req() request) {
-
+  CancelBooking(@Param('id', ParseUUIDPipe) id: UUID, @Req() request) {
     const user = request.user;
-    return this.bookingsService.CancelBooking(id,user.id);
+    return this.bookingsService.CancelBooking(id, user.id);
   }
-  
-
 }

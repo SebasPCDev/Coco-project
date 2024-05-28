@@ -15,6 +15,7 @@ import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 import { Amenities } from './amenities.entity';
 import { CoworkingImages } from './coworkingImages.entity';
 import { Bookings } from './bookings.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity('coworkings')
 export class Coworkings {
@@ -71,6 +72,7 @@ export class Coworkings {
   thumbnail?: string;
 
   @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -79,6 +81,7 @@ export class Coworkings {
   createdAt: Date;
 
   @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
@@ -87,9 +90,7 @@ export class Coworkings {
   })
   updatedAt: Date;
 
-  @ManyToMany(() => Amenities, (amenities) => amenities.coworkings, {
-    nullable: true,
-  })
+  @ManyToMany(() => Amenities, (amenities) => amenities.coworkings)
   @JoinTable({
     name: 'amenities_coworkings',
     joinColumn: {
@@ -119,5 +120,4 @@ export class Coworkings {
 
   @OneToMany(() => Bookings, (booking) => booking.coworking)
   bookings: Bookings[];
-
 }

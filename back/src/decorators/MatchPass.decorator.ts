@@ -15,4 +15,4 @@ export class MatchPass implements ValidatorConstraintInterface {
   defaultMessage(args: ValidationArguments) {
     return 'Passwords do not match';
   }
-} 
+}

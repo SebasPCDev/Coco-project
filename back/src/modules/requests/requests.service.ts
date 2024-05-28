@@ -29,7 +29,7 @@ export class RequestsService {
     private readonly coworkingsService: CoworkingsService,
     private readonly nodemailerService: NodemailerService,
     private readonly companiesService: CompaniesService,
-  ) { }
+  ) {}
 
   async getRequestByEmail(email: string) {
     const existingRequest = await this.requestsRepository.findOne({
@@ -45,21 +45,23 @@ export class RequestsService {
     return request;
   }
 
-  async addCowork(cowork: Partial<Request>, email=true) {
-
+  async addCowork(cowork: Partial<Request>, email = true) {
     await this.getRequestByEmail(cowork.email);
 
     const newRequest = this.requestsRepository.create(cowork);
     await this.requestsRepository.save(newRequest);
     if (email)
-      await this.nodemailerService.NotificationMailRequest(cowork.email,cowork.companyName)
+      await this.nodemailerService.NotificationMailRequest(
+        cowork.email,
+        cowork.companyName,
+      );
     return {
       responseCowork: 'Registrado con éxito. Por favor, espere confirmación.',
       request: newRequest,
     };
   }
 
-  async addCompany(company: Partial<Request>, email=true) {
+  async addCompany(company: Partial<Request>, email = true) {
     const existingRequest = await this.requestsRepository.findOne({
       where: { email: company.email },
     });
@@ -71,7 +73,10 @@ export class RequestsService {
     const newRequest = this.requestsRepository.create(company);
     await this.requestsRepository.save(newRequest);
     if (email)
-      await this.nodemailerService.NotificationMailRequest(company.email,company.companyName)
+      await this.nodemailerService.NotificationMailRequest(
+        company.email,
+        company.companyName,
+      );
     return {
       responseCompany: 'Registrado con éxito. Por favor, espere confirmación.',
       request: newRequest,

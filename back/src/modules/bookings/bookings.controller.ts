@@ -35,6 +35,8 @@ export class BookingsController {
     return this.bookingsService.findOne(id);
   }
 
+  @Roles(Role.EMPLOYEE)
+  @UseGuards(RolesGuard)
   @Post()
   create(@Req() request, @Body() data: CreateBookingsDto) {
     const user = request.user;

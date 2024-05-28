@@ -1,7 +1,6 @@
 import { ApiHideProperty, ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsArray,
-  // IsArray,
   IsEmail,
   IsEmpty,
   IsEnum,
@@ -19,6 +18,7 @@ import {
   ValidationOptions,
 } from 'class-validator';
 import { UUID } from 'crypto';
+import { Coworkings } from 'src/entities/coworkings.entity';
 import { Users } from 'src/entities/users.entity';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
 
@@ -188,6 +188,13 @@ export class CreateCoworkingsDto {
   @ApiHideProperty()
   @IsEmpty()
   user: Users[];
+}
+
+export class CoworkingResponseDto {
+  page: number;
+  limit: number;
+  total: number;
+  coworking: Coworkings[];
 }
 
 export class UpdateCoworkingsDto extends PartialType(CreateCoworkingsDto) {

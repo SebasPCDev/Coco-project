@@ -12,12 +12,13 @@ import {
   DefaultValuePipe,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
 import { CoworkingsService } from './coworkings.service';
 import {
   ActivateCoworkingsDto,
+  CoworkingResponseDto,
   CreateCoworkingsDto,
   UpdateCoworkingsDto,
 } from './coworkings.dto';
@@ -35,20 +36,27 @@ import { UpdateBookingsDto } from '../bookings/bookings.dto';
 @UseGuards(AuthGuard)
 @Controller('coworkings')
 export class CoworkingsController {
-  constructor(private readonly coworkingsService: CoworkingsService) {}
+  constructor(private readonly coworkingsService: CoworkingsService) { }
 
-  @Get()
   @Public()
-  getAllCoworkings(
-    @Query('country') country: string,
-    @Query('state') state: string,
-    @Query('city') city: string,
-    @Query('name') name: string,
-    @Query('status') status: CoworkingStatus,
+  @Get()
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'country', required: false })
+  @ApiQuery({ name: 'state', required: false })
+  @ApiQuery({ name: 'city', required: false })
+  @ApiQuery({ name: 'name', required: false })
+  @ApiQuery({ name: 'status', required: false })
+  async getAllCoworkings(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number,
+    @Query('country') country?: string,
+    @Query('state') state?: string,
+    @Query('city') city?: string,
+    @Query('name') name?: string,
+    @Query('status') status?: CoworkingStatus,
   ) {
-    return this.coworkingsService.getAllCoworkings(
+    return await this.coworkingsService.getAllCoworkings(
       page,
       limit,
       country,
@@ -56,10 +64,9 @@ export class CoworkingsController {
       city,
       name,
       status,
-    );
+    ) as CoworkingResponseDto;
   }
 
-  // Por pedido hacer nuevo endpoint son filtros ni paginacion
   @Get('all')
   @Public()
   getCoworkings() {
@@ -154,7 +161,6 @@ export class CoworkingsController {
     );
   }
 
-  // put check-in
   @ApiBearerAuth()
   @Roles(Role.COWORKING, Role.ADMIN_COWORKING, Role.SUPERADMIN)
   @UseGuards(RolesGuard)

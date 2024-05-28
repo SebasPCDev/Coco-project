@@ -21,7 +21,7 @@ import { CountryService } from './modules/geography/services/country.service';
 import { StateService } from './modules/geography/services/state.service';
 import { CityService } from './modules/geography/services/city.service';
 import { RequestsService } from './modules/requests/requests.service';
-import { CreateRequestDto } from './modules/requests/requests.dto';
+import { CreateRequestCoworkingDto } from './modules/requests/requests.dto';
 import { CoworkingsService } from './modules/coworkings/coworkings.service';
 import { UUID } from 'crypto';
 import { UpdateCoworkingsDto } from './modules/coworkings/coworkings.dto';
@@ -43,8 +43,8 @@ export class SeederService {
     private readonly requestsService: RequestsService,
     private readonly coworkingsService: CoworkingsService,
     private readonly companiesService: CompaniesService,
-  ) {}
-
+  ) { }
+ 
   async seed() {
     console.log('PRELOAD DATA');
 
@@ -159,7 +159,7 @@ export class SeederService {
       sol.thumbnail = images[coworkingCount];
 
       const data = await this.requestsService.addCowork(
-        sol as CreateRequestDto,
+        sol as CreateRequestCoworkingDto,
         false,
       );
 

@@ -13,8 +13,16 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
+import { Companies } from 'src/entities/companies.entity';
 import { CompanySize } from 'src/models/companySize.enum';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
+
+export class CompaniesResponse {
+  page: number;
+  limit: number;
+  total: number;
+  companies: Companies[]
+}
 
 export class CreateCompaniesDto {
   @ApiProperty({

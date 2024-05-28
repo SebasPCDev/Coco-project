@@ -9,4 +9,4 @@ import { CloudinaryConfig } from 'src/config/cloudinary';
   controllers: [FilesController],
   providers: [FilesService, CloudinaryConfig],
 })
-export class FilesModule { }
+export class FilesModule {}

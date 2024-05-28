@@ -30,7 +30,7 @@ import { CreateEmployeeDto, UpdateEmployeeDto } from '../users/employees.dto';
 @UseGuards(AuthGuard)
 @Controller('companies')
 export class CompaniesController {
-  constructor(private readonly companiesService: CompaniesService) { }
+  constructor(private readonly companiesService: CompaniesService) {}
 
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
@@ -45,7 +45,7 @@ export class CompaniesController {
     return this.companiesService.getAllCompanies(status, name, page, limit);
   }
 
-  // Por pedido hacer nuevo endpoint son filtros ni paginacion 
+  // Por pedido hacer nuevo endpoint son filtros ni paginacion
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Get('all')
@@ -83,11 +83,17 @@ export class CompaniesController {
     @Param('companyId', ParseUUIDPipe) companyId: UUID,
     @Param('userId', ParseUUIDPipe) userId: UUID,
     @Body() changes: UpdateEmployeeDto,
-    @Req() request){
-      const adminCompany = request.user;
-      return this.companiesService.updateEmployee(adminCompany, companyId, userId, changes)
-    }
-  
+    @Req() request,
+  ) {
+    const adminCompany = request.user;
+    return this.companiesService.updateEmployee(
+      adminCompany,
+      companyId,
+      userId,
+      changes,
+    );
+  }
+
   @Roles(Role.ADMIN_COMPANY, Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Put(':id')

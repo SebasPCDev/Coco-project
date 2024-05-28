@@ -32,7 +32,7 @@ export const loadReceptionists = () => {
 
 export const loadCountries = () => {
   const countries = readFileSync('src/utils/countries.json', 'utf8');
-  return JSON.parse(countries)
+  return JSON.parse(countries);
 };
 
 export const loadStates = () => {

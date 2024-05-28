@@ -18,14 +18,14 @@ export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private reflector: Reflector,
-  ) { }
+  ) {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     // Incorporamos la metadata desde el contexto
     // con el nombre que colocamos en los endpoints
     const isPublic = this.reflector.get(IS_PUBLIC_KEY, context.getHandler());
- 
+
     // Si es publicó no valido el token
     if (isPublic) return true;
 

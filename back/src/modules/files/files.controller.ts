@@ -1,4 +1,16 @@
-import { Controller, FileTypeValidator, InternalServerErrorException, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  FileTypeValidator,
+  InternalServerErrorException,
+  MaxFileSizeValidator,
+  Param,
+  ParseFilePipe,
+  ParseUUIDPipe,
+  Put,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { FilesService } from './files.service';
@@ -18,7 +30,7 @@ export class FilesController {
   constructor(
     private readonly filesService: FilesService,
     private readonly coworkingsService: CoworkingsService,
-  ) { }
+  ) {}
 
   @Put('upload-thumbnail-coworking/:id')
   @ApiConsumes('multipart/form-data')
@@ -53,8 +65,7 @@ export class FilesController {
     )
     file: Express.Multer.File,
   ) {
-
-    // Upload Image   
+    // Upload Image
     const image = await this.filesService.uploadImage(file);
     if (!image)
       throw new InternalServerErrorException('Error cargando la imagen');
@@ -98,14 +109,12 @@ export class FilesController {
     )
     file: Express.Multer.File,
   ) {
-
-
-    // Upload Image   
-    const image = await this.filesService.uploadImage(file)
+    // Upload Image
+    const image = await this.filesService.uploadImage(file);
     if (!image)
-      throw new InternalServerErrorException('Error cargando la imagen')
+      throw new InternalServerErrorException('Error cargando la imagen');
 
     // Update Coworking
-    return await this.coworkingsService.addImage(id, image.secure_url)
+    return await this.coworkingsService.addImage(id, image.secure_url);
   }
 }

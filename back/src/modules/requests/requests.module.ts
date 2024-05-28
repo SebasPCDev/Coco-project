@@ -14,16 +14,10 @@ import { AmenitiesModule } from '../amenities/amenities.module';
     CoworkingModule,
     CompaniesModule,
     NodemailerModule,
-    AmenitiesModule
+    AmenitiesModule,
   ],
   providers: [RequestsService],
   controllers: [RequestsController],
   exports: [RequestsService],
 })
-export class RequestsModule {
-  // constructor(private readonly requestService: RequestsService) {}
-
-  // async onModuleInit() {
-  //   await this.requestService.preloadRequest();
-  // }
-}
+export class RequestsModule {}

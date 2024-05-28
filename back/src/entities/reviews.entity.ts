@@ -1,7 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  UpdateDateColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import { Coworkings } from './coworkings.entity';
 import { Users } from './users.entity';
 import { Exclude } from 'class-transformer';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Reviews {
@@ -20,7 +29,7 @@ export class Reviews {
     default: () => 'CURRENT_TIMESTAMP',
   })
   date: Date;
-  
+
   @Column({
     nullable: true,
     type: 'text',
@@ -36,6 +45,7 @@ export class Reviews {
   res_coworking: string;
 
   @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -44,6 +54,7 @@ export class Reviews {
   createdAt: Date;
 
   @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
@@ -52,13 +63,13 @@ export class Reviews {
   })
   updatedAt: Date;
 
-  // Relacion hacia users 
+  // Relacion hacia users
   @ManyToOne(() => Users, (user) => user.bookings)
   @JoinColumn({ name: 'user_id' })
-  user: Users
+  user: Users;
 
   // Relacion hacia Coworkings
   @ManyToOne(() => Coworkings, (coworking) => coworking.bookings)
   @JoinColumn({ name: 'coworking_id' })
-  coworking: Coworkings
+  coworking: Coworkings;
 }

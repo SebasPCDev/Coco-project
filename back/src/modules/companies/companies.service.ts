@@ -7,7 +7,6 @@ import {
   DataSource,
   FindOptionsOrderValue,
   FindOptionsWhere,
-  In,
   Repository,
 } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -41,7 +40,7 @@ export class CompaniesService {
     private employeesRepository: Repository<Employees>,
     private dataSource: DataSource,
     private readonly nodemailerService: NodemailerService,
-  ) { }
+  ) {}
 
   async getAllCompanies(
     status: CompanyStatus,
@@ -68,7 +67,7 @@ export class CompaniesService {
     return { page, limit, total, companies };
   }
 
-  async getCompanies () {
+  async getCompanies() {
     return await this.companiesRepository.find();
   }
 
@@ -87,7 +86,7 @@ export class CompaniesService {
     return 'Esta acción añade una nueva empresa.';
   }
 
-  async activateCompany(id: UUID, email=true) {
+  async activateCompany(id: UUID, email = true) {
     // 1- Busco la solicitud
     const request = await this.requestsRepository.findOneBy({ id });
     if (!request || request.status === StatusRequest.CLOSE)
@@ -109,7 +108,9 @@ export class CompaniesService {
       const password = process.env.SUPERADMIN_PASSWORD;
       const hashedPass = await bcrypt.hash(password, 10);
       if (!hashedPass)
-        throw new BadRequestException('No se pudo aplicar hash a la contraseña');
+        throw new BadRequestException(
+          'No se pudo aplicar hash a la contraseña',
+        );
 
       const userData: CreateUsersDto = {
         name: request.name,
@@ -117,7 +118,7 @@ export class CompaniesService {
         phone: request.phone,
         email: request.email,
         password: hashedPass,
-        identification: "",
+        identification: '',
         position: request.position,
         status: UserStatus.ACTIVE,
         role: Role.ADMIN_COMPANY,
@@ -181,7 +182,7 @@ export class CompaniesService {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
-    
+
     //!Enviar email
     if (dbUser) throw new BadRequestException('El usuario ya existe');
 
@@ -209,8 +210,7 @@ export class CompaniesService {
       const password = process.env.SUPERADMIN_PASSWORD;
       // const password = Math.random().toString(36).slice(-8);
       const hashedPass = await bcrypt.hash(password, 10);
-      if (!hashedPass)
-        throw new BadRequestException('Contraseña no haseada');
+      if (!hashedPass) throw new BadRequestException('Contraseña no haseada');
 
       data.password = hashedPass;
       data.role = Role.EMPLOYEE;
@@ -240,53 +240,88 @@ export class CompaniesService {
     }
   }
 
-  async updateEmployee(adminCompany: Users, companyId: UUID, userId: UUID, changes: UpdateEmployeeDto) {
-    
-    // Validamos que el adminCompany y el employyee pertenezcan a la misma compañía 
-    const {employees} = await this.getCompanyById(companyId);
-    const foundAdminCompany = employees.findIndex((employee) => employee.user.id === adminCompany.id && employee.user.role === Role.ADMIN_COMPANY);
-    if (foundAdminCompany === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+  async updateEmployee(
+    adminCompany: Users,
+    companyId: UUID,
+    userId: UUID,
+    changes: UpdateEmployeeDto,
+  ) {
+    // Validamos que el adminCompany y el employyee pertenezcan a la misma compañía
+    const { employees } = await this.getCompanyById(companyId);
+    const foundAdminCompany = employees.findIndex(
+      (employee) =>
+        employee.user.id === adminCompany.id &&
+        employee.user.role === Role.ADMIN_COMPANY,
+    );
+    if (foundAdminCompany === -1)
+      throw new ForbiddenException(
+        'No tienes permiso para acceder a esta ruta',
+      );
 
-    const foundEmployee = employees.findIndex((employee) => employee.user.id === userId && employee.user.role === Role.EMPLOYEE);
-    if (foundEmployee === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+    const foundEmployee = employees.findIndex(
+      (employee) =>
+        employee.user.id === userId && employee.user.role === Role.EMPLOYEE,
+    );
+    if (foundEmployee === -1)
+      throw new ForbiddenException(
+        'No tienes permiso para acceder a esta ruta',
+      );
 
-    const dbUser = await this.usersRepository.findOne({where: {id: userId}, relations:['employee']});
+    const dbUser = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['employee'],
+    });
     if (!dbUser) throw new ForbiddenException('Empleado no encontrado');
 
     // Transaction ???
     if (changes.passes || changes.passesAvailable) {
-      
       //! Busca la compañia dado el user id (empleado?)
       const companydb = await this.companiesRepository.findOne({
-        where: { 
+        where: {
           id: companyId,
-         }, 
+        },
         relations: ['employees'],
-      })  
-      
-      if(!companydb){
-        throw new BadRequestException(`No se encontro compañia con id : ${companyId}`)
+      });
+
+      if (!companydb) {
+        throw new BadRequestException(
+          `No se encontro compañia con id : ${companyId}`,
+        );
       }
-      const employeesArray = companydb.employees 
-      const totalPassesEmployee = employeesArray.reduce((accumulator, employee) => {
-        return accumulator + employee.passes;
-      }, 0);
-      console.log("total pases empados",totalPassesEmployee);  
-      console.log("pases que tiene la empresa",companydb.totalPasses)
-      const pasesUpSum = totalPassesEmployee + changes.passes
-      if(pasesUpSum>companydb.totalPasses){
-        throw new BadRequestException(`los pases que dispone la compañia son: ${companydb.totalPasses}, se exede en ${pasesUpSum-companydb.totalPasses} pases `)
+      const employeesArray = companydb.employees;
+      const totalPassesEmployee = employeesArray.reduce(
+        (accumulator, employee) => {
+          return accumulator + employee.passes;
+        },
+        0,
+      );
+      console.log('total pases empados', totalPassesEmployee);
+      console.log('pases que tiene la empresa', companydb.totalPasses);
+      const pasesUpSum = totalPassesEmployee + changes.passes;
+      if (pasesUpSum > companydb.totalPasses) {
+        throw new BadRequestException(
+          `los pases que dispone la compañia son: ${companydb.totalPasses}, se exede en ${pasesUpSum - companydb.totalPasses} pases `,
+        );
       }
       //! logica para pases
-      
-      const dbEmployee = await this.employeesRepository.findOneBy({id: dbUser.employee.id });
-      const newPassesAviable = changes.passes - dbEmployee.passes + dbEmployee.passesAvailable
-      const updEmployee = this.employeesRepository.merge(dbEmployee, {passes: changes.passes, passesAvailable: newPassesAviable});
+
+      const dbEmployee = await this.employeesRepository.findOneBy({
+        id: dbUser.employee.id,
+      });
+      const newPassesAviable =
+        changes.passes - dbEmployee.passes + dbEmployee.passesAvailable;
+      const updEmployee = this.employeesRepository.merge(dbEmployee, {
+        passes: changes.passes,
+        passesAvailable: newPassesAviable,
+      });
       await this.employeesRepository.save(updEmployee);
     }
     const updUser = this.usersRepository.merge(dbUser, changes);
     await this.usersRepository.save(updUser);
-    return await this.usersRepository.findOne({where: {id: userId}, relations:['employee']});
+    return await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['employee'],
+    });
   }
 
   async update(id: UUID, changes: UpdateCompaniesDto) {
@@ -295,25 +330,4 @@ export class CompaniesService {
     const updCompany = this.companiesRepository.merge(company, changes);
     return this.companiesRepository.save(updCompany);
   }
-
-//  async preloadCompanies() {
-//     const data = loadDataCompanies();
-
-//     for await (const company of data) {
-//       const companyExists = await this.companiesRepository.findOne({
-//         where: { email: company.email },
-//       });
-
-//       if (!companyExists) {
-//         await this.companiesRepository.save(company);
-//       }
-//     }
-//     console.log(`
-//     ###############################################
-//     ##### Companies data loaded successfully #####
-//     ###############################################
-
-//     `);
-//     return true;
-//   }
 }

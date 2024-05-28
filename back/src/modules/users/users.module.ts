@@ -7,15 +7,13 @@ import { BookingsModule } from '../bookings/bookings.module';
 import { NodemailerModule } from '../nodemailer/nodemailer.module';
 
 @Module({
-  imports: [BookingsModule, TypeOrmModule.forFeature([Users]),NodemailerModule],
+  imports: [
+    BookingsModule,
+    TypeOrmModule.forFeature([Users]),
+    NodemailerModule,
+  ],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],
 })
-export class UsersModule {
-  // constructor(private readonly usersService: UsersService) { }
-
-  // async onModuleInit() {
-  //   await this.usersService.preloadSuperAdminUser();
-  // }
-}
+export class UsersModule {}

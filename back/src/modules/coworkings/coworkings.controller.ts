@@ -27,7 +27,7 @@ import { Public } from 'src/decorators/public.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
 import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
-import {  UpdateUsersDto } from '../users/users.dto';
+import { UpdateUsersDto } from '../users/users.dto';
 import { CreateUserCoworkingsDto } from '../users/coworkings.dto';
 import { UpdateBookingsDto } from '../bookings/bookings.dto';
 
@@ -35,7 +35,7 @@ import { UpdateBookingsDto } from '../bookings/bookings.dto';
 @UseGuards(AuthGuard)
 @Controller('coworkings')
 export class CoworkingsController {
-  constructor(private readonly coworkingsService: CoworkingsService) { }
+  constructor(private readonly coworkingsService: CoworkingsService) {}
 
   @Get()
   @Public()
@@ -44,13 +44,22 @@ export class CoworkingsController {
     @Query('state') state: string,
     @Query('city') city: string,
     @Query('name') name: string,
-    @Query('status', ) status: CoworkingStatus,
+    @Query('status') status: CoworkingStatus,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number) {
-    return this.coworkingsService.getAllCoworkings(page, limit, country, state, city, name, status);
+    @Query('limit', new DefaultValuePipe(6), ParseIntPipe) limit: number,
+  ) {
+    return this.coworkingsService.getAllCoworkings(
+      page,
+      limit,
+      country,
+      state,
+      city,
+      name,
+      status,
+    );
   }
 
-  // Por pedido hacer nuevo endpoint son filtros ni paginacion 
+  // Por pedido hacer nuevo endpoint son filtros ni paginacion
   @Get('all')
   @Public()
   getCoworkings() {
@@ -71,8 +80,7 @@ export class CoworkingsController {
 
   @Get('country/:country/state/:state')
   @Public()
-  getCities(@Param('country') country: string,
-    @Param('state') state: string) {
+  getCities(@Param('country') country: string, @Param('state') state: string) {
     return this.coworkingsService.getCities(country, state);
   }
 
@@ -97,7 +105,7 @@ export class CoworkingsController {
     const user = request.user;
     return this.coworkingsService.create(user.id as UUID, data);
   }
-  
+
   @Roles(Role.ADMIN_COWORKING)
   @UseGuards(RolesGuard)
   @Post('create-user-coworking')
@@ -112,15 +120,21 @@ export class CoworkingsController {
   activateCoworking(@Body() data: ActivateCoworkingsDto) {
     return this.coworkingsService.activateCoworking(data.id as UUID);
   }
-  
+
   @Put(':coworkingId/update-receptionist/:userId')
   updateReceptionist(
-  @Param('coworkingId', ParseUUIDPipe) coworkingId: UUID,
-  @Param('userId', ParseUUIDPipe) userId: UUID,
-  @Body() changes: UpdateUsersDto,
-  @Req() request){
+    @Param('coworkingId', ParseUUIDPipe) coworkingId: UUID,
+    @Param('userId', ParseUUIDPipe) userId: UUID,
+    @Body() changes: UpdateUsersDto,
+    @Req() request,
+  ) {
     const adminCoworking = request.user;
-    return this.coworkingsService.updateReceptionist(adminCoworking, coworkingId, userId, changes)
+    return this.coworkingsService.updateReceptionist(
+      adminCoworking,
+      coworkingId,
+      userId,
+      changes,
+    );
   }
 
   @ApiBearerAuth()
@@ -133,7 +147,11 @@ export class CoworkingsController {
     @Body() changes: UpdateBookingsDto,
     // @Req() request
   ) {
-    return this.coworkingsService.updateBooking(coworkingId, bookingId, changes)
+    return this.coworkingsService.updateBooking(
+      coworkingId,
+      bookingId,
+      changes,
+    );
   }
 
   // put check-in
@@ -147,9 +165,8 @@ export class CoworkingsController {
     // @Req() request
   ) {
     // const user = request.user;
-    return this.coworkingsService.checkIn( bookingId)
+    return this.coworkingsService.checkIn(bookingId);
   }
-
 
   @ApiBearerAuth()
   @Roles(Role.ADMIN_COWORKING, Role.SUPERADMIN)

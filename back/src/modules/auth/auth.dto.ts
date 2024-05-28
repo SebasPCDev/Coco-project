@@ -1,9 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
-export class recoveryPassDto {
+export class ForgotPasswordDto {
+  @ApiProperty({
+    example: 'example@email.com',
+    description: 'Debe ser un email válido',
+  })
+  @IsEmail()
+  @IsNotEmpty({ message: 'El email es obligatorio' })
+  email: string;
+}
 
-  @IsString({ message: 'La contraseña debe tener entre 8 y 15 caracteres, tener al menos una míscula, una mayúscula y un caracter especial (!@#$%^&*)'})
+export class RecoveryPassDto {
+  @IsString({
+    message:
+      'La contraseña debe tener entre 8 y 15 caracteres, tener al menos una míscula, una mayúscula y un caracter especial (!@#$%^&*)',
+  })
   @MinLength(8)
   @MaxLength(15)
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/)

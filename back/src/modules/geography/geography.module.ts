@@ -12,28 +12,16 @@ import { Country } from 'src/entities/country.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([City, State, Country])],
-  controllers: [
-    CityController, 
-    CountryController, 
-    StateController, 
-  ],
+  controllers: [CityController, CountryController, StateController],
   providers: [CityService, CountryService, StateService],
   exports: [CityService, CountryService, StateService],
 })
 export class GeographyModule {
-  constructor(private readonly countryService: CountryService,
+  constructor(
+    private readonly countryService: CountryService,
     private readonly stateService: StateService,
-    private readonly cityService: CityService) { }
+    private readonly cityService: CityService,
+  ) {}
 
-  async onModuleInit() {
-    // const countries = await this.countryService.getAllCountries()
-    // if (countries.length > 0) {
-    //   console.log("Geografía configurada");
-    //   return
-    // }
-    // await this.countryService.preloadCountries();
-    // await this.stateService.preloadStates();
-    // await this.cityService.preloadCities();
-  }
+  async onModuleInit() {}
 }
-

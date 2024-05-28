@@ -98,7 +98,6 @@ export class CreateRequestDto {
 }
 
 export class CreateRequestCoworkingDto extends CreateRequestDto {
-
   @ApiProperty({
     example: '1234567890',
     description: 'El número de identificación del solicitante',
@@ -155,7 +154,9 @@ export class CreateRequestCoworkingDto extends CreateRequestDto {
   })
   @IsOptional()
   @IsString({ message: 'El open debe ser un valor tipo string' })
-  @IsTimeRange({ message: 'El horario de apertura debe estar en el rango de 00:00 a 23:59' })
+  @IsTimeRange({
+    message: 'El horario de apertura debe estar en el rango de 00:00 a 23:59',
+  })
   open: string;
 
   @ApiProperty({
@@ -164,7 +165,9 @@ export class CreateRequestCoworkingDto extends CreateRequestDto {
   })
   @IsOptional()
   @IsString({ message: 'El close debe ser un valor tipo string' })
-  @IsTimeRange({ message: 'El horario de apertura debe estar en el rango de 00:00 a 23:59' })
+  @IsTimeRange({
+    message: 'El horario de apertura debe estar en el rango de 00:00 a 23:59',
+  })
   close: string;
 
   @ApiProperty({
@@ -181,13 +184,16 @@ export class CreateRequestCompanyDto extends CreateRequestDto {
     example: 500,
     description: 'Cantidad de empleados, tamaño de la empresa',
   })
-  @IsEnum(CompanySize, { message: 'El tamaño debe ser 1 - 10, 10 - 50, 50 - 250, 250 - 500, o más de 500' })
+  @IsEnum(CompanySize, {
+    message:
+      'El tamaño debe ser 1 - 10, 10 - 50, 50 - 250, 250 - 500, o más de 500',
+  })
   @IsNotEmpty({ message: 'El tamaño es obligatorio' })
   size: CompanySize;
 }
 
 export class UpdateRequestCoworkingDto extends PartialType(
   CreateRequestCoworkingDto,
-) { }
+) {}
 
-export class UpdateRequestDto extends PartialType(CreateRequestDto) { }
+export class UpdateRequestDto extends PartialType(CreateRequestDto) {}

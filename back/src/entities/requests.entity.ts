@@ -11,6 +11,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity({
   name: 'requests',
@@ -31,7 +32,7 @@ export class Request {
 
   @Column({
     type: 'varchar',
-    length: 15
+    length: 15,
   })
   phone: string;
 
@@ -63,19 +64,19 @@ export class Request {
 
   @Column({
     type: 'varchar',
-    nullable: true
+    nullable: true,
   })
   identification: string;
 
   @Column({
     type: 'varchar',
-    nullable: true
+    nullable: true,
   })
   companyEmail: string;
 
   @Column({
     type: 'varchar',
-    nullable: true
+    nullable: true,
   })
   companyPhone: string;
 
@@ -146,6 +147,7 @@ export class Request {
   type: CompanyType;
 
   @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -154,6 +156,7 @@ export class Request {
   createdAt: Date;
 
   @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',

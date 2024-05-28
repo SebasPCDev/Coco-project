@@ -16,8 +16,7 @@ import {
   MinLength,
   registerDecorator,
   ValidationArguments,
-  ValidationOptions
-
+  ValidationOptions,
 } from 'class-validator';
 import { UUID } from 'crypto';
 import { Users } from 'src/entities/users.entity';
@@ -51,7 +50,6 @@ export function IsTimeRange(validationOptions?: ValidationOptions) {
     });
   };
 }
-
 
 export class CreateCoworkingsDto {
   @ApiProperty({
@@ -89,7 +87,9 @@ export class CreateCoworkingsDto {
   })
   @IsString({ message: 'El horario de apertura debe ser una cadena de texto' })
   @IsNotEmpty({ message: 'El horario de apertura es obligatorio' })
-  @IsTimeRange({ message: 'El horario de apertura debe estar en el rango de 00:00 a 23:59' })
+  @IsTimeRange({
+    message: 'El horario de apertura debe estar en el rango de 00:00 a 23:59',
+  })
   open: string;
 
   @ApiProperty({
@@ -98,7 +98,9 @@ export class CreateCoworkingsDto {
   })
   @IsString({ message: 'El horario de cierre debe ser una cadena de texto' })
   @IsNotEmpty({ message: 'El horario de cierre es obligatorio' })
-  @IsTimeRange({ message: 'El horario de apertura debe estar en el rango de 00:00 a 23:59' })
+  @IsTimeRange({
+    message: 'El horario de apertura debe estar en el rango de 00:00 a 23:59',
+  })
   close: string;
 
   @ApiProperty({
@@ -188,7 +190,7 @@ export class CreateCoworkingsDto {
   user: Users[];
 }
 
-export class UpdateCoworkingsDto extends PartialType(CreateCoworkingsDto) { 
+export class UpdateCoworkingsDto extends PartialType(CreateCoworkingsDto) {
   @IsArray()
   @IsOptional()
   amenitiesIds?: UUID[];

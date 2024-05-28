@@ -8,12 +8,6 @@ import { Amenities } from 'src/entities/amenities.entity';
   imports: [TypeOrmModule.forFeature([Amenities])],
   controllers: [AmenitiesController],
   providers: [AmenitiesService],
-  exports:[AmenitiesService]
+  exports: [AmenitiesService],
 })
-export class AmenitiesModule {
-  // constructor(private readonly amenitiesService:AmenitiesService ) {}
-
-  // async onModuleInit() {
-  //   await this.amenitiesService.preloadAmenities();
-  // }
-}
+export class AmenitiesModule {}

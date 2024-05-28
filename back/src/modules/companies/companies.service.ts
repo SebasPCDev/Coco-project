@@ -7,6 +7,7 @@ import {
   DataSource,
   FindOptionsOrderValue,
   FindOptionsWhere,
+  In,
   Repository,
 } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -243,8 +244,7 @@ export class CompaniesService {
     
     // Validamos que el adminCompany y el employyee pertenezcan a la misma compañía 
     const {employees} = await this.getCompanyById(companyId);
-        
-    const foundAdminCompany = employees.findIndex((employee) => employee.user.id === adminCompany.id && employee.user.role === Role.ADMIN_COWORKING);
+    const foundAdminCompany = employees.findIndex((employee) => employee.user.id === adminCompany.id && employee.user.role === Role.ADMIN_COMPANY);
     if (foundAdminCompany === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
 
     const foundEmployee = employees.findIndex((employee) => employee.user.id === userId && employee.user.role === Role.EMPLOYEE);
@@ -255,6 +255,29 @@ export class CompaniesService {
 
     // Transaction ???
     if (changes.passes || changes.passesAvailable) {
+      
+      //! Busca la compañia dado el user id (empleado?)
+      const companydb = await this.companiesRepository.findOne({
+        where: { 
+          id: companyId,
+         }, 
+        relations: ['employees'],
+      })  
+      
+      if(!companydb){
+        throw new BadRequestException(`No se encontro compañia con id : ${companyId}`)
+      }
+      const employeesArray = companydb.employees 
+      const totalPassesEmployee = employeesArray.reduce((accumulator, employee) => {
+        return accumulator + employee.passes;
+      }, 0);
+      console.log("total pases empados",totalPassesEmployee);  
+      console.log("pases que tiene la empresa",companydb.totalPasses)
+      const pasesUpSum = totalPassesEmployee + changes.passes
+      if(pasesUpSum>companydb.totalPasses){
+        throw new BadRequestException(`los pases que dispone la compañia son: ${companydb.totalPasses}, se exede en ${pasesUpSum-companydb.totalPasses} pases `)
+      }
+
       const dbEmployee = await this.employeesRepository.findOneBy({id: dbUser.employee.id });
       const updEmployee = this.employeesRepository.merge(dbEmployee, {passes: changes.passes, passesAvailable: changes.passesAvailable});
       await this.employeesRepository.save(updEmployee);

@@ -22,14 +22,18 @@ import { Public } from 'src/decorators/public.decorator';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { QueryParamsValidator } from 'src/pipes/queryParamsValidator.pipe';
 import { UUID } from 'crypto';
-import { CreateRequestCompanyDto, CreateRequestCoworkingDto, UpdateRequestCoworkingDto } from './requests.dto';
+import {
+  CreateRequestCompanyDto,
+  CreateRequestCoworkingDto,
+  UpdateRequestCoworkingDto,
+} from './requests.dto';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @ApiTags('requests')
 @Controller('requests')
 export class RequestsController {
-  constructor(private readonly requestsService: RequestsService) { }
+  constructor(private readonly requestsService: RequestsService) {}
 
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
@@ -85,5 +89,4 @@ export class RequestsController {
   ) {
     return this.requestsService.declineRequest(id, changes);
   }
-
 }

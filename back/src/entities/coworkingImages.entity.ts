@@ -10,6 +10,7 @@ import {
 import { Exclude } from 'class-transformer';
 
 import { Coworkings } from './coworkings.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity('coworking_images')
 export class CoworkingImages {
@@ -20,6 +21,7 @@ export class CoworkingImages {
   secure_url: string;
 
   @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -28,6 +30,7 @@ export class CoworkingImages {
   createdAt: Date;
 
   @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',

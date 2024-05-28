@@ -8,28 +8,28 @@ import { StateService } from './state.service';
 
 @Injectable()
 export class CityService {
-    constructor(
+  constructor(
     @InjectRepository(City)
     private cityRepository: Repository<City>,
-    private readonly stateService: StateService
+    private readonly stateService: StateService,
   ) {}
 
   async getAllCities() {
-    const cities = await this.cityRepository.find()
+    const cities = await this.cityRepository.find();
     return cities;
   }
 
   async getCity(id: number) {
-    const city = await this.cityRepository.findOneBy({id})
+    const city = await this.cityRepository.findOneBy({ id });
 
-    if (!city) throw new BadRequestException('Ciudad no econtrada')
+    if (!city) throw new BadRequestException('Ciudad no econtrada');
     return city;
   }
 
   async create(data: CreateCityDto) {
     const state = await this.stateService.getState(data.stateId);
 
-    const newCity = this.cityRepository.create({...data, state});
-    return this.cityRepository.save(newCity)
+    const newCity = this.cityRepository.create({ ...data, state });
+    return this.cityRepository.save(newCity);
   }
 }

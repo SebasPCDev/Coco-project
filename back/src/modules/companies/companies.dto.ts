@@ -55,30 +55,37 @@ export class CreateCompaniesDto {
     example: 'Tecnología',
     description: 'Sector empresarial',
   })
-  @IsString({ message: 'El sector empresarial debe ser una cadena de caracteres' })
+  @IsString({
+    message: 'El sector empresarial debe ser una cadena de caracteres',
+  })
   @IsOptional({ message: 'El sector empresarial no puede estar vacío' })
   businessSector: string;
 
-  @IsEnum(CompanySize, { message: 'El tamaño debe ser 0-30, 31-100, 101-500, 500-en adelante' })
+  @IsEnum(CompanySize, {
+    message: 'El tamaño debe ser 0-30, 31-100, 101-500, 500-en adelante',
+  })
   @IsNotEmpty({ message: 'El tamaño es obligatorio' })
   size: CompanySize;
 
   @IsEmpty()
-  totalPasses: number
+  totalPasses: number;
 
   @ApiProperty({
     example: 'pending',
     description: 'Estado de la compañía',
   })
-  @IsEnum(CompanyStatus, { message: 'El estado puede ser pending, active, inactive' })
+  @IsEnum(CompanyStatus, {
+    message: 'El estado puede ser pending, active, inactive',
+  })
   status: CompanyStatus;
-
 }
 
-export class UpdateCompaniesDto extends PartialType(OmitType(CreateCompaniesDto, ['totalPasses'])) {
+export class UpdateCompaniesDto extends PartialType(
+  OmitType(CreateCompaniesDto, ['totalPasses']),
+) {
   @IsNumber()
   @IsOptional()
-  totalPasses: number
+  totalPasses: number;
 }
 
 export class ActivateCoworkingsDto {

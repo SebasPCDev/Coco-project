@@ -1,8 +1,18 @@
 import { Exclude } from 'class-transformer';
 import { BookingStatus } from 'src/models/bookingStatus';
-import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Users } from './users.entity';
 import { Coworkings } from './coworkings.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'bookings' })
 export class Bookings {
@@ -16,16 +26,20 @@ export class Bookings {
   @Column({ type: 'time', name: 'reservation_time', nullable: true })
   reservationTime: Date;
 
-  @Column({ type: 'timestamptz', name: 'booking_date', default: () => 'CURRENT_TIMESTAMP', })
+  @Column({
+    type: 'timestamptz',
+    name: 'booking_date',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   date: Date;
 
-  @Column({ type: 'varchar', nullable: true, name:"confirm_phrase" })
+  @Column({ type: 'varchar', nullable: true, name: 'confirm_phrase' })
   confirmPhrase: string;
-  
-  @Column({ type: 'boolean', default: false, name:"confirm_user" })
+
+  @Column({ type: 'boolean', default: false, name: 'confirm_user' })
   confirmUser: boolean;
 
-  @Column({ type: 'boolean', default: false, name:"confirm_coworking" })
+  @Column({ type: 'boolean', default: false, name: 'confirm_coworking' })
   confirmCoworking: boolean;
 
   @Column({
@@ -37,8 +51,9 @@ export class Bookings {
 
   @Column({ type: 'varchar', nullable: true })
   observation: string;
-  
+
   @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -47,6 +62,7 @@ export class Bookings {
   createdAt: Date;
 
   @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
@@ -55,14 +71,13 @@ export class Bookings {
   })
   updatedAt: Date;
 
-  // Relacion hacia users 
+  // Relacion hacia users
   @ManyToOne(() => Users, (user) => user.bookings)
   @JoinColumn({ name: 'user_id' })
-  user: Users
+  user: Users;
 
   // Relacion hacia Coworkings
   @ManyToOne(() => Coworkings, (coworking) => coworking.bookings)
   @JoinColumn({ name: 'coworking_id' })
-  coworking: Coworkings
-
+  coworking: Coworkings;
 }

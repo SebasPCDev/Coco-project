@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { UsersService } from '../users/users.service';
-import { LoginUserDto, recoveryPassDto } from './auth.dto';
+import { LoginUserDto, RecoveryPassDto } from './auth.dto';
 import { UUID } from 'crypto';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
 
@@ -40,9 +40,8 @@ export class AuthService {
   }
 
   async forgotPassword(email: string) {
-
     const user = await this.usersService.getUserByEmail(email);
-    if (!user) throw new BadRequestException('Verifique su dirección de email')
+    if (!user) throw new BadRequestException('Verifique su dirección de email');
 
     const payload = {
       id: user.id,
@@ -53,32 +52,31 @@ export class AuthService {
 
     await this.usersService.update(user.id as UUID, {
       recoveryToken: token,
-    }); 
+    });
 
-      const link = `${process.env.NODEMAILER_FRONT_URL}/recovery-password?token=${token}`;
+    const link = `${process.env.NODEMAILER_FRONT_URL}/recovery-password?token=${token}`;
 
-    this.nodemailerService.forgotPassEmailRequest(
-      email,
-      user.name,
-      link,
-    );
+    this.nodemailerService.forgotPassEmailRequest(email, user.name, link);
   }
 
-  async recoveryPass(data: recoveryPassDto) {
-    const {token, password} = data;
+  async recoveryPass(data: RecoveryPassDto) {
+    const { token, password } = data;
 
     try {
       const secret = process.env.JWT_SECRET;
       const payload = this.jwtService.verify(token, { secret });
-      
+
       const user = await this.usersService.findOne(payload.id);
 
       if (user.recoveryToken !== token)
         throw new BadRequestException('Token inválido');
 
-      const updUser = await this.usersService.update(payload.id, {password, recoveryToken: null})
-      
-      return updUser;      
+      const updUser = await this.usersService.update(payload.id, {
+        password,
+        recoveryToken: null,
+      });
+
+      return updUser;
     } catch (error) {
       throw new BadRequestException('Token inválido');
     }

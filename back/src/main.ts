@@ -19,9 +19,22 @@ async function bootstrap() {
     .setTitle('Coco+')
     .setDescription('API construida para el backend de la aplicación Coco+')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  let document = SwaggerModule.createDocument(app, swaggerConfig);
+  const sortedPaths = Object.keys(document.paths)
+    .sort()
+    .reduce((acc, key) => {
+      acc[key] = document.paths[key];
+      return acc;
+    }, {});
+
+  document = {
+    ...document,
+    paths: sortedPaths,
+  };
+
   SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);

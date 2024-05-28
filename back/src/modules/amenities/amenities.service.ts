@@ -2,15 +2,15 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UUID } from 'crypto';
 import { Amenities } from 'src/entities/amenities.entity';
-// import { loadDataAmenities } from 'src/utils/loadData';
 import { Repository } from 'typeorm';
+import { CreateAmenitiesDto, UpdateAmenitiesDto } from './amenities.dto';
 
 @Injectable()
 export class AmenitiesService {
   constructor(
     @InjectRepository(Amenities)
     private readonly amenitiesRepository: Repository<Amenities>,
-  ) { }
+  ) {}
 
   async findAll(): Promise<Amenities[]> {
     return await this.amenitiesRepository.find();
@@ -18,23 +18,23 @@ export class AmenitiesService {
 
   async findOne(id: UUID): Promise<Amenities> {
     const amenity = await this.amenitiesRepository.findOneBy({ id });
-    if (!amenity) throw new BadRequestException('Comodidad no encontrada')
+    if (!amenity) throw new BadRequestException('Comodidad no encontrada');
     return amenity;
   }
 
-  async create(amenityData: Partial<Amenities>): Promise<Amenities> {
-    const amenity = this.amenitiesRepository.create(amenityData);
+  async create(data: CreateAmenitiesDto) {
+    const amenity = this.amenitiesRepository.create(data);
     return await this.amenitiesRepository.save(amenity);
   }
 
-  async update(id: UUID, amenityData: Partial<Amenities>): Promise<Amenities> {
+  async update(id: UUID, changes: UpdateAmenitiesDto) {
     const amenity = await this.findOne(id);
 
-    const updAmenity = this.amenitiesRepository.merge(amenity, amenityData);
+    const updAmenity = this.amenitiesRepository.merge(amenity, changes);
     return await this.amenitiesRepository.save(updAmenity);
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: UUID) {
     await this.amenitiesRepository.delete(id);
   }
 }

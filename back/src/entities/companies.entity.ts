@@ -11,6 +11,7 @@ import {
 import { Employees } from './employees.entity';
 import { CompanySize } from 'src/models/companySize.enum';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity('companies')
 export class Companies {
@@ -35,7 +36,7 @@ export class Companies {
   @Column({ type: 'enum', enum: CompanySize })
   size: CompanySize;
 
-  @Column({ type: 'int', name: "total_passes", nullable: true })
+  @Column({ type: 'int', name: 'total_passes', nullable: true })
   totalPasses: number;
 
   @Column({
@@ -46,6 +47,7 @@ export class Companies {
   status: CompanyStatus;
 
   @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -54,6 +56,7 @@ export class Companies {
   createdAt: Date;
 
   @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',

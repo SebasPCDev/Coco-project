@@ -16,6 +16,7 @@ import { UserStatus } from 'src/models/userStatus.enum';
 import { Role } from 'src/models/roles.enum';
 import { Bookings } from './bookings.entity';
 import { Reviews } from './reviews.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'users' })
 export class Users {
@@ -41,10 +42,12 @@ export class Users {
   position: string;
 
   @Exclude()
+  @ApiHideProperty()
   @Column({ type: 'varchar', length: 255 })
   password: string;
 
   @Exclude()
+  @ApiHideProperty()
   @Column({
     name: 'recovery_token',
     type: 'varchar',
@@ -67,6 +70,7 @@ export class Users {
   status: UserStatus;
 
   @Exclude()
+  @ApiHideProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -75,6 +79,7 @@ export class Users {
   createdAt: Date;
 
   @Exclude()
+  @ApiHideProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',

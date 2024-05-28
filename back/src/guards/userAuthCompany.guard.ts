@@ -13,12 +13,9 @@ export class UserAuthCompanyGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly usersService: UsersService,
-  ) { }
+  ) {}
 
-  async canActivate(
-    context: ExecutionContext,
-  ): Promise<boolean> {
-
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 
@@ -27,8 +24,8 @@ export class UserAuthCompanyGuard implements CanActivate {
 
     const dbUser = await this.usersService.findOne(user.id);
 
-    console.log("dbUser.employee.company.id", dbUser.employee.company.id);
-    console.log("paramId", paramId);
+    console.log('dbUser.employee.company.id', dbUser.employee.company.id);
+    console.log('paramId', paramId);
 
     const valid = dbUser.employee.company.id === paramId;
 
@@ -38,7 +35,5 @@ export class UserAuthCompanyGuard implements CanActivate {
       );
 
     return valid;
-
   }
 }
-

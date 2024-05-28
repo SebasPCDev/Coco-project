@@ -14,10 +14,10 @@ import { AmenitiesModule } from '../amenities/amenities.module';
     CoworkingModule,
     CompaniesModule,
     NodemailerModule,
-    AmenitiesModule
+    AmenitiesModule,
   ],
   providers: [RequestsService],
   controllers: [RequestsController],
   exports: [RequestsService],
 })
-export class RequestsModule { }
+export class RequestsModule {}

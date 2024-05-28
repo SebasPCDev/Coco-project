@@ -57,16 +57,11 @@ export class NodemailerService {
     }
   }
 
-  async NotificationMailRequest(
-    email: string,
-    companyName: string,
-  ) {
-  
-
+  async NotificationMailRequest(email: string, companyName: string) {
     if (!companyName) {
       throw new BadRequestException('Nombre de la empresaes null');
     }
-  
+
     const emailConfig = {
       from: process.env.NODEMAILER_MAIL,
       to: email,
@@ -86,17 +81,11 @@ export class NodemailerService {
     }
   }
 
-    async forgotPassEmailRequest(
-    email: string,
-    name: string,
-    link: string,
-  ) {
-  
-
+  async forgotPassEmailRequest(email: string, name: string, link: string) {
     if (!name) {
       throw new BadRequestException('Nombre es obligatorio');
     }
-  
+
     const emailConfig = {
       from: process.env.NODEMAILER_MAIL,
       to: email,
@@ -118,18 +107,16 @@ export class NodemailerService {
 
   async NotificationBookingEmployee(
     companyName: string,
-    employeeName:string,
-    employeeEmail:string,
-    dia:Date,
-    hora:Date,
-    address:string
+    employeeName: string,
+    employeeEmail: string,
+    dia: Date,
+    hora: Date,
+    address: string,
   ) {
-  
-
     if (!companyName) {
       throw new BadRequestException('Nombre del coworking null');
     }
-  
+
     const emailConfig = {
       from: process.env.NODEMAILER_MAIL,
       to: employeeEmail,
@@ -139,7 +126,7 @@ export class NodemailerService {
         employeeName,
         dia,
         hora,
-        address
+        address,
       ),
     };
 
@@ -157,18 +144,16 @@ export class NodemailerService {
 
   async NotificationBookingCoworking(
     companyName: string,
-    employeeName:string,
-    employeeLastname:string,
-    dia:Date,
-    hora:Date,   
-    coworkignEmail:string
+    employeeName: string,
+    employeeLastname: string,
+    dia: Date,
+    hora: Date,
+    coworkignEmail: string,
   ) {
-  
-
     if (!companyName) {
       throw new BadRequestException('Nombre del coworking null');
     }
-  
+
     const emailConfig = {
       from: process.env.NODEMAILER_MAIL,
       to: coworkignEmail,
@@ -178,7 +163,7 @@ export class NodemailerService {
         employeeName,
         employeeLastname,
         dia,
-        hora,   
+        hora,
       ),
     };
 
@@ -196,19 +181,17 @@ export class NodemailerService {
 
   async sendBookingActiveNotificationEmployee(
     companyName: string,
-    employeeName:string,
-    dia:Date,
-    hora:Date,  
-    address:string, 
+    employeeName: string,
+    dia: Date,
+    hora: Date,
+    address: string,
     phrase: string,
-    employeeEmail:string,
+    employeeEmail: string,
   ) {
-  
-
     if (!companyName) {
       throw new BadRequestException('Nombre del coworking null');
     }
-  
+
     const emailConfig = {
       from: process.env.NODEMAILER_MAIL,
       to: employeeEmail,
@@ -217,9 +200,9 @@ export class NodemailerService {
         companyName,
         employeeName,
         dia,
-        hora,  
+        hora,
         address,
-        phrase
+        phrase,
       ),
     };
 
@@ -237,18 +220,16 @@ export class NodemailerService {
 
   async sendBookingActiveNotificationCoworking(
     companyName: string,
-    employeeName:string,
-    dia:Date,
-    hora:Date,  
-    address:string, 
-    coworkignEmail:string,
+    employeeName: string,
+    dia: Date,
+    hora: Date,
+    address: string,
+    coworkignEmail: string,
   ) {
-  
-
     if (!companyName) {
       throw new BadRequestException('Nombre del coworking null');
     }
-  
+
     const emailConfig = {
       from: process.env.NODEMAILER_MAIL,
       to: coworkignEmail,
@@ -257,8 +238,8 @@ export class NodemailerService {
         companyName,
         employeeName,
         dia,
-        hora,  
-        address 
+        hora,
+        address,
       ),
     };
 
@@ -276,18 +257,16 @@ export class NodemailerService {
 
   async sendBookingRejectNotificationEmployee(
     companyName: string,
-    employeeName:string,
-    dia:Date,
-    hora:Date,  
-    address:string, 
-    employeeEmail:string,
+    employeeName: string,
+    dia: Date,
+    hora: Date,
+    address: string,
+    employeeEmail: string,
   ) {
-  
-
     if (!companyName) {
       throw new BadRequestException('Nombre del coworking null');
     }
-  
+
     const emailConfig = {
       from: process.env.NODEMAILER_MAIL,
       to: employeeEmail,
@@ -296,9 +275,8 @@ export class NodemailerService {
         companyName,
         employeeName,
         dia,
-        hora,  
+        hora,
         address,
-
       ),
     };
 
@@ -316,18 +294,16 @@ export class NodemailerService {
 
   async sendBookingRejectNotificationCoworking(
     companyName: string,
-    employeeName:string,
-    dia:Date,
-    hora:Date,  
-    address:string, 
-    coworkignEmail:string,
+    employeeName: string,
+    dia: Date,
+    hora: Date,
+    address: string,
+    coworkignEmail: string,
   ) {
-  
-
     if (!companyName) {
       throw new BadRequestException('Nombre del coworking null');
     }
-  
+
     const emailConfig = {
       from: process.env.NODEMAILER_MAIL,
       to: coworkignEmail,
@@ -336,8 +312,8 @@ export class NodemailerService {
         companyName,
         employeeName,
         dia,
-        hora,  
-        address 
+        hora,
+        address,
       ),
     };
 
@@ -353,111 +329,102 @@ export class NodemailerService {
     }
   }
 
-async sendActivationMailCoworkEmployee(
+  async sendActivationMailCoworkEmployee(
     employeeCoworking: string,
     email: string,
     password: string,
-){
+  ) {
+    const emailConfig = {
+      from: process.env.NODEMAILER_MAIL,
+      to: email,
+      subject: 'Estado de reserva',
+      html: sendActivationMailCoworkEmployee(
+        employeeCoworking,
+        email,
+        password,
+      ),
+    };
 
-  
-  const emailConfig = {
-    from: process.env.NODEMAILER_MAIL,
-    to: email,
-    subject: 'Estado de reserva',
-    html: sendActivationMailCoworkEmployee(
-      employeeCoworking,
-      email,
-      password,
-    ),
-  };
-
-  try {
-    const info = await transporter.sendMail(emailConfig);
-    console.log('Correo electrónico enviado:', info.response);
-    return 'Correo electrónico enviado';
-  } catch (error) {
-    console.error('Error al enviar el correo electrónico:', error);
-    throw new InternalServerErrorException(
-      `Error al enviar el correo electrónico:${error}`,
-    );
+    try {
+      const info = await transporter.sendMail(emailConfig);
+      console.log('Correo electrónico enviado:', info.response);
+      return 'Correo electrónico enviado';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      throw new InternalServerErrorException(
+        `Error al enviar el correo electrónico:${error}`,
+      );
+    }
   }
 
-}
+  async SendNotificationPasesEmployee(
+    companyName: string,
+    employeeName: string,
+    numeroPasesDis: number,
+    pasesMensuales: number,
+    dia: Date,
+    hora: Date,
+    address: string,
+    employeeEmail: string,
+  ) {
+    const emailConfig = {
+      from: process.env.NODEMAILER_MAIL,
+      to: employeeEmail,
+      subject: 'Disponibilidad de Pases',
+      html: SendNotificationPasesEmployee(
+        companyName,
+        employeeName,
+        numeroPasesDis,
+        pasesMensuales,
+        dia,
+        hora,
+        address,
+      ),
+    };
 
-async SendNotificationPasesEmployee (
-  companyName: string,
-  employeeName:string,
-  numeroPasesDis:number,
-  pasesMensuales:number,
-  dia: Date,
-  hora:Date,
-  address:string,
-  employeeEmail:string,
-){
-
-  const emailConfig = {
-    from: process.env.NODEMAILER_MAIL,
-    to: employeeEmail,
-    subject: 'Disponibilidad de Pases',
-    html: SendNotificationPasesEmployee(
-      companyName,
-      employeeName,
-      numeroPasesDis,
-      pasesMensuales,
-      dia,
-      hora,  
-      address,
-
-    ),
-  };
-
-  try {
-    const info = await transporter.sendMail(emailConfig);
-    console.log('Correo electrónico enviado:', info.response);
-    return 'Correo electrónico enviado';
-  } catch (error) {
-    console.error('Error al enviar el correo electrónico:', error);
-    throw new InternalServerErrorException(
-      `Error al enviar el correo electrónico:${error}`,
-    );
+    try {
+      const info = await transporter.sendMail(emailConfig);
+      console.log('Correo electrónico enviado:', info.response);
+      return 'Correo electrónico enviado';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      throw new InternalServerErrorException(
+        `Error al enviar el correo electrónico:${error}`,
+      );
+    }
   }
-}
-async sendCancelBooking (
-  companyName: string,
-  employeeName:string,
-  dirigidoA:string,
-  dia: Date,
-  hora:Date,
-  address:string,
-  email:string,
+  async sendCancelBooking(
+    companyName: string,
+    employeeName: string,
+    dirigidoA: string,
+    dia: Date,
+    hora: Date,
+    address: string,
+    email: string,
+  ) {
+    const emailConfig = {
+      from: process.env.NODEMAILER_MAIL,
+      to: email,
+      subject: 'Disponibilidad de Pases',
+      html: sendCancelBooking(
+        companyName,
+        employeeName,
+        dirigidoA,
+        dia,
+        hora,
+        address,
+      ),
+    };
 
-){
-
-  const emailConfig = {
-    from: process.env.NODEMAILER_MAIL,
-    to: email,
-    subject: 'Disponibilidad de Pases',
-    html: sendCancelBooking(
-      companyName,
-      employeeName,
-      dirigidoA,
-      dia,
-      hora,
-      address,
-    ),
-  };
-
-  try {
-    const info = await transporter.sendMail(emailConfig);
-    console.log('Correo electrónico enviado:', info.response);
-    return 'Correo electrónico enviado';
-  } catch (error) {
-    console.error('Error al enviar el correo electrónico:', error);
-    throw new InternalServerErrorException(
-      `Error al enviar el correo electrónico:${error}`,
-    );
+    try {
+      const info = await transporter.sendMail(emailConfig);
+      console.log('Correo electrónico enviado:', info.response);
+      return 'Correo electrónico enviado';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      throw new InternalServerErrorException(
+        `Error al enviar el correo electrónico:${error}`,
+      );
+    }
   }
-
-}
-  
 }

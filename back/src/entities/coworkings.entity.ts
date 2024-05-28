@@ -16,6 +16,7 @@ import { Amenities } from './amenities.entity';
 import { CoworkingImages } from './coworkingImages.entity';
 import { Bookings } from './bookings.entity';
 import { ApiHideProperty } from '@nestjs/swagger';
+import { Reviews } from './reviews.entity';
 
 @Entity('coworkings')
 export class Coworkings {
@@ -120,4 +121,7 @@ export class Coworkings {
 
   @OneToMany(() => Bookings, (booking) => booking.coworking)
   bookings: Bookings[];
+
+  @OneToMany(() => Reviews, (review) => review.coworking)
+  reviews: Reviews[];
 }

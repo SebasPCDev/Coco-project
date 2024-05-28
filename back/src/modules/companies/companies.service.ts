@@ -183,7 +183,7 @@ export class CompaniesService {
       email: data.email,
     });
 
-    //!Enviar email
+  
     if (dbUser) throw new BadRequestException('El usuario ya existe');
 
     const adminCompany = await this.usersRepository.findOne({
@@ -226,6 +226,15 @@ export class CompaniesService {
 
       const newEmployee = this.employeesRepository.create(employee);
       await queryRunner.manager.save(newEmployee);
+
+      //!Enviar email
+
+      if (user.email)
+        this.nodemailerService.confirmacionMailRequest(
+          user.email,
+          company.name,
+          password,
+        );
 
       await queryRunner.commitTransaction(); //COMMIT
       await queryRunner.release(); // RELEASE

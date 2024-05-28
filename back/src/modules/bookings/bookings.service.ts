@@ -138,14 +138,14 @@ export class BookingsService {
     );
 
     //! mail  a user  info: reserva pendieynte de confirmacion (nombre direccion dia y hora)
-    // this.nodemailerService.NotificationBookingEmployee(
-    //   coworking.name,
-    //   user.name,
-    //   user.email,
-    //   booking.reservationDate,
-    //   booking.reservationTime,
-    //   coworking.address
-    // )
+    this.nodemailerService.NotificationBookingEmployee(
+      coworking.name,
+      user.name,
+      user.email,
+      booking.reservationDate,
+      booking.reservationTime,
+      coworking.address
+    )
     //! mail a  coworking info quieren reservar dia horario (user apellido dni date hora )
     this.nodemailerService.NotificationBookingCoworking(
       coworking.name,

@@ -8,28 +8,28 @@ import { UUID } from 'crypto';
 import { Request } from 'src/entities/requests.entity';
 import { StatusRequest } from 'src/models/statusRequest.enum';
 import { CompanyType } from 'src/models/companyType.enum';
-import { FindOptionsWhere, Repository } from 'typeorm';
-import { UpdateRequestCoworkingDto, UpdateRequestDto } from './requests.dto';
-// import { loadRequestCoworkings, loadImagesCoworkings, loadReceptionists, loadDataRequestCompany } from 'src/utils/loadData';
-import { CoworkingsService } from '../coworkings/coworkings.service';
+import { FindOptionsOrderValue, FindOptionsWhere, Repository } from 'typeorm';
+import { CreateRequestCompanyDto, CreateRequestCoworkingDto, UpdateRequestCoworkingDto, UpdateRequestDto } from './requests.dto';
 import { NodemailerService } from '../nodemailer/nodemailer.service';
-// import { UpdateCoworkingsDto } from '../coworkings/coworkings.dto';
-// import { CoworkingStatus } from 'src/models/coworkingStatus.enum';
-// import { Role } from 'src/models/roles.enum';
-// import { UserStatus } from 'src/models/userStatus.enum';
-import { AmenitiesService } from '../amenities/amenities.service';
-import { CompaniesService } from '../companies/companies.service';
 
 @Injectable()
 export class RequestsService {
   constructor(
     @InjectRepository(Request)
     private requestsRepository: Repository<Request>,
-    private readonly amenitiesService: AmenitiesService,
-    private readonly coworkingsService: CoworkingsService,
     private readonly nodemailerService: NodemailerService,
-    private readonly companiesService: CompaniesService,
-  ) {}
+  ) { }
+
+  async getRequest(type: CompanyType, status: StatusRequest) {
+    const where: FindOptionsWhere<Request> = {};
+    if (type) where.type = type;
+    if (status) where.status = status;
+
+    return await this.requestsRepository.find({
+      where,
+      order: { updatedAt: 'DESC' as FindOptionsOrderValue }
+    });
+  }
 
   async getRequestByEmail(email: string) {
     const existingRequest = await this.requestsRepository.findOne({
@@ -45,7 +45,13 @@ export class RequestsService {
     return request;
   }
 
-  async addCowork(cowork: Partial<Request>, email = true) {
+  async findById(id: UUID) {
+    const request = await this.requestsRepository.findOneBy({ id });
+    if (!request) throw new BadRequestException('Solicitud no encontrada');
+    return request;
+  }
+
+  async addCowork(cowork: CreateRequestCoworkingDto, email = true) {
     await this.getRequestByEmail(cowork.email);
 
     const newRequest = this.requestsRepository.create(cowork);
@@ -61,7 +67,7 @@ export class RequestsService {
     };
   }
 
-  async addCompany(company: Partial<Request>, email = true) {
+  async addCompany(company: CreateRequestCompanyDto, email = true) {
     const existingRequest = await this.requestsRepository.findOne({
       where: { email: company.email },
     });
@@ -81,20 +87,6 @@ export class RequestsService {
       responseCompany: 'Registrado con éxito. Por favor, espere confirmación.',
       request: newRequest,
     };
-  }
-
-  async getRequest(type: CompanyType, status: StatusRequest) {
-    const where: FindOptionsWhere<Request> = {};
-    if (type) where.type = type;
-    if (status) where.status = status;
-
-    return await this.requestsRepository.find({ where });
-  }
-
-  async findById(id: UUID) {
-    const request = await this.requestsRepository.findOneBy({ id });
-    if (!request) throw new BadRequestException('Solicitud no encontrada');
-    return request;
   }
 
   async declineRequest(id: UUID, changes: UpdateRequestDto) {

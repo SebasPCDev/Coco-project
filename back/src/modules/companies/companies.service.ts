@@ -277,9 +277,11 @@ export class CompaniesService {
       if(pasesUpSum>companydb.totalPasses){
         throw new BadRequestException(`los pases que dispone la compañia son: ${companydb.totalPasses}, se exede en ${pasesUpSum-companydb.totalPasses} pases `)
       }
-
+      //! logica para pases
+      
       const dbEmployee = await this.employeesRepository.findOneBy({id: dbUser.employee.id });
-      const updEmployee = this.employeesRepository.merge(dbEmployee, {passes: changes.passes, passesAvailable: changes.passesAvailable});
+      const newPassesAviable = changes.passes - dbEmployee.passes + dbEmployee.passesAvailable
+      const updEmployee = this.employeesRepository.merge(dbEmployee, {passes: changes.passes, passesAvailable: newPassesAviable});
       await this.employeesRepository.save(updEmployee);
     }
     const updUser = this.usersRepository.merge(dbUser, changes);

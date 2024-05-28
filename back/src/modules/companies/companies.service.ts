@@ -244,8 +244,7 @@ export class CompaniesService {
     
     // Validamos que el adminCompany y el employyee pertenezcan a la misma compañía 
     const {employees} = await this.getCompanyById(companyId);
-        
-    const foundAdminCompany = employees.findIndex((employee) => employee.user.id === adminCompany.id && employee.user.role === Role.ADMIN_COWORKING);
+    const foundAdminCompany = employees.findIndex((employee) => employee.user.id === adminCompany.id && employee.user.role === Role.ADMIN_COMPANY);
     if (foundAdminCompany === -1) throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
 
     const foundEmployee = employees.findIndex((employee) => employee.user.id === userId && employee.user.role === Role.EMPLOYEE);
@@ -260,12 +259,11 @@ export class CompaniesService {
       //! Busca la compañia dado el user id (empleado?)
       const companydb = await this.companiesRepository.findOne({
         where: { 
-          employees: { id: userId },
           id: companyId,
-          status:In([CompanyStatus.COMPLETED]),
          }, 
         relations: ['employees'],
       })  
+      
       if(!companydb){
         throw new BadRequestException(`No se encontro compañia con id : ${companyId}`)
       }

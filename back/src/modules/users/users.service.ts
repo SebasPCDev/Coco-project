@@ -70,7 +70,7 @@ export class UsersService {
       where: { id },
       relations: ['coworkings', 'employee', 'employee.company'],
     });
-
+    
     if (!user) throw new BadRequestException('Usuario no encontrado');
     return user;
   }

@@ -13,7 +13,6 @@ import { Role } from 'src/models/roles.enum';
 import { UpdateBookingsDto } from '../bookings/bookings.dto';
 import { BookingStatus } from 'src/models/bookingStatus';
 import { BookingsService } from '../bookings/bookings.service';
-import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { UserStatus } from 'src/models/userStatus.enum';
 
 @Injectable()
@@ -22,8 +21,7 @@ export class UsersService {
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
     private readonly bookingsService: BookingsService,
-    private readonly nodemailerService: NodemailerService,
-  ) {}
+  ) { }
 
   async create(data: CreateUsersDto) {
     const user = await this.getUserByEmail(data.email);

@@ -40,13 +40,13 @@ export class CompaniesService {
     private employeesRepository: Repository<Employees>,
     private dataSource: DataSource,
     private readonly nodemailerService: NodemailerService,
-  ) {}
+  ) { }
 
   async getAllCompanies(
     status: CompanyStatus,
-    name: string,
     page: number,
     limit: number,
+    name?: string,
   ) {
     const where: FindOptionsWhere<Companies> = {};
 

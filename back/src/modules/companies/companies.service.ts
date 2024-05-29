@@ -81,11 +81,6 @@ export class CompaniesService {
     return company;
   }
 
-  create(data: CreateCompaniesDto) {
-    console.log('data', data);
-    return 'Esta acción añade una nueva empresa.';
-  }
-
   async activateCompany(id: UUID, email = true) {
     // 1- Busco la solicitud
     const request = await this.requestsRepository.findOneBy({ id });
@@ -183,7 +178,6 @@ export class CompaniesService {
       email: data.email,
     });
 
-
     if (dbUser) throw new BadRequestException('El usuario ya existe');
 
     const adminCompany = await this.usersRepository.findOne({
@@ -193,7 +187,7 @@ export class CompaniesService {
 
     if (adminCompany.employee.company.id !== data.companyId)
       throw new ForbiddenException(
-        'No tienes permiso y no puedes acceder a esta ruta',
+        'No tienes permiso y no puedes acceder a este recurso',
       );
 
     const company = await this.companiesRepository.findOneBy({
@@ -226,8 +220,6 @@ export class CompaniesService {
 
       const newEmployee = this.employeesRepository.create(employee);
       await queryRunner.manager.save(newEmployee);
-
-      //!Enviar email
 
       if (user.email)
         this.nodemailerService.confirmacionMailRequest(
@@ -276,24 +268,25 @@ export class CompaniesService {
     changes: UpdateEmployeeDto,
   ) {
     // Validamos que el adminCompany y el employyee pertenezcan a la misma compañía
-    const { employees } = await this.getCompanyById(companyId);
-    const foundAdminCompany = employees.findIndex(
+    const company = await this.getCompanyById(companyId);
+
+    const foundAdminCompany = company.employees.findIndex(
       (employee) =>
         employee.user.id === adminCompany.id &&
         employee.user.role === Role.ADMIN_COMPANY,
     );
     if (foundAdminCompany === -1)
       throw new ForbiddenException(
-        'No tienes permiso para acceder a esta ruta',
+        'No tienes permiso para acceder a este recurso',
       );
 
-    const foundEmployee = employees.findIndex(
+    const foundEmployee = company.employees.findIndex(
       (employee) =>
         employee.user.id === userId && employee.user.role === Role.EMPLOYEE,
     );
     if (foundEmployee === -1)
       throw new ForbiddenException(
-        'No tienes permiso para acceder a esta ruta',
+        'No tienes permiso para acceder a este recurso',
       );
 
     const dbUser = await this.usersRepository.findOne({
@@ -304,47 +297,42 @@ export class CompaniesService {
 
     // Transaction ???
     if (changes.passes || changes.passesAvailable) {
-      //! Busca la compañia dado el user id (empleado?)
-      const companydb = await this.companiesRepository.findOne({
-        where: {
-          id: companyId,
-        },
-        relations: ['employees'],
-      });
 
-      if (!companydb) {
-        throw new BadRequestException(
-          `No se encontro compañia con id : ${companyId}`,
-        );
-      }
-      const employeesArray = companydb.employees;
-      const totalPassesEmployee = employeesArray.reduce(
+      const totalPassesEmployee = company.employees.reduce(
         (accumulator, employee) => {
           return accumulator + employee.passes;
         },
         0,
       );
-      console.log('total pases empados', totalPassesEmployee);
-      console.log('pases que tiene la empresa', companydb.totalPasses);
-      const pasesUpSum = totalPassesEmployee + changes.passes;
-      if (pasesUpSum > companydb.totalPasses) {
-        throw new BadRequestException(
-          `los pases que dispone la compañia son: ${companydb.totalPasses}, se exede en ${pasesUpSum - companydb.totalPasses} pases `,
-        );
-      }
-      //! logica para pases
 
+      //! logica para pases
       const dbEmployee = await this.employeesRepository.findOneBy({
         id: dbUser.employee.id,
       });
-      const newPassesAviable =
-        changes.passes - dbEmployee.passes + dbEmployee.passesAvailable;
+
+      if (changes.passes > dbEmployee.passes) {
+
+        const pasesUpSum = totalPassesEmployee + changes.passes;
+        if (pasesUpSum > company.totalPasses) {
+          throw new BadRequestException(
+            `Los pases disponibles de la compañia son: ${company.totalPasses}, se excede en ${pasesUpSum - company.totalPasses} pases`,
+          );
+        }
+      }
+
+      let newPassesAviable = dbEmployee.passesAvailable;
+
+      if (changes.passes < dbEmployee.passesAvailable) newPassesAviable = changes.passes;
+
+      if (changes.passes > dbEmployee.passes) changes.passes - dbEmployee.passes + dbEmployee.passesAvailable;
+
       const updEmployee = this.employeesRepository.merge(dbEmployee, {
         passes: changes.passes,
         passesAvailable: newPassesAviable,
       });
       await this.employeesRepository.save(updEmployee);
     }
+
     const updUser = this.usersRepository.merge(dbUser, changes);
     await this.usersRepository.save(updUser);
     return await this.usersRepository.findOne({

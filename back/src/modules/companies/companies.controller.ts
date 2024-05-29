@@ -16,13 +16,14 @@ import {
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 import { RolesGuard } from 'src/guards/roles.guard';
-import { CompaniesResponse, CreateCompaniesDto, UpdateCompaniesDto } from './companies.dto';
+import { CompaniesResponse, UpdateCompaniesDto } from './companies.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Role } from 'src/models/roles.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { CompaniesService } from './companies.service';
 import { CompanyStatus } from 'src/models/companyStatus.enum';
 import { CreateEmployeeDto, UpdateEmployeeDto } from '../users/employees.dto';
+import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
 // import { UserAuthCompanyGuard } from 'src/guards/userAuthCompany.guard';
 
 @ApiTags('Companies')
@@ -57,14 +58,10 @@ export class CompaniesController {
     return this.companiesService.getCompanies();
   }
 
+  @UseGuards(UserAuthCompanyGuard)
   @Get(':id')
   getCompanyById(@Param('id', ParseUUIDPipe) id: UUID) {
     return this.companiesService.getCompanyById(id);
-  }
-
-  @Post()
-  create(@Body() createCompaniesDto: CreateCompaniesDto) {
-    return this.companiesService.create(createCompaniesDto);
   }
 
   @Roles(Role.SUPERADMIN)

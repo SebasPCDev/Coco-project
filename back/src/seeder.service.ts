@@ -44,7 +44,7 @@ export class SeederService {
     private readonly coworkingsService: CoworkingsService,
     private readonly companiesService: CompaniesService,
   ) { }
- 
+
   async seed() {
     console.log('PRELOAD DATA');
 
@@ -262,6 +262,7 @@ export class SeederService {
       await this.companiesService.createEmployee(
         adminCompany.employees[0].user.id as UUID,
         employee,
+        false
       );
     }
   }

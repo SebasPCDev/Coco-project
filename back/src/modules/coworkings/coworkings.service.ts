@@ -33,6 +33,7 @@ import { UpdateBookingsDto } from '../bookings/bookings.dto';
 import { BookingsService } from '../bookings/bookings.service';
 import { BookingStatus } from 'src/models/bookingStatus';
 import { Amenities } from 'src/entities/amenities.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class CoworkingsService {
@@ -50,6 +51,7 @@ export class CoworkingsService {
     private amenitiesRepository: Repository<Amenities>,
     private readonly bookingsService: BookingsService,
     private readonly nodemailerService: NodemailerService,
+    private readonly jwtService: JwtService,
   ) { }
 
   async getAllCoworkings(
@@ -358,6 +360,25 @@ export class CoworkingsService {
       // !Mail a user con phrase ()
       //!mail a coworking y a empleado  que  se actulizo la reserva
       //* Envia a empleado
+
+
+      const payload = {
+        id: booking.user,
+        bookingId,
+        coworkingId,
+        reservationDate: booking.reservationDate,
+      };
+
+      const token = this.jwtService.sign(payload, {
+        expiresIn: '15m',
+      });
+
+      // await this.usersService.update(user.id as UUID, {
+      //   recoveryToken: token,
+      // });
+
+      const link = `${process.env.NODEMAILER_FRONT_URL}/check-in?token=${token}`;
+
       this.nodemailerService.sendBookingActiveNotificationEmployee(
         booking.coworking.name,
         booking.user.name,
@@ -366,6 +387,7 @@ export class CoworkingsService {
         booking.coworking.address,
         changes.confirmPhrase,
         booking.user.email,
+        link,
       );
       //*Envia a coworking
       this.nodemailerService.sendBookingActiveNotificationCoworking(

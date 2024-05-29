@@ -187,6 +187,7 @@ export class NodemailerService {
     address: string,
     phrase: string,
     employeeEmail: string,
+    link: string,
   ) {
     if (!companyName) {
       throw new BadRequestException('Nombre del coworking null');
@@ -203,6 +204,7 @@ export class NodemailerService {
         hora,
         address,
         phrase,
+        link
       ),
     };
 

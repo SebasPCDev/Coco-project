@@ -5,7 +5,9 @@ function sendBookingActiveNotificationEmployee(
   hora: Date,
   address: string,
   phrase: string,
+  link: string,
 ) {
+
   const html = `
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="es">
@@ -135,13 +137,28 @@ a[x-apple-data-detectors] {
                       </h3></td>
                      </tr>
 
-                     <tr>
+                    <tr>
                     <tr>
                     <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                     <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                         <tr>
                         <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Codigo de reserva: ${phrase}</h1></td>
                         </tr>
+                        <tr>
+                          <a href=${link} target="_blank"  
+                            style="
+                            text-decoration: none;
+                            margin-top: 1rem;
+                            border-radius: 0.5rem; 
+                            padding-left: 1.5rem; 
+                            padding-right: 1.5rem;
+                            padding-top: 0.75rem; 
+                            padding-bottom: 0.75rem;
+                            font-weight: bold;
+                            background-color: #1A2528;
+                            color: #C0DC7F;"
+                          >Realizar check-in</a>
+                    </tr>
                     </table></td>
                     </tr>
               

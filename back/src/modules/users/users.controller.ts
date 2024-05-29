@@ -29,7 +29,7 @@ import { UserStatus } from 'src/models/userStatus.enum';
 @UseGuards(AuthGuard)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(private readonly userService: UsersService) { }
 
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
@@ -54,6 +54,13 @@ export class UsersController {
   getProfile(@Req() request) {
     const userId = request.user.id;
     return this.userService.findOne(userId);
+  }
+
+  @Get('checkIn/email')
+  checkInEmail(@Query('token') token: string) {
+    console.log("token", token);
+    return token
+    // return this.userService.checkIn(user.id, bookingId);
   }
 
   @Roles(Role.SUPERADMIN)

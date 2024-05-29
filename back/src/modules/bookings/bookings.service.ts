@@ -33,7 +33,7 @@ export class BookingsService {
     @InjectRepository(Employees)
     private employeesRepository: Repository<Employees>,
     private readonly nodemailerService: NodemailerService,
-  ) { }
+  ) {}
 
   async findAll() {
     const bookings = await this.bookingsRepository.find();
@@ -52,12 +52,11 @@ export class BookingsService {
   async create(userId: UUID, data: CreateBookingsDto) {
     const user = await this.usersRepository.findOne({
       where: { id: userId },
-      relations: ['employee','bookings'],
+      relations: ['employee', 'bookings'],
     });
-    if (!user)
-      throw new BadRequestException('Usuario no encontrado');
+    if (!user) throw new BadRequestException('Usuario no encontrado');
     if (user.status !== UserStatus.ACTIVE)
-      throw new BadRequestException('Usuario no habilitado')
+      throw new BadRequestException('Usuario no habilitado');
 
     const coworking = await this.coworkingsRepository.findOne({
       where: { id: data.coworkingId },
@@ -117,12 +116,10 @@ export class BookingsService {
     await this.employeesRepository.update(user.employee.id, {
       passesAvailable: pasesUp,
     });
-   
-    
+
     const newData = { ...data, user, coworking };
     const newBooking = this.bookingsRepository.create(newData);
     const booking = await this.bookingsRepository.save(newBooking);
-   
 
     //!Enviar mensaje de descuento de pases
 
@@ -155,7 +152,7 @@ export class BookingsService {
       booking.reservationTime,
       coworking.email,
     );
-    console.log(user.bookings)
+    console.log(user.bookings);
     return booking;
   }
 
@@ -169,14 +166,16 @@ export class BookingsService {
   async CancelBooking(id: UUID, userId: UUID) {
     const booking = await this.bookingsRepository.findOne({
       where: { id: id },
-      relations: ['user', 'coworking'],
+      relations: ['user', 'coworking', 'user.employee'],
     });
+    console.log(booking);
     if (!booking) throw new BadRequestException('Reserva no encontrada');
 
     const user = await this.usersRepository.findOne({
       where: { id: userId },
       relations: ['bookings', 'coworkings', 'employee'],
     });
+
     if (!user) throw new BadRequestException('Usuario no encontrado');
 
     if (user.role === Role.EMPLOYEE) {
@@ -206,8 +205,12 @@ export class BookingsService {
           `No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`,
         );
       }
-      await this.employeesRepository.update(employee.id, { passesAvailable: employee.passesAvailable + 1 })
-      await this.bookingsRepository.update(booking.id, { status: BookingStatus.USER_CANCELED });
+      await this.employeesRepository.update(employee.id, {
+        passesAvailable: employee.passesAvailable + 1,
+      });
+      await this.bookingsRepository.update(booking.id, {
+        status: BookingStatus.USER_CANCELED,
+      });
       this.nodemailerService.sendCancelBooking(
         booking.coworking.name,
         user.name,
@@ -221,10 +224,8 @@ export class BookingsService {
     }
 
     if (user.role === Role.COWORKING) {
-      console.log('El coworking cancelo');
       //!Con esto se asegura que el coworking que tiene la reserva sea el que la cancela
-      console.log(user);
-      console.log(user.coworkings);
+
       // if(booking.coworking.user.includes(userId as UUID)){
       //   throw new BadRequestException(`Booking con id ${booking.id} no pertenece al usuario con id ${userId} `)
       // }
@@ -237,17 +238,23 @@ export class BookingsService {
           `Tu reserva debe ser diferente a cancelada o completa pero su estadio es: ${booking.status}`,
         );
       }
+
       const employee = await this.employeesRepository.findOneBy({
-        id: user.employee.id,
+        id: booking.user.employee.id,
       });
+
       if (!employee) {
         throw new BadRequestException(
           `No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`,
         );
       }
-      await this.employeesRepository.update(employee.id, { passesAvailable: employee.passesAvailable + 1 })
-      booking.status = BookingStatus.COWORKING_CANCELED
-      await this.bookingsRepository.update(booking.id, { status: BookingStatus.COWORKING_CANCELED });
+      await this.employeesRepository.update(employee.id, {
+        passesAvailable: employee.passesAvailable + 1,
+      });
+      booking.status = BookingStatus.COWORKING_CANCELED;
+      await this.bookingsRepository.update(booking.id, {
+        status: BookingStatus.COWORKING_CANCELED,
+      });
       this.nodemailerService.sendCancelBooking(
         booking.coworking.name,
         user.name,
@@ -279,9 +286,13 @@ export class BookingsService {
           `No se encontro el empleado con id en la tabla eployee, con id: ${user.employee.id}`,
         );
       }
-      await this.employeesRepository.update(employee.id, { passesAvailable: employee.passesAvailable + 1 })
-      booking.status = BookingStatus.COWORKING_CANCELED
-      await this.bookingsRepository.update(booking.id, { status: BookingStatus.COWORKING_CANCELED });
+      await this.employeesRepository.update(employee.id, {
+        passesAvailable: employee.passesAvailable + 1,
+      });
+      booking.status = BookingStatus.COWORKING_CANCELED;
+      await this.bookingsRepository.update(booking.id, {
+        status: BookingStatus.COWORKING_CANCELED,
+      });
       this.nodemailerService.sendCancelBooking(
         booking.coworking.name,
         user.name,

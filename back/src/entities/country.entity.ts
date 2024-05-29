@@ -6,13 +6,13 @@ export class Country {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 100 })
+  @Column({ length: 150 })
   name: string;
 
-  @Column({ length: 10 })
+  @Column({ length: 50 })
   lat: string;
 
-  @Column({ length: 10 })
+  @Column({ length: 50 })
   long: string;
 
   @OneToMany(() => State, (state) => state.country)

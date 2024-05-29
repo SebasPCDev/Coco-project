@@ -305,20 +305,13 @@ export class CompaniesService {
         0,
       );
 
-      console.log("totalPassesEmployee 1", totalPassesEmployee);
-
-
       //! logica para pases
       const dbEmployee = await this.employeesRepository.findOneBy({
         id: dbUser.employee.id,
       });
 
-      console.log("TOTAL COMPAñy", 500);
-      console.log("Change", changes.passes);
-      console.log("dbEmployee.passes", dbEmployee.passes);
-
       if (changes.passes > dbEmployee.passes) {
-        console.log("totalPassesEmployee 2", totalPassesEmployee);
+
         const pasesUpSum = totalPassesEmployee + changes.passes;
         if (pasesUpSum > company.totalPasses) {
           throw new BadRequestException(
@@ -331,12 +324,8 @@ export class CompaniesService {
 
       if (changes.passes < dbEmployee.passesAvailable) newPassesAviable = changes.passes;
 
-      // if (changes.passes < dbEmployee.passes && changes.passes > dbEmployee.passesAvailable) newPassesAviable = dbEmployee.passesAvailable;
-
       if (changes.passes > dbEmployee.passes) changes.passes - dbEmployee.passes + dbEmployee.passesAvailable;
 
-      // const newPassesAviable =
-      //   changes.passes - dbEmployee.passes + dbEmployee.passesAvailable;
       const updEmployee = this.employeesRepository.merge(dbEmployee, {
         passes: changes.passes,
         passesAvailable: newPassesAviable,

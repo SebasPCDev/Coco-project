@@ -173,7 +173,7 @@ export class CompaniesService {
     }
   }
 
-  async createEmployee(adminCompanyId: UUID, data: CreateEmployeeDto) {
+  async createEmployee(adminCompanyId: UUID, data: CreateEmployeeDto, email = true) {
     const dbUser = await this.usersRepository.findOneBy({
       email: data.email,
     });
@@ -221,7 +221,7 @@ export class CompaniesService {
       const newEmployee = this.employeesRepository.create(employee);
       await queryRunner.manager.save(newEmployee);
 
-      if (user.email)
+      if (email && user.email)
         this.nodemailerService.confirmacionMailRequest(
           user.email,
           company.name,

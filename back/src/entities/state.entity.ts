@@ -13,13 +13,13 @@ export class State {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 100 })
+  @Column({ length: 150 })
   name: string;
 
-  @Column({ length: 10 })
+  @Column({ length: 50 })
   lat: string;
 
-  @Column({ length: 10 })
+  @Column({ length: 50 })
   long: string;
 
   @ManyToOne(() => Country, (country) => country.states)

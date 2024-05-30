@@ -17,6 +17,7 @@ import sendBookingRejectNotificationCoworking from 'src/templates/notificationRe
 import sendActivationMailCoworkEmployee from 'src/templates/activationSuccedCoworkEmployee';
 import SendNotificationPasesEmployee from 'src/templates/notificationPasesEmployee';
 import sendCancelBooking from 'src/templates/cancelBooking';
+import sendEmailActiveCompany from 'src/templates/notificationEmailActiveCompany';
 dotenvConfig({
   path: '.env.development',
 });
@@ -67,6 +68,30 @@ export class NodemailerService {
       to: email,
       subject: 'Confirmación de Solicitud',
       html: sendNotificationEmail(companyName),
+    };
+
+    try {
+      const info = await transporter.sendMail(emailConfig);
+      console.log('Correo electrónico enviado:', info.response);
+      return 'Correo electrónico enviado';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      throw new InternalServerErrorException(
+        `Error al enviar el correo electrónico:${error}`,
+      );
+    }
+  }
+
+  async NotificationMailActiveCompany(email: string, companyName: string) {
+    if (!companyName) {
+      throw new BadRequestException('Nombre de la empresaes null');
+    }
+
+    const emailConfig = {
+      from: process.env.NODEMAILER_MAIL,
+      to: email,
+      subject: 'Activación de empresa',
+      html: sendEmailActiveCompany(companyName),
     };
 
     try {

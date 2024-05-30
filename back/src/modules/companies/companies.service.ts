@@ -347,7 +347,21 @@ export class CompaniesService {
   async update(id: UUID, changes: UpdateCompaniesDto) {
     const company = await this.getCompanyById(id);
 
+    if (company.status === CompanyStatus.COMPLETED
+      && changes.status === CompanyStatus.ACTIVE) {
+      // enviar email
+      const adminCompany = company.employees.find(adminComp => adminComp.user.role === Role.ADMIN_COMPANY)
+      if (adminCompany) {
+        this.nodemailerService.NotificationMailActiveCompany(
+          adminCompany.user.email,
+          company.name,
+        );
+      }
+    }
+
     const updCompany = this.companiesRepository.merge(company, changes);
-    return this.companiesRepository.save(updCompany);
+
+
+    return await this.companiesRepository.save(updCompany);
   }
 }

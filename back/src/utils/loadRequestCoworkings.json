@@ -9,8 +9,8 @@
     "state": "Tucumán",
     "city": "San Miguel de Tucumán",
     "address": "Calle Mendoza 654",
-    "lat": "-26.832397",
-    "long": "-65.202586"
+    "lat": "-26.798211",
+    "long": "-65.179682"
   },
   {
     "name": "Maria",
@@ -22,8 +22,8 @@
     "state": "Tucumán",
     "city": "San Miguel de Tucumán",
     "address": "Calle Crisostomo alvarez 535",
-    "lat": "-26.836054",
-    "long": "-65.209778"
+    "lat": "-26.880004",
+    "long": "-65.223627"
   },
   {
     "name": "Juan",
@@ -35,8 +35,8 @@
     "state": "Tucumán",
     "city": "San Miguel de Tucumán",
     "address": "Calle 25 de Mayo 330",
-    "lat": "-26.825423",
-    "long": "-65.211100"
+    "lat": "-26.809396",
+    "long": "-65.247832"
   },
   {
     "name": "Laura",
@@ -48,8 +48,8 @@
     "state": "Buenos Aires",
     "city": "La Plata",
     "address": "Calle 12 727",
-    "lat": "-34.922819",
-    "long": "-57.956613"
+    "lat": "-34.923357",
+    "long": "-57.952341"
   },
   {
     "name": "Carlos",
@@ -61,8 +61,8 @@
     "state": "Buenos Aires",
     "city": "La Plata",
     "address": "Avenida 13 575",
-    "lat": "-34.915789",
-    "long": "-57.962420"
+    "lat": "-34.874606",
+    "long": "-58.082148"
   },
   {
     "name": "Ana",
@@ -74,8 +74,8 @@
     "state": "Buenos Aires",
     "city": "La Plata",
     "address": "Calle 50 687",
-    "lat": "-34.915110",
-    "long": "-57.949645"
+    "lat": "-34.857499",
+    "long": "-57.915774"
   },
   {
     "name": "Jose",
@@ -87,8 +87,8 @@
     "state": "Córdoba",
     "city": "Córdoba",
     "address": "Calle Belgrano 110",
-    "lat": "-31.416483",
-    "long": "-64.183528"
+    "lat": "-31.463261",
+    "long": "-64.199303"
   },
   {
     "name": "Elena",
@@ -100,8 +100,8 @@
     "state": "Córdoba",
     "city": "Córdoba",
     "address": "Calle Rivadavia 230",
-    "lat": "-31.416903",
-    "long": "-64.186261"
+    "lat": "-31.359685",
+    "long": "-64.226268"
   },
   {
     "name": "Gabriel",
@@ -113,8 +113,8 @@
     "state": "Córdoba",
     "city": "Córdoba",
     "address": "Calle Caseros 240",
-    "lat": "-31.417967",
-    "long": "-64.184203"
+    "lat": "-31.388290",
+    "long": "-64.132181"
   },
   {
     "name": "Paula",
@@ -126,8 +126,8 @@
     "state": "Buenos Aires",
     "city": "Ciudad Autonoma de Buenos Aires",
     "address": "Avenida Corrientes 1352",
-    "lat": "-34.605507",
-    "long": "-58.384526"
+    "lat": "-34.552455",
+    "long": "-58.490597"
   },
   {
     "name": "Fernando",
@@ -152,8 +152,8 @@
     "state": "Buenos Aires",
     "city": "Ciudad Autonoma de Buenos Aires",
     "address": "Calle Sarmiento 600",
-    "lat": "-34.604422",
-    "long": "-58.377975"
+    "lat": "-34.635232",
+    "long": "-58.488790"
   },
   {
     "name": "Diego",

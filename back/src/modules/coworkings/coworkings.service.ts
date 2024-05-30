@@ -363,19 +363,21 @@ export class CoworkingsService {
 
 
       const payload = {
-        id: booking.user,
+        id: booking.user.id,
+        confirmPhrase: changes.confirmPhrase,
         bookingId,
         coworkingId,
         reservationDate: booking.reservationDate,
       };
 
-      const token = this.jwtService.sign(payload, {
-        expiresIn: '15m',
-      });
+      const currentDateMillis = Date.now();
+      const reserveDate = new Date('2024-06-12T00:00:00.000Z');
+      const reserveDateMillis = reserveDate.getTime();
+      const differenceMillis = reserveDateMillis - currentDateMillis;
 
-      // await this.usersService.update(user.id as UUID, {
-      //   recoveryToken: token,
-      // });
+      const token = this.jwtService.sign(payload, {
+        expiresIn: differenceMillis,
+      });
 
       const link = `${process.env.NODEMAILER_FRONT_URL}/check-in?token=${token}`;
 

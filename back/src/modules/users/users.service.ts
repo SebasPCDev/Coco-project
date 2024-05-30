@@ -14,6 +14,7 @@ import { UpdateBookingsDto } from '../bookings/bookings.dto';
 import { BookingStatus } from 'src/models/bookingStatus';
 import { BookingsService } from '../bookings/bookings.service';
 import { UserStatus } from 'src/models/userStatus.enum';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
@@ -21,6 +22,7 @@ export class UsersService {
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
     private readonly bookingsService: BookingsService,
+    private readonly jwtService: JwtService,
   ) { }
 
   async create(data: CreateUsersDto) {
@@ -115,7 +117,7 @@ export class UsersService {
 
     if (booking.status !== BookingStatus.ACTIVE)
       throw new BadRequestException(
-        `El estado de la reserva esta en:${booking.status},no se puede modificar`,
+        `El estado de la reserva esta en: ${booking.status}, no se puede modificar`,
       );
 
     booking.confirmUser = true;
@@ -134,6 +136,34 @@ export class UsersService {
     // verificar si bookingif "ACTIVO"
     // user_confirm = true
     // Verifica si coworking_confirm = true => pasa estado a Completed
+  }
+
+  async checkInByEmail(token: string) {
+    const secret = process.env.JWT_SECRET;
+    let payload;
+    try {
+      payload = this.jwtService.verify(token, { secret });
+
+    } catch (error) {
+      throw new BadRequestException("Token inválido")
+    }
+
+    const booking = await this.bookingsService.findOne(payload.bookingId);
+    if (booking.user.id !== payload.id)
+      throw new ForbiddenException(
+        'No tienes permisos para modificar esta resevación',
+      );
+
+    if (booking.status !== BookingStatus.ACTIVE)
+      throw new BadRequestException(
+        `El estado de la reserva esta en: ${booking.status}, no se puede modificar`,
+      );
+
+    booking.confirmUser = true;
+    if (booking.confirmCoworking === true) booking.status = BookingStatus.COMPLETED;
+
+    const updBooking = await this.bookingsService.update(booking.id as UUID, booking);
+    return updBooking;
   }
 
   async update(id: UUID, changes: UpdateUsersDto) {

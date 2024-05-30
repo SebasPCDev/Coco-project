@@ -23,6 +23,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { UserAuthGuard } from 'src/guards/userAuth.guard';
 import { UpdateBookingsDto } from '../bookings/bookings.dto';
 import { UserStatus } from 'src/models/userStatus.enum';
+import { Public } from 'src/decorators/public.decorator';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -56,13 +57,6 @@ export class UsersController {
     return this.userService.findOne(userId);
   }
 
-  @Get('checkIn/email')
-  checkInEmail(@Query('token') token: string) {
-    console.log("token", token);
-    return token
-    // return this.userService.checkIn(user.id, bookingId);
-  }
-
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Get(':id')
@@ -86,6 +80,12 @@ export class UsersController {
   ) {
     const user = request.user;
     return this.userService.updateBooking(user.id, bookingId, changes);
+  }
+
+  @Public()
+  @Put('checkIn/email')
+  checkInByEmail(@Body('token') token: string) {
+    return this.userService.checkInByEmail(token);
   }
 
   @Roles(Role.EMPLOYEE, Role.SUPERADMIN)

@@ -4,7 +4,6 @@ import { State } from 'src/entities/state.entity';
 import { Repository } from 'typeorm';
 import { CreateStateDto } from '../geography.dto';
 import { CountryService } from './country.service';
-// import { loadStates } from 'src/utils/loadData';
 
 @Injectable()
 export class StateService {
@@ -12,10 +11,11 @@ export class StateService {
     @InjectRepository(State)
     private stateRepository: Repository<State>,
     private readonly countryService: CountryService,
-  ) {}
+  ) { }
 
   async getAllStates() {
-    const states = await this.stateRepository.find();
+    const states = await this.stateRepository.find({ relations: ['country'] });
+    console.log("states", states);
     return states;
   }
 

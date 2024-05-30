@@ -289,7 +289,7 @@ export class CoworkingsService {
         this.nodemailerService.sendActivationMailCoworkEmployee(
           newUser.name,
           newUser.email,
-          newUser.password,
+          password,
         );
 
       return newUser;

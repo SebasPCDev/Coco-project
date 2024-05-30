@@ -1,8 +1,14 @@
+import { config as dotenvConfig } from 'dotenv';
+dotenvConfig({
+  path: '.env.development',
+});
+
 function sendActivationMailCoworkEmployee(
   employeeCoworking: string,
   email: string,
   password: string,
 ) {
+  const url =process.env.NODEMAILER_FRONT_URL
   const html = `<html>
       <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -347,7 +353,7 @@ function sendActivationMailCoworkEmployee(
     
                                 text-decoration: none;
                               "
-                              href="http://localhost:3001/login" 
+                              href= '${url}/login'
                             >
                               Iniciar sesión
                             </a>

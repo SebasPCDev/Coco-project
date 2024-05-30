@@ -5,7 +5,9 @@ function sendBookingActiveNotificationEmployee(
   hora: Date,
   address: string,
   phrase: string,
+  link: string,
 ) {
+
   const html = `
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="es">
@@ -135,16 +137,34 @@ a[x-apple-data-detectors] {
                       </h3></td>
                      </tr>
 
-                     <tr>
+                    <tr>
                     <tr>
                     <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                     <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                         <tr>
-                        <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Codigo de reserva: ${phrase}</h1></td>
+                        <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Codigo de reserva: ${phrase}</h1>
+
+                        <div style="margin-top:38px;margin-bottom:38px;">
+                        <p style="margin-bottom:38px;line-height:24px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:20px;font-weight:bold;color:#333333;">El día ${dia.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })} podrás realizar el check-in a través del siguiente botón</p>
+                        <a href=${link} target="_blank"  
+                            style="
+                            text-decoration: none;
+                            margin-top: 2rem;
+                            border-radius: 0.5rem; 
+                            padding-left: 1.5rem; 
+                            padding-right: 1.5rem;
+                            padding-top: 0.75rem; 
+                            padding-bottom: 0.75rem;
+                            font-weight: bold;
+                            background-color: #1A2528;
+                            color: #C0DC7F;"
+                          >Realizar check-in</a>
+                        </div>
+                        </td>
                         </tr>
                     </table></td>
                     </tr>
-              
+
                      <tr>
                       <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">¿Tienes alguna pregunta? <a href="mailto:cocoplus2024@gmail.com" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">cocoplus2024@gmail.com</a></p></td>
                      </tr>

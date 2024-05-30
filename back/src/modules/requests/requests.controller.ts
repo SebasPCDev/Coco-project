@@ -11,7 +11,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { RequestsService } from './requests.service';
 import { CompanyType } from 'src/models/companyType.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -30,14 +30,16 @@ import {
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
-@ApiTags('requests')
+@ApiTags('Requests')
 @Controller('requests')
 export class RequestsController {
-  constructor(private readonly requestsService: RequestsService) {}
+  constructor(private readonly requestsService: RequestsService) { }
 
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Get()
+  @ApiQuery({ name: 'type', required: false })
+  @ApiQuery({ name: 'status', required: false })
   async getrequests(
     @Query(
       'type',
@@ -58,12 +60,8 @@ export class RequestsController {
     )
     status?: StatusRequest,
   ) {
-    try {
-      const result = await this.requestsService.getRequest(type, status);
-      return result;
-    } catch (error) {
-      throw error;
-    }
+    const result = await this.requestsService.getRequest(type, status);
+    return result;
   }
 
   @Public()

@@ -13,9 +13,9 @@ import {
   ParseEnumPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUsersDto, UpdateDto, UpdateUsersDto } from './users.dto';
+import { CreateUsersDto, UpdateDto, UpdateUsersDto, UsersResponseDto } from './users.dto';
 import { UUID } from 'crypto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/models/roles.enum';
@@ -35,7 +35,12 @@ export class UsersController {
   @Roles(Role.SUPERADMIN)
   @UseGuards(RolesGuard)
   @Get()
-  findAll(
+  @ApiQuery({ name: 'status', required: false })
+  @ApiQuery({ name: 'name', required: false })
+  @ApiQuery({ name: 'role', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  async findAll(
     @Query('status', new ParseEnumPipe(UserStatus, { optional: true }))
     status?: UserStatus,
     @Query('name') name?: string,
@@ -43,7 +48,7 @@ export class UsersController {
     @Query('page', new ParseIntPipe({ optional: true })) page?: number,
     @Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
   ) {
-    return this.userService.findAll(status, name, role, page, limit);
+    return await this.userService.findAll(status, name, role, page, limit) as UsersResponseDto;
   }
 
   @Post()

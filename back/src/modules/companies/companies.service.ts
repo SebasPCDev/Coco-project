@@ -195,6 +195,9 @@ export class CompaniesService {
     });
     if (!company) throw new BadRequestException('Empresa no encontrada');
 
+    if (company.status !== CompanyStatus.ACTIVE)
+      throw new BadRequestException('La empresa no se encuentra activa');
+
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
 

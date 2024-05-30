@@ -17,6 +17,7 @@ import {
   Validate,
 } from 'class-validator';
 import { MatchPass } from 'src/decorators/MatchPass.decorator';
+import { Users } from 'src/entities/users.entity';
 import { Role } from 'src/models/roles.enum';
 import { UserStatus } from 'src/models/userStatus.enum';
 
@@ -69,12 +70,7 @@ export class CreateUsersDto {
   @IsNotEmpty({ message: 'position no debe estar vacío' })
   position: string;
 
-  @ApiProperty({
-    example: '',
-    description:
-      'Contraseña del usuario (se establece dentro del endpoint, se envía null)',
-    nullable: true,
-  })
+  @ApiHideProperty()
   @IsEmpty()
   password: string;
 
@@ -103,6 +99,13 @@ export class CreateUsersDto {
     message: 'status debe ser un valor válido de UserStatus',
   })
   status: UserStatus;
+}
+
+export class UsersResponseDto {
+  page: number;
+  limit: number;
+  total: number;
+  users: Users[];
 }
 
 export class UpdateUsersDto extends PartialType(

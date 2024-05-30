@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsString,
   IsOptional,
@@ -72,27 +72,15 @@ export class CreateRequestDto {
   @IsString({ message: 'message debe ser un string' })
   message: string;
 
-  // @ApiProperty({
-  //   example: 'pending',
-  //   description: 'El status de la request pending / close	',
-  // })
-  // @IsOptional()
-  // @IsEnum(StatusRequest)
   @IsEmpty()
+  @ApiHideProperty()
   status: StatusRequest;
 
-  @ApiProperty({
-    example: 'Esto es una observacion',
-    description: 'Observacion de la request',
-  })
+  @ApiHideProperty()
   @IsEmpty()
   observation: string;
 
-  @ApiProperty({
-    example: '',
-    description: 'Debe estar vacio (se seta detro del endpoint), se envia null',
-    nullable: true,
-  })
+  @ApiHideProperty()
   @IsEmpty()
   type: CompanyType;
 }
@@ -194,6 +182,6 @@ export class CreateRequestCompanyDto extends CreateRequestDto {
 
 export class UpdateRequestCoworkingDto extends PartialType(
   CreateRequestCoworkingDto,
-) {}
+) { }
 
-export class UpdateRequestDto extends PartialType(CreateRequestDto) {}
+export class UpdateRequestDto extends PartialType(CreateRequestDto) { }

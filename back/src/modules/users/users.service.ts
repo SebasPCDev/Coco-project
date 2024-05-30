@@ -122,20 +122,10 @@ export class UsersService {
 
     booking.confirmUser = true;
     if (booking.confirmCoworking === true) {
-      //* Pasa el estado a complete
       booking.status = BookingStatus.COMPLETED;
-
-      //!Descuenta los pases una vez  completo
-      // if(booking.user.employee.passesAvailable<=0){
-      //     throw new BadRequestException("El cliente no tiene pases disponibles")
-      // }
-      // booking.user.employee.passesAvailable  =  booking.user.employee.passesAvailable-1
     }
     const updBooking = await this.bookingsService.update(bookingId, booking);
     return updBooking;
-    // verificar si bookingif "ACTIVO"
-    // user_confirm = true
-    // Verifica si coworking_confirm = true => pasa estado a Completed
   }
 
   async checkInByEmail(token: string) {

@@ -33,7 +33,7 @@ export class BookingsService {
     @InjectRepository(Employees)
     private employeesRepository: Repository<Employees>,
     private readonly nodemailerService: NodemailerService,
-  ) {}
+  ) { }
 
   async findAll() {
     const bookings = await this.bookingsRepository.find();
@@ -257,12 +257,12 @@ export class BookingsService {
       });
       this.nodemailerService.sendCancelBooking(
         booking.coworking.name,
-        user.name,
+        booking.user.name,
         booking.coworking.name,
         booking.reservationDate,
         booking.reservationTime,
         booking.coworking.address,
-        user.email,
+        booking.user.email,
       );
       return { mesage: `se cancelo la reserva id ${booking.id}` };
     }
@@ -295,12 +295,12 @@ export class BookingsService {
       });
       this.nodemailerService.sendCancelBooking(
         booking.coworking.name,
-        user.name,
+        booking.user.name,
         booking.coworking.name,
         booking.reservationDate,
         booking.reservationTime,
         booking.coworking.address,
-        user.email,
+        booking.user.email,
       );
       return { mesage: `se cancelo la reserva id ${booking.id}` };
     }

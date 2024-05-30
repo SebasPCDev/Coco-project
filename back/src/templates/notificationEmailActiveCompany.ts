@@ -1,10 +1,4 @@
-function sendBookingActiveNotificationCoworking(
-  companyName: string,
-  employeeName: string,
-  dia: Date,
-  hora: Date,
-  address: string,
-) {
+function sendEmailActiveCompany(companyName: string) {
   const html = `
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="es">
@@ -14,7 +8,7 @@ function sendBookingActiveNotificationCoworking(
   <meta name="x-apple-disable-message-reformatting">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="telephone=no" name="format-detection">
-  <title>sendBookingNotificationEmployee</title><!--[if (mso 16)]>
+  <title>sendNotificationEmail</title><!--[if (mso 16)]>
     <style type="text/css">
     a {text-decoration: none;}
     </style>
@@ -95,7 +89,7 @@ a[x-apple-data-detectors] {
                   <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Reserva aprobada</h1></td>
+                      <td align="center" class="es-m-p0r es-m-p0l es-m-txt-c" style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:40px;padding-right:40px"><h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">Confirmación de Solicitud ${companyName}</h1></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -108,33 +102,7 @@ a[x-apple-data-detectors] {
                   <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:5px" role="presentation">
                      <tr>
-                      <td align="center" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:25px;padding-bottom:25px"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#333333">
-                      Estimados ${companyName},
-                      <br>
-                      <br>
-
-                      Nos complace informarles que la reserva solicitada ha sido aprobada con éxito.
-
-                      <br>
-                      <br>
-                      Estamos muy contentos de colaborar con ${companyName} y confiamos en que esta reserva contribuirá 
-                      positivamente a nuestras actividades. Si requieren información adicional o tienen alguna pregunta, no duden en ponerse en contacto con nosotros.
-
-                      <br>
-                      <br>
-                      
-                      Detalles de Reserva:
-                      <br>
-                      <br>
-                      Empleado: ${employeeName}
-                      <br>
-                      Día solicitado: ${dia.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-                      <br>
-                      Hora solicitada: ${hora}
-                      <br>
-                      Dirección: ${address}
-
-                      </h3></td>
+                      <td align="center" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:25px;padding-bottom:25px"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#333333">Le informamos que su solicitud para formar parte de Coco+ ha sido confirmada con éxito. Ya puedes comenzar a realizar el alta de empleados.</h3></td>
                      </tr>
                      <tr>
                       <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">¿Tienes alguna pregunta? <a href="mailto:cocoplus2024@gmail.com" target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">cocoplus2024@gmail.com</a></p></td>
@@ -195,4 +163,4 @@ a[x-apple-data-detectors] {
     `;
   return html;
 }
-export default sendBookingActiveNotificationCoworking;
+export default sendEmailActiveCompany;

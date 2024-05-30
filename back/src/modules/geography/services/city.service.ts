@@ -4,7 +4,6 @@ import { City } from 'src/entities/city.entity';
 import { Repository } from 'typeorm';
 import { CreateCityDto } from '../geography.dto';
 import { StateService } from './state.service';
-// import { loadCities } from 'src/utils/loadData';
 
 @Injectable()
 export class CityService {
@@ -12,10 +11,10 @@ export class CityService {
     @InjectRepository(City)
     private cityRepository: Repository<City>,
     private readonly stateService: StateService,
-  ) {}
+  ) { }
 
   async getAllCities() {
-    const cities = await this.cityRepository.find();
+    const cities = await this.cityRepository.find({ relations: ['state'] });
     return cities;
   }
 
